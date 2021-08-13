@@ -1,0 +1,25 @@
+@use "../../BaseStyle.scss" as base;
+
+.ch-button{
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: base.$background;
+    background-color:#979997;
+    padding:0.5em;
+    border-radius: 0.5em;
+    border-style: none none solid none;
+    border-width: 0.2em;
+    border-color: #cccccc;
+    cursor: pointer;
+    margin: 0.4rem;
+    transition: filter 0.1s ease;
+  
+    &:hover{
+      filter:brightness(94%)
+    }
+  
+    &:active{
+      filter:brightness(90%);
+      border-color: #b2b2b2;
+    }
+  }
