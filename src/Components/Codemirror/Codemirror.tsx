@@ -1,14 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {EditorState, EditorView, basicSetup} from "@codemirror/basic-setup";
 import {python} from "@codemirror/lang-python";
-import './Codemirror.css';
+import './Codemirror.scss';
 
-function Codemirror() {
-    useEffect(() => {
+class Codemirror extends React.Component {
+    view: EditorView | undefined;
+    
+
+    render(){
+        return(<div id="code_window" className="Codemirror">
+            
+        </div>)
+    }
+
+    componentDidMount() {
         let parent = document.getElementById("code_window");
-        let view:EditorView;
+        
         if (parent) {
-            let view = new EditorView({
+            this.view = new EditorView({
                 state: EditorState.create({extensions:[basicSetup, python()]}),
                 parent: parent
             });
@@ -16,20 +25,17 @@ function Codemirror() {
         else{
             console.log("Could not find parent element")
         }
+    }
 
+    componentWillUnmount() {
+        if (this.view){
+            this.view.destroy();
+        }
+    }
 
-        return () => {
-            view.destroy();
-        } 
-        
-    });
-
-
-    return (
-        <div id="code_window" className="Codemirror">
-            
-        </div>
-    );
+    getEditorState () {
+        return(this.view?.state.doc);
+    }
 }
 
 export default Codemirror;
