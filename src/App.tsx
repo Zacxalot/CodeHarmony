@@ -3,12 +3,15 @@ import Codemirror from './Components/Codemirror/Codemirror';
 import CHButton from './Components/Basic UI/CHButton/CHButton';
 import Console from './Components/Console/Console';
 
+
 interface AppState {
   stdout: string;
 }
 
 class App extends React.Component<{},AppState> {
   codemirrorRef: React.RefObject<Codemirror>;
+  pyWorker: Worker;
+  pyWorkerInitialised: Boolean;
 
   constructor(props:any){
     super(props);
@@ -16,6 +19,10 @@ class App extends React.Component<{},AppState> {
     this.state = {
       stdout: ""
     }
+    
+    // Setup pyodide worker
+    this.pyWorker = new Worker("./pyodideWorker.js")
+    this.pyWorkerInitialised = false;
   }
 
   render() {
@@ -29,20 +36,33 @@ class App extends React.Component<{},AppState> {
   }
 
   componentDidMount() {
-    loadPyodide({ indexURL : "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/" });
-    
+    // Add listener for pyodide web worker messages
+    this.pyWorker.addEventListener("message", this.handlePyWorkerMessage);
+
+    this.pyWorker.postMessage({"type":"initialise"});
   }
 
-  runCode= () => {
+  handlePyWorkerMessage = (message:MessageEvent) => {
+    switch(message.data.type){
+      case "init complete":
+        console.log("Pyodide init complete");
+        this.pyWorkerInitialised = true;
+        break;
+      case "console":
+        this.setState({stdout: this.state.stdout + message.data.data})
+        // console.log(this.state.stdout)
+        break;
+    }
+  }
+
+  runCode = () => {
     if (this.codemirrorRef.current !== null){
       let data = this.codemirrorRef.current.getEditorState();
       
-      if (data){
-        this.setState({
-          stdout: data.sliceString(0,data.length)
-        });
+      if (data && this.pyWorkerInitialised){
+        this.pyWorker.postMessage({"type":"code","data":data.sliceString(0,data.length)})
+
       }
-      
     }
   }
 }
