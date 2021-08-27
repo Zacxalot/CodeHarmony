@@ -1,0 +1,55 @@
+@use "../../BaseStyle.scss" as base;
+
+.home-page{
+    display: flex;
+    flex-direction:column;
+    min-height: 100vh;
+}
+
+.large-emoji{
+    font-size:16rem;
+}
+
+.selection-card {
+    user-select:none;
+    width: 50%;
+    display:inline-block;
+    text-align: center;
+}
+
+.selection-card-area {
+    width: 100%;
+}
+
+@media (max-width:650px) {
+    .selection-card {
+        width: 100%;
+        display:block;
+    }    
+}
+
+.selection-card-link{
+    border-style: none none solid none;
+    display: inline-block;
+    border-radius: 1.2rem;
+    background-color:base.$accent;
+    border-color: base.$shadow;
+
+    margin:0.2rem 0.2rem;
+
+    &:hover{
+        filter:brightness(94%)
+    }
+
+    &:active{
+        filter:brightness(90%);
+        border-color: #b2b2b2;
+    }
+}
+
+.selection-card-align{
+    flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

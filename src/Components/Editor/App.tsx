@@ -1,7 +1,7 @@
 import React from 'react';
-import Codemirror from './Components/Codemirror/Codemirror';
-import CHButton from './Components/Basic UI/CHButton/CHButton';
-import Console from './Components/Console/Console';
+import Codemirror from "../Codemirror/Codemirror"
+import CHButton from '../Basic UI/CHButton/CHButton';
+import Console from '../Console/Console';
 
 
 interface AppState {

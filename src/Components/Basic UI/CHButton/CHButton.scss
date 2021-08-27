@@ -1,4 +1,4 @@
-@use "../../BaseStyle.scss" as base;
+@use "../../../BaseStyle.scss" as base;
 
 .ch-button{
     font-size: 1.2rem;
@@ -9,7 +9,7 @@
     border-radius: 0.5em;
     border-style: none none solid none;
     border-width: 0.2em;
-    border-color: #cccccc;
+    border-color: base.$shadow;
     cursor: pointer;
     margin: 0.4rem;
     transition: filter 0.1s ease;
