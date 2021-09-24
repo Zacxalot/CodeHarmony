@@ -7,7 +7,7 @@ class HomePage extends React.Component {
         return (
             <div className="home-page">
                 <nav>
-                    <h1>Code_Harmony</h1>
+                    <h1>Code<span>_</span>Harmony</h1>
 
                 </nav>
                 <div className="selection-card-align">

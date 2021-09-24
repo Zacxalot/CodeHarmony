@@ -1,9 +1,11 @@
 @use "../../BaseStyle.scss" as base;
+@use "sass:color";
 
 .home-page{
     display: flex;
     flex-direction:column;
     min-height: 100vh;
+    width: 100vw;
 }
 
 .large-emoji{
@@ -11,29 +13,34 @@
 }
 
 .selection-card {
+    font-size:1.8rem;
     user-select:none;
-    width: 50%;
+    width: 45%;
     display:inline-block;
     text-align: center;
+    margin:1rem;
 }
 
 .selection-card-area {
+    text-align: center;
     width: 100%;
 }
 
-@media (max-width:650px) {
+@media (max-width:680px) {
     .selection-card {
-        width: 100%;
-        display:block;
+        width:80%;
+        margin:1rem 0rem;
     }    
 }
 
 .selection-card-link{
-    border-style: none none solid none;
     display: inline-block;
     border-radius: 1.2rem;
-    background-color:base.$accent;
+    // background-color:base.$accent;
+    background-image:linear-gradient(45deg,adjust-hue(base.$accent,-0),adjust-hue(base.$accent,90));
     border-color: base.$shadow;
+    width:100%;
+    box-shadow: 0rem 1rem 0px #000000,0rem 1.5rem 0.2rem base.$shadow;
 
     margin:0.2rem 0.2rem;
 

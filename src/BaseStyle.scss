@@ -1,10 +1,10 @@
-$background: #f5f5f5;
-$shadow: #cccccc;
+$background: #fcfcfc;
+$shadow: #ececec;
 
 
-$main-colour: #b275ef;
-$accent: #b2ef75;
-$accent-alt: #75efb2;
+$main-colour: #ffffff;
+$accent: #886ce4;
+$accent-alt: #eb75ef;
 
 html, body, #root{
     min-height: 100vh;
@@ -21,9 +21,34 @@ nav{
     color:$background;
     text-align: center;
     margin: 0px;
-    font-size: 1.4rem;
+    font-size: 2rem;
+    
+    box-shadow: 0px 10px 12px $shadow;
+
     h1{
         margin: 0px;
+        // background: linear-gradient(45deg,#ee22cf,#7a0ec7);
+        // background-clip: text;
+        // color:transparent;
+        // animation: nav-text-animation 10s linear infinite;
+        letter-spacing: -0.1rem;
+        text-shadow: 0rem 0.2rem 0.1rem $shadow;
+        color: black;
+
+        span{
+            color:$accent;
+        }
     }
 }
 
+@keyframes nav-text-animation {
+    from{
+        filter: hue-rotate(0deg)
+    }
+    50%{
+        filter: hue-rotate(40deg)
+    }
+    to{
+        filter: hue-rotate(0deg)
+    }
+}
