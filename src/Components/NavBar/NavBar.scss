@@ -1,0 +1,26 @@
+@use "../../BaseStyle.scss" as base;
+
+nav{
+    background-color: base.$main-colour;
+    color:base.$background;
+    text-align: center;
+    margin: 0px;
+    font-size: 2rem;
+    
+    box-shadow: 0px 10px 12px base.$shadow;
+
+    h1{
+        margin: 0px;
+        // background: linear-gradient(45deg,#ee22cf,#7a0ec7);
+        // background-clip: text;
+        // color:transparent;
+        // animation: nav-text-animation 10s linear infinite;
+        letter-spacing: -0.1rem;
+        text-shadow: 0rem 0.2rem 0.1rem base.$shadow;
+        color: black;
+
+        span{
+            color:base.$accent;
+        }
+    }
+}
