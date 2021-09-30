@@ -2,10 +2,10 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
   } from "react-router-dom";
 import HomePage from "../Home/Home";
+import TeacherDashboard from "../TeacherDashboard/TeacherDashboard";
 import PageNotFound from "../PageNotFound/PageNotFound";
 
 class Hub extends React.Component {
@@ -15,6 +15,7 @@ class Hub extends React.Component {
             <Router>
                 <Switch>
                     <Route path="/s/dashboard"/>
+                    <Route path="/t/dashboard" component={TeacherDashboard}/>
                     <Route exact path="/" component={HomePage}/>
                     <Route component={PageNotFound}/>
                 </Switch>

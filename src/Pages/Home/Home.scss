@@ -15,7 +15,7 @@
     width: 100%;
 }
 
-@media (max-width:680px) {
+@media (max-width:750px) {
     .selection-card {
         width:80%;
         margin:1rem 0rem;
@@ -25,7 +25,6 @@
 .selection-card-link{
     display: inline-block;
     border-radius: 1.2rem;
-    // background-color:base.$accent;
     background-image:linear-gradient(45deg,adjust-hue(base.$accent,-0),adjust-hue(base.$accent,90));
     border-color: base.$shadow;
     width:100%;

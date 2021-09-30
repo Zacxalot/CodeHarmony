@@ -4,7 +4,8 @@ import "./CHButton.scss";
 interface ButtonProps {
     text: string;
     colour?: string;
-    callback: () => void;
+    callback?: () => void;
+    fontBlack?: boolean;
 }
 
 class CHButton extends React.Component<ButtonProps,{}> {
@@ -18,7 +19,7 @@ class CHButton extends React.Component<ButtonProps,{}> {
         }
 
         return (
-            <button className="ch-button" style={{ backgroundColor: colour }} onClick={this.props.callback}>{text}</button>
+            <button className="ch-button" style={{ backgroundColor: colour, color: (this.props.fontBlack ? "black" : "white") }} onClick={this.props.callback}>{text}</button>
         );
     };
 

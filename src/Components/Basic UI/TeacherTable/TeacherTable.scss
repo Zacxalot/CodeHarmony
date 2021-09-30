@@ -1,0 +1,43 @@
+@use "../../../BaseStyle.scss" as base;
+
+table{
+    max-width: 1600px;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+
+    thead{
+        background-color: transparent;
+    }
+
+    tbody{
+        text-align: right;
+        background-color: #FFFFFF44;
+
+        tr{
+            border-top: 1px solid #00000022;
+            border-bottom: 1px solid #00000022;
+
+            td:nth-child(odd){
+                background-color: #00000011;
+            }
+        }
+    }
+
+    td{
+        padding: 0.3rem;
+    }
+
+    th{
+        padding: 0rem 0.8rem;
+    }
+}
+
+.table-border{
+    padding: 1rem 0rem;
+    background-color: base.$accent;
+    display:inline-block;
+    border-radius: 1rem;
+    margin: 1rem;
+    box-shadow: 0px 12px 7px base.$shadow;
+
+}

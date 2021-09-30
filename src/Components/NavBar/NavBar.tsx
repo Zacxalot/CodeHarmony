@@ -1,12 +1,17 @@
 import React from "react";
-import './NavBar.scss';
+import "./NavBar.scss";
 import {Link} from "react-router-dom";
 
-class NavBar extends React.Component {
+interface NavBarProps {
+    small?: boolean
+}
+
+class NavBar extends React.Component<NavBarProps,{}> {
+    
 
     render(){
         return (
-            <nav>
+            <nav style={{fontSize: ((this.props.small) ? "1rem" : "2rem")}}>
                 <Link to={"/"}>
                     <h1>Code<span>_</span>Harmony</h1>
                 </Link>

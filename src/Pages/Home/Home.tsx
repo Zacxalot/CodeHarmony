@@ -1,8 +1,5 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
   } from "react-router-dom";
 import './Home.scss';
@@ -23,10 +20,10 @@ class HomePage extends React.Component {
                             </Link>
                         </div>
                         <div className="selection-card">
-                            <a className="selection-card-link">
+                            <Link to={"/t/dashboard"} className="selection-card-link">
                                 <h1>I'm a teacher</h1>
                                 <span className="large-emoji">👨‍🏫️</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
