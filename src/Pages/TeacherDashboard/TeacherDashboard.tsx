@@ -13,9 +13,6 @@ class TeacherDashboard extends React.Component {
         return (
             <div className="full-page">
                 <NavBar small></NavBar>
-                <Link to="/t/create">
-                    <CHButton text="New Lesson" fontBlack></CHButton>
-                </Link>
                 
                 <div style={{textAlign:"center"}}>
                     <TeacherTable></TeacherTable>   

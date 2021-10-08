@@ -1,103 +1,45 @@
 import React from "react";
 import "./TeacherTable.scss";
+import "./TeacherTableItem.scss";
 
-class TeacherTable extends React.Component {
+import TeacherTableItem from "./TeacherTableItem";
+import {Lesson} from "./TeacherTableItem";
+
+interface TeacherTableState {
+    lessons:Lesson[]
+}
+
+
+
+class TeacherTable extends React.Component<{},TeacherTableState> {
+    constructor(props:any){
+        super(props);
+
+        this.state = {
+            lessons: [
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23}
+
+            ]
+        }
+    }
 
     render(){
+        const lessonsItems = this.state.lessons.map((lesson) => <TeacherTableItem session_name={lesson.session_name} lesson_name={lesson.lesson_name} participant_count={lesson.participant_count}></TeacherTableItem>);
+        
+
+
         return (
-            <div className="table-border">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Session Name</th>
-                            <th>Lesson Name</th>
-                            <th>Participants</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming This is a great test</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                        <tr>
-                            <td>Group A1</td>
-                            <td>Functional Programming</td>
-                            <td>14</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <ul className="list-border">
+                <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Lecture Name</span><span className="participant-count">Participant Count</span><span className="manage-head">Manage</span></li>
+               {lessonsItems}
+            </ul>
         );
     };
 }
