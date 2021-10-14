@@ -1,5 +1,5 @@
 import React from "react";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import Codemirror from "../../Components/Codemirror/Codemirror";
 import NavBar from "../../Components/NavBar/NavBar";
 import Console from "../../Components/Console/Console";
@@ -11,7 +11,8 @@ import "./StudentCoding.scss";
 interface CodeSendResponse {
     language:string,
     run:{
-        stdout:string
+        stdout:string,
+        signal:string | null
     },
     version:string
 }
@@ -77,7 +78,7 @@ class StudentCoding extends React.Component {
     
             axios.post<CodeSendResponse>("/api/v2/execute",sendCode)
                  .then((response) => {
-                     this.consoleRef.current?.setState({contents:response.data.run.stdout});
+                     this.consoleRef.current?.setState({contents:response.data.run.stdout,signal:response.data.run.signal});
                      this.consoleRef.current?.scrollToBottom();
                  })
                  .catch(ex => {

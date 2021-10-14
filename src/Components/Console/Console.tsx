@@ -1,37 +1,34 @@
 import React, { RefObject } from "react";
-import { getSupportedCodeFixes } from "typescript";
 import "./Console.scss";
 
 interface ConsoleProps {
 }
 
 interface ConsoleState{
-    contents:String
+    contents:String,
+    signal:String|null
 }
 
 class Console extends React.Component<ConsoleProps,ConsoleState> {
-    scrollRef:RefObject<HTMLDivElement>;
+    scrollRef:RefObject<HTMLPreElement>;
 
     constructor(props:ConsoleProps){
         super(props);
-        this.state = {contents:""};
+        this.state = {contents:"",signal:null};
         this.scrollRef = React.createRef();
     }
 
     render(){
-        let contents = this.state.contents.split("\n");
-        let lines = []
-
-        for (const line of contents){
-            lines.push(line)
-            lines.push(<br/>)
+        let contents = this.state.contents;
+        if (this.state.signal === "SIGKILL"){
+            contents += "\nOutput truncated"
         }
 
         return (
             <div className="console-container">
-                <div ref={this.scrollRef} className="console">
-                    {lines}
-                </div>
+                <pre ref={this.scrollRef} className="console">
+                    {contents}
+                </pre>
             </div>
         );
     };
