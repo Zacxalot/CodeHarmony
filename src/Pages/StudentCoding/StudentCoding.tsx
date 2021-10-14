@@ -1,12 +1,31 @@
 import React from "react";
+import axios, {AxiosResponse} from "axios";
 import Codemirror from "../../Components/Codemirror/Codemirror";
 import NavBar from "../../Components/NavBar/NavBar";
 import Console from "../../Components/Console/Console";
 import CodingInfoWindow from "../../Components/CodingInfoWindow/CodingInfoWindow";
+import RunbarButton from "../../Components/RunbarButton/RunbarButton";
 
 import "./StudentCoding.scss";
-class StudentCoding extends React.Component {
 
+interface CodeSendResponse {
+    language:string,
+    run:{
+        stdout:string
+    },
+    version:string
+}
+
+class StudentCoding extends React.Component {
+    codemirrorRef: React.RefObject<Codemirror>;
+    consoleRef: React.RefObject<Console>;
+
+    constructor(props:any){
+        super(props);
+        this.codemirrorRef = React.createRef();
+        this.consoleRef = React.createRef();
+    }
+    
     render(){
         return (
             <div className="full-page student-coding">
@@ -14,15 +33,15 @@ class StudentCoding extends React.Component {
 
                 <div className="coding-flex">
                     <div className="codemirror-container">
-                        <Codemirror></Codemirror>
+                        <Codemirror ref={this.codemirrorRef}></Codemirror>
                     </div>
 
                     <div className="info-console">
                         <CodingInfoWindow></CodingInfoWindow>
-                        <Console></Console>
+                        <Console ref={this.consoleRef}></Console>
                         <div className="runbar-container">
                             <div className="runbar">
-                                Test
+                                <RunbarButton icon="run" callback={this.runCode}></RunbarButton>
                             </div>
                         </div>
                     </div>
@@ -32,6 +51,43 @@ class StudentCoding extends React.Component {
             
         );
     };
+
+
+
+    runCode = () => {
+        let code;
+        
+        // Get code from the Codemirror
+        if (this.codemirrorRef.current !== null){
+            code = this.codemirrorRef.current.getEditorState()?.join("\n");
+        }
+
+
+        if (code !== undefined){
+            let sendCode = {
+                "language": "python",
+                "version":"3.9.4",
+                "files":[
+                    {
+                        "name":"main.py",
+                        "content":code
+                    }
+                ]
+            }
+    
+            axios.post<CodeSendResponse>("/api/v2/execute",sendCode)
+                 .then((response) => {
+                     this.consoleRef.current?.setState({contents:response.data.run.stdout});
+                     this.consoleRef.current?.scrollToBottom();
+                 })
+                 .catch(ex => {
+                     console.log(ex)
+                 });
+        }
+
+        
+        
+    }
     
 }
 

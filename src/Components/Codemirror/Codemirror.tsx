@@ -39,8 +39,8 @@ class Codemirror extends React.Component {
     }
 
     // Returns the code in the editor
-    getEditorState () {
-        return(this.view?.state.doc);
+    getEditorState(){
+        return(this.view?.state.doc.toJSON());
     }
 }
 

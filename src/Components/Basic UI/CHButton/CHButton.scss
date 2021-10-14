@@ -14,12 +14,5 @@
     margin: 0.4rem;
     transition: filter 0.1s ease;
   
-    &:hover{
-      filter:brightness(94%)
-    }
-  
-    &:active{
-      filter:brightness(90%);
-      border-color: #b2b2b2;
-    }
+   
   }

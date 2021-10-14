@@ -42,8 +42,9 @@
 }
 
 .runbar{
-    padding:0.0rem 0.7rem;
+    padding:0.0rem 0.6rem;
     background-color: base.$main-colour;
     height: 100%;
     border-radius: base.$ide-border-radius;
+    display:flex;
 }
