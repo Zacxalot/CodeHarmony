@@ -1,8 +1,23 @@
-.console{
+@use "../../BaseStyle.scss" as base;
+
+.console-container{
+    flex: 0;
     width: 100%;
-    resize: vertical;
-    border-width: 1px 0px;
-    border-color: #979997;
-    border-style:solid;
-    white-space: pre;
+    display:flex;
+    flex-direction:column;
+    color:base.$main-colour;
+    min-height: 40vh;
+    max-height: 40vh;
+}
+
+.console{
+    word-wrap: break-word;
+    margin:0.4rem;
+    padding:0.4rem 0.7rem;
+    flex: 1;
+    background-color: base.$charcoal;
+    display:inline-block;
+    border-radius: base.$ide-border-radius;
+    overflow-y: auto;
+    
 }

@@ -1,0 +1,18 @@
+@use "../../BaseStyle.scss" as base;
+.info-window-container{
+    display: flex;
+    min-height: 40vh;
+    max-height: 40vh;
+    flex:0;
+}
+
+.info-window{
+    
+    flex:1;
+    margin:0.4rem 0.4rem 0.0rem 0.4rem;
+    padding:0.4rem;
+    background-color: base.$main-colour;
+    border-radius:base.$ide-border-radius;
+    overflow-y:auto;
+    
+}

@@ -1,11 +1,15 @@
 $background: #fcfcfc;
+$background-grey:#555555;
 $shadow: #ececec;
-
-
 $main-colour: #ffffff;
 $accent: #886ce4;
 $accent-alt: #eb75ef;
 $manage: #e0b02c;
+$charcoal: #1f1f1f;
+
+
+$ide-border-radius: 0.6rem;
+
 
 html, body, #root{
     min-height: 100vh;
@@ -20,7 +24,6 @@ body{
     display: flex;
     flex-direction:column;
     min-height: 100vh;
-    width: 100vw;
 }
 
 .large-emoji{

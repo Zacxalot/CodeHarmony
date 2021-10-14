@@ -19,7 +19,7 @@ class TeacherTableItem extends React.Component<Lesson,{}> {
                 <span className="session-name">{this.props.session_name}</span>
                 <span className="lesson-name">{this.props.lesson_name}</span>
                 <span className="participant-count">{this.props.participant_count}</span>
-                <Link to="manage/" className="manage-button"><span>Manage</span><img  src={gear} /></Link>
+                <Link to="manage/" className="manage-button"><span>Manage</span><img alt="Gear symbol" src={gear} /></Link>
             </li>      
         );
     };
