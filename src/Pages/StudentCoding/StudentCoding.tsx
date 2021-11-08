@@ -82,6 +82,7 @@ class StudentCoding extends React.Component {
                      this.consoleRef.current?.scrollToBottom();
                  })
                  .catch(ex => {
+                     console.log("Running code failed")
                      console.log(ex)
                  });
         }
