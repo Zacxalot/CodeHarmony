@@ -2,11 +2,13 @@ $background: #fcfcfc;
 $background-grey:#555555;
 $shadow: #ececec;
 $main-colour: #ffffff;
-$accent: #886ce4;
-$accent-alt: #eb75ef;
-$manage: #e0b02c;
+$accent: #9f35f5;
+$accent-pink: #f5358b;
+$accent-green: #8bf535;
+$manage: #f5cb35;
 $charcoal: #1f1f1f;
 
+$font-family: Hind;
 
 $ide-border-radius: 0.6rem;
 
@@ -24,6 +26,7 @@ body{
     display: flex;
     flex-direction:column;
     min-height: 100vh;
+    text-align: center;
 }
 
 .large-emoji{

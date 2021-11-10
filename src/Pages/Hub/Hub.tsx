@@ -8,6 +8,7 @@ import HomePage from "../Home/Home";
 import TeacherDashboard from "../TeacherDashboard/TeacherDashboard";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import StudentCoding from "../StudentCoding/StudentCoding";
+import TeacherLessonPlan from "../TeacherLessonPlan/TeacherLessonPlan";
 
 class Hub extends React.Component {
 
@@ -17,6 +18,7 @@ class Hub extends React.Component {
                 <Switch>
                     <Route path="/s/dashboard" component={StudentCoding}/>
                     <Route path="/t/dashboard" component={TeacherDashboard}/>
+                    <Route path="/t/lesson-plan" component={TeacherLessonPlan}/>
                     <Route exact path="/" component={HomePage}/>
                     <Route component={PageNotFound}/>
                 </Switch>

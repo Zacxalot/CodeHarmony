@@ -27,17 +27,12 @@ class CodingInfoWindow extends React.Component {
 
         this.renderlist = [];
 
+
+
+        // Example of adding a JSX element
         let a =  React.createElement("h1",[],["test",React.createElement("h2",[],"madness")]);
 
         this.renderlist.push(a);
-
-        console.log("Pushed element to render list")
-
-        // for(let i = 0; i <= 30; i++){
-        //     this.renderlist.push(<h1>Hello</h1>)
-        //     this.renderlist.push(<h2>Sad</h2>)
-        //     this.renderlist.push(<script>console.log("test")</script>)
-        // }
     }
 }
 

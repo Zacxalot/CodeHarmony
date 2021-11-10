@@ -29,7 +29,7 @@ class RunbarButton extends React.Component<ButtonProps,{}> {
 
         // Assign a default colour of purple
         if (backgroundColour === undefined){
-            backgroundColour = "#886ce4";
+            backgroundColour = "#9f35f5";
         }
 
         return (
