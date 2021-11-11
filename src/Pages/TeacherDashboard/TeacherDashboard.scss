@@ -1,5 +1,44 @@
 @use "../../BaseStyle.scss" as base;
 
 .new-lesson-modal-style{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top:0;
+    bottom:0;
+    max-width: min(30rem,100%);
+    height: fit-content;
+    border: 1px solid #bfbfbf;
+    background-color: base.$main-colour;
+    overflow: auto;
+    border-radius: 1rem;
+    outline: currentcolor none medium;
+    padding: 0.5rem;
+    text-align: center;
+
+    h4{
+        font-size: 1.3rem;
+        margin:0px 0.5rem 0.5rem 0.5rem;
+        display: block;
+    }
+
+    span{
+        display: block;
+        margin: 0.5rem auto 0.5rem auto;
+        
+        font-size: 1.2rem;
+        font-weight: 400;
+
+        input{
+            border-radius: 0.4rem;
+            border: 1px solid #bfbfbf;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            padding:0.4rem;
+        }
+
+        
+    }
     
 }

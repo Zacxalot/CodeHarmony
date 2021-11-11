@@ -6,6 +6,7 @@ interface ButtonProps {
     colour?: string;
     callback?: () => void;
     fontBlack?: boolean;
+    disabled?: boolean;
 }
 
 class CHButton extends React.Component<ButtonProps,{}> {
@@ -17,9 +18,14 @@ class CHButton extends React.Component<ButtonProps,{}> {
         if (colour === undefined){
             colour = "#65dd44";
         }
+    
 
         return (
-            <button className="ch-button" style={{ backgroundColor: colour, color: (this.props.fontBlack ? "black" : "white") }} onClick={this.props.callback}>{text}</button>
+            <button className={(this.props.disabled ? "ch-button-disabled" : "") + " ch-button"}
+                disabled={this.props.disabled}
+                style={{ backgroundColor: colour, color: (this.props.fontBlack ? "black" : "white")}} 
+                onClick={this.props.callback}>{text}
+            </button>
         );
     };
 

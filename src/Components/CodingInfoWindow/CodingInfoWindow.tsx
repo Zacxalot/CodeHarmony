@@ -1,12 +1,12 @@
-import axios from "axios";
+// import axios from "axios";
 import React from "react";
 import "./CodingInfoWindow.scss";
 
-interface CodeInfoElement{
-    type:String,
-    props:any,
-    children:String
-}
+// interface CodeInfoElement{
+//     type:String,
+//     props:any,
+//     children:String
+// }
 
 
 class CodingInfoWindow extends React.Component {
