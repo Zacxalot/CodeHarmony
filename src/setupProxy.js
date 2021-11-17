@@ -9,9 +9,9 @@ module.exports = function(app) {
     })
   );
   app.use(
-    "/infotest",
+    "/plan",
     createProxyMiddleware({
-      target: "http://localhost:8080/",
+      target: "http://localhost:8080",
       changeOrigin:true,
     })
   );

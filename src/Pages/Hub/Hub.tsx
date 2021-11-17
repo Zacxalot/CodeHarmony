@@ -1,8 +1,9 @@
 import React from "react";
 import {
     BrowserRouter as Router,
-    Switch,
-    Route
+    Routes,
+    Route,
+    BrowserRouter
   } from "react-router-dom";
 import HomePage from "../Home/Home";
 import TeacherDashboard from "../TeacherDashboard/TeacherDashboard";
@@ -14,19 +15,15 @@ class Hub extends React.Component {
 
     render(){
         return (
-            <Router>
-                <Switch>
-                    <Route path="/s/dashboard" component={StudentCoding}/>
-                    <Route path="/t/dashboard" component={TeacherDashboard}/>
-                    <Route path="/t/lesson-plan" component={TeacherLessonPlan}/>
-                    <Route exact path="/" component={HomePage}/>
-                    <Route component={PageNotFound}/>
-                </Switch>
-                
-
-                
-
-            </Router>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/s/dashboard" element={<StudentCoding/>}/>
+                    <Route path="/t/dashboard" element={<TeacherDashboard/>}/>
+                    <Route path="/t/lesson-plan" element={<TeacherLessonPlan/>}/>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="*" element={<PageNotFound/>}/>
+                </Routes>
+            </BrowserRouter>
         );
     };
     
