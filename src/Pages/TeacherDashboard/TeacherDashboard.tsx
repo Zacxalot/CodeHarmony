@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../../Components/NavBar/NavBar";
-import TeacherTable from "../../Components/Basic UI/TeacherTable/TeacherTable";
+import TeacherSessionTable from "../../Components/TeacherTable/TeacherSessionTable";
 import Modal from 'react-modal';
 import LargeLinkButton from "../../Components/LargeLinkButton/LargeLinkButton";
 import LargeCallbackButton from "../../Components/LargeCallbackButton/LargeCallbackButton";
@@ -10,12 +10,15 @@ import CHButton from "../../Components/Basic UI/CHButton/CHButton";
 import axios, { AxiosError } from "axios";
 import { throwStatement, TYPESCRIPT_TYPES } from "@babel/types";
 import { Map } from "typescript";
+import TeacherPlanTable from "../../Components/TeacherTable/TeacherPlanTable copy";
 
 interface TeacherDashboardState {
     newLessonModalOpen: boolean;
     newPlanNameValue: String;
     newPlanErrorString: String;
     openNewPlan: string;
+    sessions:Session[];
+    plans:Plan[];
 }
 
 interface CreateNewPlanResponse {
@@ -23,16 +26,19 @@ interface CreateNewPlanResponse {
     msg:string
 }
 
-interface Blah {
-    fwaawfaw:string,
-    hawah:string
+export interface Session {
+    session_name: String,
+    lesson_name: String,
+    participant_count: Number
 }
 
+export interface Plan {
+    plan_name: String
+}
 
 
 class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
     errorTypes = new Map([
-        ["-1","Badness"],
         ["-3","Plan name already in use"]
     ])
 
@@ -42,7 +48,20 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
             newLessonModalOpen: false,
             newPlanNameValue: "",
             newPlanErrorString:"",
-            openNewPlan:""
+            openNewPlan:"",
+            sessions:[
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
+                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23}
+            ],
+            plans:[
+                {plan_name:"Session test"}
+            ]
         }
     }
 
@@ -72,7 +91,8 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
                     <LargeCallbackButton callback={this.openCreateLessonModal} emoji="✍️">New Lesson Plan</LargeCallbackButton>
                 </div>
                 <div style={{textAlign:"center"}}>
-                    <TeacherTable></TeacherTable>   
+                    <TeacherSessionTable sessions={this.state.sessions}></TeacherSessionTable>
+                    <TeacherPlanTable plans={this.state.plans}></TeacherPlanTable>
                 </div>
                 
             </div>
@@ -108,7 +128,7 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
                 }
             }
             else{
-
+                this.setState({newPlanErrorString:"There was a problem, please try again later"})
             }
             
         })
