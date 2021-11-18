@@ -72,7 +72,7 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
 
     render(){
         if(this.state.openNewPlan !== ""){
-            return(<Navigate to={"/plan/" + this.state.openNewPlan}/>)
+            return(<Navigate to={"/t/plan/" + this.state.openNewPlan}/>)
         }
 
         return (

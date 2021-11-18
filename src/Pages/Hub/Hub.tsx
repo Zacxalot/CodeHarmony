@@ -19,7 +19,7 @@ class Hub extends React.Component {
                 <Routes>
                     <Route path="/s/dashboard" element={<StudentCoding/>}/>
                     <Route path="/t/dashboard" element={<TeacherDashboard/>}/>
-                    <Route path="/t/lesson-plan" element={<TeacherLessonPlan/>}/>
+                    <Route path="/t/plan/*" element={<TeacherLessonPlan/>}/>
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
