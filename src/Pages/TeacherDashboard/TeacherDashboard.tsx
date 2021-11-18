@@ -26,6 +26,11 @@ interface CreateNewPlanResponse {
     msg:string
 }
 
+
+interface PlanListResponse{
+    plans:Plan[]
+}
+
 export interface Session {
     session_name: String,
     lesson_name: String,
@@ -98,6 +103,16 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
             </div>
         );
     };
+
+    componentDidMount(){
+        axios.get<PlanListResponse>("/plan/list")
+        .then(planlist => {
+            this.setState({plans:planlist.data.plans})
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
 
     openCreateLessonModal = () => {
         this.setState({newPlanNameValue:"",newLessonModalOpen:true,newPlanErrorString:""})

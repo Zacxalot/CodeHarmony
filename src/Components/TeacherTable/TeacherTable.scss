@@ -40,7 +40,7 @@ ul {
 }
 
 .tt-item{
-    width:auto;
+    max-width:auto;
     display:flex;
     text-align: left;
     padding: 0.5rem;
@@ -49,11 +49,13 @@ ul {
     box-shadow: inset 0rem 0.7rem 0.7rem base.$shadow;
     border-radius: 1rem;
     align-items: center;
+    
 }
 
 .session-name{
     flex: 10;
-    
+    min-width: 0;
+    text-overflow: ellipsis;
 }
 
 .lesson-name{
@@ -74,7 +76,7 @@ ul {
     border-radius: 1rem;
     align-items: center;
     padding: 0rem 0.4rem;
-
+    min-width:0;
     
     img{
         flex:1;
