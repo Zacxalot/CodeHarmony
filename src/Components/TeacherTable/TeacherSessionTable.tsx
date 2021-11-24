@@ -8,12 +8,7 @@ interface TeacherTableProps {
     sessions:Session[]
 }
 
-
-
 class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
-    constructor(props:any){
-        super(props);
-    }
 
     render(){
         const sessionsItems = this.props.sessions.map((session) => 
@@ -21,7 +16,7 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
                 <span className="session-name">{session.session_name}</span>
                 <span className="lesson-name">{session.lesson_name}</span>
                 <span className="participant-count">{session.participant_count}</span>
-                <Link to="manage/" className="manage-button"><img alt="Gear symbol" src={gear} /></Link>
+                <Link to="manage/" className="manage-button" draggable="false"><img alt="Gear symbol" src={gear} /></Link>
             </li>
         );
         

@@ -29,7 +29,7 @@
     background-image:linear-gradient(45deg,adjust-hue(base.$accent,-0),adjust-hue(base.$accent,90));
     border-color: base.$shadow;
     width:100%;
-    box-shadow: 0rem 1rem 0px #000000,0rem 1.5rem 0.2rem base.$shadow;
+    box-shadow: 0rem 0.5rem 0.5rem base.$shadow;
 
     margin:0.2rem 0.2rem;
 

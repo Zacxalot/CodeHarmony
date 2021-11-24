@@ -8,8 +8,6 @@ import { Navigate } from "react-router";
 import "./TeacherDashboard.scss";
 import CHButton from "../../Components/Basic UI/CHButton/CHButton";
 import axios, { AxiosError } from "axios";
-import { throwStatement, TYPESCRIPT_TYPES } from "@babel/types";
-import { Map } from "typescript";
 import TeacherPlanTable from "../../Components/TeacherTable/TeacherPlanTable copy";
 
 interface TeacherDashboardState {
@@ -25,7 +23,6 @@ interface CreateNewPlanResponse {
     plan_name:string,
     msg:string
 }
-
 
 interface PlanListResponse{
     plans:Plan[]
@@ -43,9 +40,6 @@ export interface Plan {
 
 
 class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
-    errorTypes = new Map([
-        ["-3","Plan name already in use"]
-    ])
 
     constructor(props:any){
         super(props);
@@ -132,20 +126,12 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
             this.setState({openNewPlan:response.data.plan_name})
         })
         .catch((err: AxiosError) => {
-            let response = err.response?.data as CreateNewPlanResponse;
-            if(response !== undefined){
-                let errorText = this.errorTypes.get(response.plan_name);
-                if(errorText !== undefined) {
-                    this.setState({newPlanErrorString:errorText})
-                }
-                else{
-                    this.setState({newPlanErrorString:"There was a problem, please try again later"})
-                }
+            if(err.response?.status === 400){
+                this.setState({newPlanErrorString:"Plan name already in use"})
             }
             else{
-                this.setState({newPlanErrorString:"There was a problem, please try again later"})
+                this.setState({newPlanErrorString:"There was a problem. Please try again later"})
             }
-            
         })
     }
 }

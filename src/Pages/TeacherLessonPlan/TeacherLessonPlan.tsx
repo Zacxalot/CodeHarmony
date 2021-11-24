@@ -5,10 +5,9 @@ import axios from "axios";
 
 const TeacherLessonPlan: React.FC<{}> = () => {
     const location = useLocation();
-    let plan_name = ""
 
     useEffect(() => {
-        plan_name = location.pathname.split("/").slice(-1)[0]
+        let plan_name = location.pathname.split("/").slice(-1)[0]
 
         axios.get("/plan/info",{data:{"plan_name":plan_name}})
         .then()
