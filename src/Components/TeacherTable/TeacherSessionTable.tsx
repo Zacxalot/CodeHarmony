@@ -12,7 +12,7 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
 
     render(){
         const sessionsItems = this.props.sessions.map((session) => 
-            <li className="tt-item">
+            <li className="tt-item" key={session.session_name.toString()}>
                 <span className="session-name">{session.session_name}</span>
                 <span className="lesson-name">{session.lesson_name}</span>
                 <span className="participant-count">{session.participant_count}</span>

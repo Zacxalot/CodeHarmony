@@ -14,7 +14,7 @@ class TeacherPlanTable extends React.PureComponent<TeacherTableProps,{}> {
 
     render(){
         const planItems = this.props.plans.map((plan) => 
-            <li className="tt-item">
+            <li className="tt-item" key={plan.plan_name.toString()}>
                 <span className="session-name">{plan.plan_name}</span>
                 <Link to={"/t/plan/" + plan.plan_name} className="manage-button" draggable="false"><img alt="Gear symbol" src={gear} /></Link>
             </li>
