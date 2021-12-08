@@ -8,7 +8,7 @@ import { Navigate } from "react-router";
 import "./TeacherDashboard.scss";
 import CHButton from "../../Components/Basic UI/CHButton/CHButton";
 import axios, { AxiosError } from "axios";
-import TeacherPlanTable from "../../Components/TeacherTable/TeacherPlanTable copy";
+import TeacherPlanTable from "../../Components/TeacherTable/TeacherPlanTable";
 
 interface TeacherDashboardState {
     newLessonModalOpen: boolean;
@@ -50,13 +50,6 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
             openNewPlan:"",
             sessions:[
                 {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23},
-                {session_name:"Session test", lesson_name:"Lesson test", participant_count:23}
             ],
             plans:[
                 {plan_name:"Session test"}

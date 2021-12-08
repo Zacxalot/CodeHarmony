@@ -44,7 +44,6 @@ const TeacherLessonPlan: React.FC<{}> = () => {
         let plan_name = location.pathname.split("/").slice(-1)[0]
         axios.get("/plan/info/" + plan_name)
         .then((response) => {
-            console.log(response);
             setPlanSections(response.data as PlanSection[]);
         })
         .catch(() => console.error("Request failed"))
@@ -54,7 +53,6 @@ const TeacherLessonPlan: React.FC<{}> = () => {
 
     // On plan section change
     useEffect(() => {
-        console.log(planSections);
         if (planSections.length >= 1){
             setSelectedSection(planSections[0]);
         }

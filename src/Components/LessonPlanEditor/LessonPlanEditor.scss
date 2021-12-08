@@ -1,0 +1,9 @@
+@use "../../BaseStyle.scss" as base;
+
+.editor-elements{
+    display:inline-block;
+
+    width: 40rem;
+    max-width: 100%;
+    margin: 0.4rem;
+}

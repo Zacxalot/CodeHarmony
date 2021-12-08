@@ -1,0 +1,20 @@
+@use "../../BaseStyle.scss" as base;
+
+.editor-element-container{
+    display:inline-block;
+    background-color: base.$background;
+    border: solid base.$light-grey 1px;
+    border-radius: 1rem;
+    flex-wrap: wrap;
+
+    width: 40rem;
+    max-width: 95%;
+    margin: 0.4rem;
+}
+
+.editor-options{
+    border-top: solid base.$light-grey 1px;
+    border-radius: 0rem 0rem 1rem 1rem;
+    
+    background-color: base.$very-light-grey;
+}

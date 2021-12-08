@@ -20,7 +20,6 @@ class TeacherPlanTable extends React.PureComponent<TeacherTableProps,{}> {
             </li>
         );
         
-        console.log(planItems);
 
         return (
             <ul className="list-border">
