@@ -15,6 +15,37 @@
 .editor-options{
     border-top: solid base.$light-grey 1px;
     border-radius: 0rem 0rem 1rem 1rem;
-    
+    display: flex;
+    flex-direction: row;
     background-color: base.$very-light-grey;
+}
+
+.arrow-container{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0.2rem;
+}
+
+.arrow-button{
+    padding: 0.4rem;
+    width: fit-content;
+    border-radius: 0.7rem 0.7rem 0 0;
+    flex:1;
+    background-color: base.$accent;
+    text-align: center;
+}
+
+.arrow-button-down{
+    border-radius: 0 0 0.7rem 0.7rem;
+}
+
+.arrow-image{
+    user-select: none;
+    width: 1.4rem;
+}
+
+.options-container{
+    flex: 30;
+    padding: 0.2rem;
 }

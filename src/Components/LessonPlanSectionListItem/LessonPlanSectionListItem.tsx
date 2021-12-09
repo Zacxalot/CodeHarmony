@@ -5,7 +5,6 @@ interface LessonPlanSectionListItemProps {
 }
 
 const LessonPlanSectionListItem: React.FC<LessonPlanSectionListItemProps> = ({section}) => {
-
     return(<div>{section.name}</div>)
 }
 
