@@ -1,10 +1,13 @@
 @use "../../BaseStyle.scss" as base;
 
+$inner-border-radius:0.3rem;
+$large-border-radius:1rem;
+
 .editor-element-container{
     display:inline-block;
     background-color: base.$background;
     border: solid base.$light-grey 1px;
-    border-radius: 1rem;
+    border-radius: $large-border-radius;
     flex-wrap: wrap;
 
     width: 40rem;
@@ -14,7 +17,7 @@
 
 .editor-options{
     border-top: solid base.$light-grey 1px;
-    border-radius: 0rem 0rem 1rem 1rem;
+    border-radius: 0rem 0rem $large-border-radius $large-border-radius;
     display: flex;
     flex-direction: row;
     background-color: base.$very-light-grey;
@@ -25,19 +28,23 @@
     flex: 1;
     flex-direction: column;
     padding: 0.2rem;
+    height: 5rem;
+    justify-content: baseline;
+    align-self: flex-end;
 }
 
 .arrow-button{
     padding: 0.4rem;
     width: fit-content;
-    border-radius: 0.7rem 0.7rem 0 0;
+    border-radius: $inner-border-radius $inner-border-radius 0 0;
     flex:1;
     background-color: base.$accent;
     text-align: center;
 }
 
 .arrow-button-down{
-    border-radius: 0 0 0.7rem 0.7rem;
+    vertical-align: bottom;
+    border-radius: 0 0 $large-border-radius $inner-border-radius ;
 }
 
 .arrow-image{
@@ -45,7 +52,50 @@
     width: 1.4rem;
 }
 
+.editor-preview{
+    p{
+        font-weight: 150;
+    }
+}
+
 .options-container{
     flex: 30;
     padding: 0.2rem;
+    text-align: left;
+
+    select {
+        background-color: transparent;
+        border: solid 1px base.$light-grey;
+        border-radius: $inner-border-radius;
+        
+        padding: 0 1em 0 0;
+        margin: 0;
+        width: fit-content;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: inherit;
+        line-height: inherit;
+        background-color: base.$background;
+    }
+
+    .textbox{
+        border: solid 1px base.$light-grey;
+        border-radius: $inner-border-radius $inner-border-radius $inner-border-radius $large-border-radius;
+        padding: 0 1em 0 0;
+        margin-top: 0.2rem;
+        width: fit-content;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: inherit;
+        line-height: inherit;
+        width:96%;
+        resize: none;
+        padding: 0.4rem;
+        background-color: base.$background;
+        min-height: 3rem;
+        font-weight: 150;
+    }
 }
+
+
+

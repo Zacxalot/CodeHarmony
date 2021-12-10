@@ -78,41 +78,11 @@ const TeacherLessonPlan: React.FC<{}> = () => {
         }
     }
 
-    const test:PlanSection[] = [{
-        "name": "Introduction",
-        "section_type": "LECTURE ",
-        "elements": [
-          {
-            "el_type": "h1",
-            "props": [],
-            "children": {
-              "String": "Test"
-            }
-          },
-          {
-            "el_type": "p",
-            "props": [],
-            "children": {
-              "String": "This is just a paragraph"
-            }
-          },
-          {
-            "el_type": "h1",
-            "props": [],
-            "children": {
-              "String": "Test2"
-            }
-          }
-        ]
-      }]
-
     return(<div className="full-page">
                 <NavBar small></NavBar>
                 <div>
                     {renderSectionsList()}
                     {renderLessonPlanEditor()}
-                    <button onClick={(er) => console.log(planSections)}>TEST</button>
-                    <button onClick={(er) => dispatch(loadLessonPlan(test as PlanSection[]))}>ADD</button>
                 </div>
             </div>
     );

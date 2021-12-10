@@ -1,4 +1,4 @@
-import react, { ChangeEvent, MouseEventHandler} from "react";
+import react, { ChangeEvent, useEffect, useState} from "react";
 import { CHElement } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import "./LessonPlanEditorElement.scss"
 import up_arrow from "../../Vectors/up.svg"
@@ -13,7 +13,14 @@ interface LessonPlanEditorElementProps {
 }
 
 const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ element, section_id, id }) => {
+
+    const [textValue, setTextValue] = useState(element.children.String)
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setTextValue(element.children.String)
+    }, [element.children.String])
+
     const handleTypeChange = (e:ChangeEvent<HTMLSelectElement>) => {
         dispatch(updateElement({type:"eltype",new_value:e.target.value,id,section_id}))
     }
@@ -28,6 +35,14 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
         console.log("Down")
     }
 
+
+    const handleTextboxChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+        dispatch(updateElement({type:"child",new_value:e.target.value,id,section_id}))
+        setTextValue(e.target.value)
+        console.log(e.target.value)
+    }
+
+    console.log("rendered")
     return <div className="editor-element-container">
             <div className="editor-preview">
                 {react.createElement(element.el_type, element.props, element.children.String)}
@@ -38,6 +53,7 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
                         <option value="h1">Heading</option>
                         <option value="p">Paragraph</option>
                     </select>
+                    <textarea className="textbox" onChange={handleTextboxChange} value={textValue}></textarea>
                 </div>
                 
                 <div className="arrow-container">
