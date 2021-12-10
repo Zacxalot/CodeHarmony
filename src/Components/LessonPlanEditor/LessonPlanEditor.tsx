@@ -1,16 +1,18 @@
-import { EditorElementChange, PlanSection } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
+import { PlanSection } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import LessonPlanEditorElement from "../LessonPlanEditorElement/LessonPlanEditorElement"
 import "./LessonPlanEditor.scss"
 
 interface LessonPlanEditorProps {
     plan_section:PlanSection,
-    callback:(event:EditorElementChange) => void
+    section_id:number
 }
 
-const LessonPlanEditor: React.FC<LessonPlanEditorProps> = ({plan_section,callback}) => {
+const LessonPlanEditor: React.FC<LessonPlanEditorProps> = ({plan_section,section_id}) => {
+    
+
     const renderSectionElements = () => {
         return plan_section.elements.map((element, index) => {
-            return <LessonPlanEditorElement element={element} key={index.toString()} id={index} callback={callback}></LessonPlanEditorElement>
+            return <LessonPlanEditorElement element={element} key={index.toString()} section_id={section_id} id={index}></LessonPlanEditorElement>
         })
     }
 

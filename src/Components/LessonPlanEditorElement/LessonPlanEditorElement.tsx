@@ -1,22 +1,24 @@
 import react, { ChangeEvent} from "react";
-import { CHElement, EditorElementChange } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
+import { CHElement } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import "./LessonPlanEditorElement.scss"
 import up_arrow from "../../Vectors/up.svg"
 import down_arrow from "../../Vectors/down.svg";
+import { useDispatch } from "react-redux";
+import { updateElement } from "../../Pages/TeacherLessonPlan/teacherLessonPlanSlice";
 
 interface LessonPlanEditorElementProps {
     element: CHElement,
-    callback: (event:EditorElementChange) => void,
+    section_id:number,
     id: number
 }
 
-
-
-const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ element, callback,id }) => {
-
+const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ element, section_id, id }) => {
+    const dispatch = useDispatch();
     const handleTypeChange = (e:ChangeEvent<HTMLSelectElement>) => {
-        callback({type:"eltype",new_value:e.target.value,id:id})
+        dispatch(updateElement({type:"eltype",new_value:e.target.value,id,section_id}))
     }
+
+    console.log("RENDERED ELEMENT")
 
     return <div className="editor-element-container">
             <div className="editor-preview">

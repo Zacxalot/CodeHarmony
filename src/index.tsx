@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Hub from './Pages/Hub/Hub';
 import reportWebVitals from './reportWebVitals';
+import {Provider} from 'react-redux';
+import { store } from './Redux/store';
 
 ReactDOM.render(
+  <Provider store={store}>
   <React.StrictMode>
     <Hub />
-  </React.StrictMode>,
+  </React.StrictMode>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 
