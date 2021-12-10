@@ -1,4 +1,4 @@
-import react, { ChangeEvent} from "react";
+import react, { ChangeEvent, MouseEventHandler} from "react";
 import { CHElement } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import "./LessonPlanEditorElement.scss"
 import up_arrow from "../../Vectors/up.svg"
@@ -18,7 +18,15 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
         dispatch(updateElement({type:"eltype",new_value:e.target.value,id,section_id}))
     }
 
-    console.log("RENDERED ELEMENT")
+    const handlePositionUp = (e:React.MouseEvent<HTMLElement>) => {
+        dispatch(updateElement({type:"move",new_value:"up",id,section_id}))
+        console.log("Up")
+    }
+
+    const handlePositionDown = (e:React.MouseEvent<HTMLElement>) => {
+        dispatch(updateElement({type:"move",new_value:"down",id,section_id}))
+        console.log("Down")
+    }
 
     return <div className="editor-element-container">
             <div className="editor-preview">
@@ -33,10 +41,10 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
                 </div>
                 
                 <div className="arrow-container">
-                    <span className="arrow-button button-hover">
+                    <span onClick={handlePositionUp} className="arrow-button button-hover">
                         <img  src={up_arrow} className="arrow-image" alt="up arrow"></img>
                     </span>
-                    <span className="arrow-button arrow-button-down button-hover">
+                    <span  onClick={handlePositionDown} className="arrow-button arrow-button-down button-hover">
                         <img src={down_arrow} className="arrow-image" alt="down arrow"></img>
                     </span>
                 </div>
