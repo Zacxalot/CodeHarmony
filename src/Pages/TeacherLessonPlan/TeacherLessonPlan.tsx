@@ -35,10 +35,14 @@ export interface EditorElementChange{
     section_id:number
 }
 
+export interface EditorElementNew{
+    section_id:number
+}
+
 const TeacherLessonPlan: React.FC<{}> = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const planSections = useAppSelector((state) => state.planSections);
+    const planSections:PlanSection[] = useAppSelector((state) => state.planSections);
     const [selectedSection,setSelectedSection] =useState<number>(-1);
     
     // First load
