@@ -1,17 +1,19 @@
-import React, {useEffect, useState } from "react";
+import React, {useEffect, useRef, useState } from "react";
 import NavBar from "../../Components/NavBar/NavBar";
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import LessonPlanSectionListItem from "../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem";
 import LessonPlanEditor from "../../Components/LessonPlanEditor/LessonPlanEditor";
 import { useDispatch } from "react-redux";
-import { loadLessonPlan } from "./teacherLessonPlanSlice";
+import { clearChangedFlag, loadLessonPlan, setSectionOrders } from "./teacherLessonPlanSlice";
 import {useAppSelector } from "../../Redux/hooks";
 
 export interface PlanSection {
     name:string,
     section_type:string,
-    elements:CHElement[]
+    elements:CHElement[],
+    order_pos:number,
+    changed:boolean
 }
 
 export interface CHElement{
@@ -39,31 +41,74 @@ export interface EditorElementNew{
     section_id:number
 }
 
+
 const TeacherLessonPlan: React.FC<{}> = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const planSections:PlanSection[] = useAppSelector((state) => state.planSections);
     const [selectedSection,setSelectedSection] =useState<number>(-1);
+    const plan_name = location.pathname.split("/").slice(-1)[0]
+
+    // Timer that waits before changes stop before sending update request
+    const updateTimer = useRef<NodeJS.Timeout>();
+    
     
     // First load
     useEffect(() => {
-        let plan_name = location.pathname.split("/").slice(-1)[0]
         axios.get("/plan/info/" + plan_name)
         .then((response) => {
-            dispatch(loadLessonPlan(response.data as PlanSection[]))
+            let sections = response.data as PlanSection[]
+            dispatch(loadLessonPlan(sections))
+
         })
         .catch(() => console.error("Request failed"))
-    },[location.pathname, dispatch]) 
+    },[plan_name, dispatch]) 
 
     // On plan section change
     useEffect(() => {
+
+        // Uploads changes of sections to API
+        // Called by the update timer below
+        const uploadPlan = () => {
+
+            for(let i = 0; i < planSections.length;i++){
+                dispatch(setSectionOrders())
+
+                if(planSections[i].changed){
+                    axios.put("/plan/info/" + plan_name,planSections[i])
+                    .then((response) => {
+                    })
+                    .catch(() => console.error("Upload failed"))
+                    
+                }
+            }
+
+            // Clear out all of the "changed" flags 
+            dispatch(clearChangedFlag())
+
+            // Disable the reload blocker
+            window.onbeforeunload = null
+        }
+
         if (planSections.length >= 1){
+
+            // Reset the timer
+            if(updateTimer.current !== undefined){
+                clearTimeout(updateTimer.current);
+            }
+            updateTimer.current = setTimeout(uploadPlan,3000)
+
+            // Prevent the reload while updating database
+            window.onbeforeunload = () => {
+                return true;
+            };
+
             setSelectedSection(0);
         }
         else{
             setSelectedSection(-1)
         }
-    }, [planSections])
+    }, [dispatch, planSections, plan_name])
 
     
     const renderSectionsList = () => {

@@ -15,6 +15,8 @@ export const teacherLessonPlanSlice = createSlice({
         },
         updateElement: (state, action:PayloadAction<EditorElementChange>) => {
             let payload = action.payload
+
+            state[payload.section_id].changed = true;
             
             if(payload.type === "eltype" && payload.new_value){
                 // Set the element type to what was selected in the dropdown
@@ -44,12 +46,29 @@ export const teacherLessonPlanSlice = createSlice({
                 }
             }
         },
+        // Add new element to the selected section
         addNewElement: (state, action: PayloadAction<EditorElementNew>) => {
             let payload = action.payload
             state[payload.section_id].elements.push({el_type:"h1",children:{String:""},props:{}});
+        },
+        // Re assign the section orders
+        setSectionOrders: (state) => {
+            for(let i = 0; i < state.length;i++){
+                if (state[i].order_pos !== i){
+                    state[i].order_pos = i;
+                    state[i].changed = true;
+                }
+            }
+        },
+
+        // Clears changed flag on items
+        clearChangedFlag: (state) => {
+            for(let i = 0; i < state.length;i++){
+                state[i].changed = false
+            }
         }
     }
 })
 
-export const {loadLessonPlan, updateElement, addNewElement} = teacherLessonPlanSlice.actions;
+export const {loadLessonPlan, updateElement, addNewElement, setSectionOrders, clearChangedFlag} = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer

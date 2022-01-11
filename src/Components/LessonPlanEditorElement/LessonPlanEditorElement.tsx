@@ -39,10 +39,8 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
     const handleTextboxChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(updateElement({type:"child",new_value:e.target.value,id,section_id}))
         setTextValue(e.target.value)
-        console.log(e.target.value)
     }
 
-    console.log("rendered")
     return <div className="editor-element-container">
             <div className="editor-preview">
                 {react.createElement(element.el_type, element.props, element.children.String)}
