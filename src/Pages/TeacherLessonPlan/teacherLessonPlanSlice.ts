@@ -49,7 +49,7 @@ export const teacherLessonPlanSlice = createSlice({
         // Add new element to the selected section
         addNewElement: (state, action: PayloadAction<EditorElementNew>) => {
             let payload = action.payload
-            state[payload.section_id].elements.push({el_type:"h1",children:{String:""},props:{}});
+            state[payload.section_id].elements.push({el_type:"h1",children:{String:""},props:[]});
         },
         // Re assign the section orders
         setSectionOrders: (state) => {
