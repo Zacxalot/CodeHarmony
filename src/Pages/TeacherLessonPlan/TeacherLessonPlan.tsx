@@ -7,6 +7,7 @@ import LessonPlanEditor from "../../Components/LessonPlanEditor/LessonPlanEditor
 import { useDispatch } from "react-redux";
 import { clearChangedFlag, loadLessonPlan, setSectionOrders } from "./teacherLessonPlanSlice";
 import {useAppSelector } from "../../Redux/hooks";
+import "./TeacherLessonPlan.scss";
 
 export interface PlanSection {
     name:string,
@@ -129,8 +130,16 @@ const TeacherLessonPlan: React.FC<{}> = () => {
 
     return(<div className="full-page">
                 <NavBar small></NavBar>
-                <div>
-                    {renderSectionsList()}
+                <div className="lesson-plan-container">
+                    <div className="section-options-container">
+                        <ul>
+                            {renderSectionsList()}
+                        </ul>
+                        <span className="new-section-button button-hover">
+                            Add New Section
+                        </span>
+                    </div>
+                    
                     {renderLessonPlanEditor()}
                 </div>
             </div>

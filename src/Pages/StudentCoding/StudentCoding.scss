@@ -8,6 +8,7 @@
 
 .coding-flex{
     display:flex;
+    width: 100%;
     flex:1 2;
 
     @media(max-width:750px){

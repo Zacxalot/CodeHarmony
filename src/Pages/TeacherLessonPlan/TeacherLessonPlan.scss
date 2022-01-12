@@ -1,0 +1,33 @@
+@use "../../BaseStyle.scss" as base;
+
+$inner-border-radius:0.3rem;
+$large-border-radius:1rem;
+
+.lesson-plan-container{
+    flex:1;
+    width:40rem;
+    max-width: 100%;
+    padding:0.4rem;
+}
+
+.section-options-container{
+    width: 100%;
+    display:inline-block;
+    background-color: base.$background;
+    border: solid base.$light-grey 1px;
+    border-radius: $large-border-radius;
+}
+
+.new-section-button{
+    display:inline-block;
+    padding:0.2rem 1rem;
+    margin:0.2rem;
+    border: solid base.$light-grey 1px;;
+    border-radius:0.6rem;
+    background-color: white;
+    user-select: none;
+}
+
+ul{
+    padding:0px;
+}

@@ -82,7 +82,7 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
                     <LargeLinkButton to="session/new/" emoji="👨‍🏫️">New Session</LargeLinkButton>
                     <LargeCallbackButton callback={this.openCreateLessonModal} emoji="✍️">New Lesson Plan</LargeCallbackButton>
                 </div>
-                <div style={{textAlign:"center"}}>
+                <div style={{textAlign:"center",display:"flex", flexDirection:"column"}}>
                     <TeacherSessionTable sessions={this.state.sessions}></TeacherSessionTable>
                     <TeacherPlanTable plans={this.state.plans}></TeacherPlanTable>
                 </div>

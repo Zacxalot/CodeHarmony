@@ -11,7 +11,6 @@ class HomePage extends React.Component {
         return (
             <div className="full-page">
                 <NavBar></NavBar>
-                <div className="selection-card-align">
                     <div className="selection-card-area">
                         <div className="selection-card">
                             <Link to={"/s/dashboard"} className="selection-card-link">
@@ -26,7 +25,6 @@ class HomePage extends React.Component {
                             </Link>
                         </div>
                     </div>
-                </div>
                 
             </div>
         );
