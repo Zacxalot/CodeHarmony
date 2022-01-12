@@ -10,14 +10,12 @@ ul {
     padding: 0rem;
     background-color: base.$accent;
     display:inline-block;
-    border-radius: 1rem;
+    border-radius: 1rem 1rem 2rem 2rem;
     margin: 1rem;
     box-shadow: 0px 12px 7px base.$shadow;
 
     h2{
         padding:0rem;
-        border-bottom: solid 1px #00000011;
-        box-shadow: 0rem 0.3rem 0.3rem #00000011;
     }
 
 
@@ -27,11 +25,18 @@ ul {
     }
 }
 
+.list-inner{
+    background-color: white;
+    margin:0;
+    padding:0.5rem;
+    border-radius:0rem 0rem 1rem 1rem;
+}
+
 .tt-head{
     width:auto;
     display:flex;
     text-align: left;
-    padding: 0rem 1rem;
+    padding: 0.5rem;
 }
 
 .manage-head{
@@ -44,7 +49,6 @@ ul {
     display:flex;
     text-align: left;
     padding: 0.5rem;
-    margin: 0.5rem;
     background-color: base.$background;
     box-shadow: inset 0rem 0.7rem 0.7rem base.$shadow;
     border-radius: 1rem;

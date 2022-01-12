@@ -23,11 +23,14 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
         console.log(sessionsItems);
 
         return (
-            <ul className="list-border">
-                <li><h2>Sessions</h2></li>
-                <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Lecture Name</span><span className="participant-count">Participant Count</span><span className="manage-head">Manage</span></li>
-               {sessionsItems}
-            </ul>
+            <div className="list-border">
+                <h2>Sessions</h2>
+                <ul className="list-inner">
+                    <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Lecture Name</span><span className="participant-count">Participant Count</span><span className="manage-head">Manage</span></li>
+                    {sessionsItems}
+                </ul>
+            </div>
+            
         );
     };
 }
