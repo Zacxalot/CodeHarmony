@@ -48,6 +48,7 @@ const TeacherLessonPlan: React.FC<{}> = () => {
     const dispatch = useDispatch();
     const planSections:PlanSection[] = useAppSelector((state) => state.planSections);
     const [selectedSection,setSelectedSection] =useState<number>(-1);
+    const [newSectionName,setNewSectionName] = useState<string>("");
     const plan_name = location.pathname.split("/").slice(-1)[0]
 
     // Timer that waits before changes stop before sending update request
@@ -121,7 +122,12 @@ const TeacherLessonPlan: React.FC<{}> = () => {
     const renderLessonPlanEditor = () => {
 
         if (selectedSection !== -1){
-            return <LessonPlanEditor plan_section={planSections[selectedSection]} section_id={selectedSection}></LessonPlanEditor>
+            return (<div>
+                <h1>{planSections[selectedSection].name}</h1>
+                <LessonPlanEditor plan_section={planSections[selectedSection]} section_id={selectedSection}></LessonPlanEditor>
+            </div>
+                
+            )
         }
         else{
             return <div>Add a section to get started</div>
@@ -132,14 +138,16 @@ const TeacherLessonPlan: React.FC<{}> = () => {
                 <NavBar small></NavBar>
                 <div className="lesson-plan-container">
                     <div className="section-options-container">
+                        <h1>Sections</h1>
                         <ul>
                             {renderSectionsList()}
                         </ul>
-                        <span className="new-section-button button-hover">
-                            Add New Section
-                        </span>
+                        <form action="" onSubmit={e => {e.preventDefault(); console.log(newSectionName)}} className="new-section-container">
+                            <input onChange={e => {setNewSectionName(e.target.value)}} className="new-section-name-box" type="text"></input>
+                            <input type="submit" value="Add" className="new-section-button button-hover"></input>
+                        </form>
+                        
                     </div>
-                    
                     {renderLessonPlanEditor()}
                 </div>
             </div>
