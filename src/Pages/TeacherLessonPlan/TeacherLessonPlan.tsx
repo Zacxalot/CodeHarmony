@@ -5,7 +5,7 @@ import axios from "axios";
 import LessonPlanSectionListItem from "../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem";
 import LessonPlanEditor from "../../Components/LessonPlanEditor/LessonPlanEditor";
 import { useDispatch } from "react-redux";
-import { clearChangedFlag, loadLessonPlan, setSectionOrders } from "./teacherLessonPlanSlice";
+import { clearChangedFlag, createNewSection, loadLessonPlan, setSectionOrders } from "./teacherLessonPlanSlice";
 import {useAppSelector } from "../../Redux/hooks";
 import "./TeacherLessonPlan.scss";
 
@@ -125,13 +125,22 @@ const TeacherLessonPlan: React.FC<{}> = () => {
             return (<div>
                 <h1>{planSections[selectedSection].name}</h1>
                 <LessonPlanEditor plan_section={planSections[selectedSection]} section_id={selectedSection}></LessonPlanEditor>
-            </div>
-                
-            )
+            </div>)
         }
         else{
             return <div>Add a section to get started</div>
         }
+    }
+
+    // Request to add a new section to the plan
+    const addNewSection = () => {
+        var newName = newSectionName
+
+        axios.post("/plan/info/" + plan_name, {request:"new-section", data:{section_name:newSectionName,order_pos:planSections.length}})
+        .then((response) => {
+            dispatch(createNewSection({name:newName,section_type:"LECTURE",elements:[],order_pos:planSections.length,changed:false}));
+        })
+        .catch(() => console.error("Request failed"))
     }
 
     return(<div className="full-page">
@@ -142,7 +151,7 @@ const TeacherLessonPlan: React.FC<{}> = () => {
                         <ul>
                             {renderSectionsList()}
                         </ul>
-                        <form action="" onSubmit={e => {e.preventDefault(); console.log(newSectionName)}} className="new-section-container">
+                        <form action="" onSubmit={e => {e.preventDefault(); addNewSection()}} className="new-section-container">
                             <input onChange={e => {setNewSectionName(e.target.value)}} className="new-section-name-box" type="text"></input>
                             <input type="submit" value="Add" className="new-section-button button-hover"></input>
                         </form>

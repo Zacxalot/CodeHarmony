@@ -66,9 +66,13 @@ export const teacherLessonPlanSlice = createSlice({
             for(let i = 0; i < state.length;i++){
                 state[i].changed = false
             }
+        },
+
+        createNewSection:(state, action:PayloadAction<PlanSection>) => {
+            state.push(action.payload)
         }
     }
 })
 
-export const {loadLessonPlan, updateElement, addNewElement, setSectionOrders, clearChangedFlag} = teacherLessonPlanSlice.actions;
+export const {loadLessonPlan, updateElement, addNewElement, setSectionOrders, clearChangedFlag, createNewSection} = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer
