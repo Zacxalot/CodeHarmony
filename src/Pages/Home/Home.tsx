@@ -12,18 +12,14 @@ class HomePage extends React.Component {
             <div className="full-page">
                 <NavBar></NavBar>
                     <div className="selection-card-area">
-                        <div className="selection-card">
-                            <Link to={"/s/dashboard"} className="selection-card-link">
-                                <h1>I'm a student</h1>
-                                <span className="large-emoji">🙋</span>
-                            </Link>
-                        </div>
-                        <div className="selection-card">
-                            <Link to={"/t/dashboard"} className="selection-card-link">
-                                <h1>I'm a teacher</h1>
-                                <span className="large-emoji">👨‍🏫️</span>
-                            </Link>
-                        </div>
+                        <Link to={"/s/dashboard"} className="selection-card-link">
+                            <h1>I'm a student</h1>
+                            <span className="large-emoji">🙋</span>
+                        </Link>
+                        <Link to={"/t/dashboard"} className="selection-card-link">
+                            <h1>I'm a teacher</h1>
+                            <span className="large-emoji">👨‍🏫️</span>
+                        </Link>
                     </div>
                 
             </div>

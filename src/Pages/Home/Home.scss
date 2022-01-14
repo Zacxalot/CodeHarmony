@@ -4,23 +4,26 @@
 .selection-card {
     font-size:1.8rem;
     user-select:none;
-    width: 45%;
     display:inline-block;
     text-align: center;
-    margin:1rem;
+    
 }
 
 .selection-card-area {
     text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex:1;
     width: 100%;
     user-select:none;
 }
 
 @media (max-width:750px) {
-    .selection-card {
-        width:80%;
-        margin:1rem 0rem;
-    }    
+    
+    .selection-card-area{
+        flex-direction: column;
+    }
 }
 
 .selection-card-link{
@@ -30,9 +33,9 @@
     border-color: base.$shadow;
     width:100%;
     box-shadow: 0rem 0.5rem 0.5rem base.$shadow;
-    padding:0.6rem;
+    margin:1rem;
+    flex:1;
 
-    margin:0.6rem;
 
     &:hover{
         filter:brightness(94%)
@@ -46,7 +49,6 @@
 
 .selection-card-align{
     flex:1;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
