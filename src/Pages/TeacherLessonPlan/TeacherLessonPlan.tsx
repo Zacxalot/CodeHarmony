@@ -61,6 +61,9 @@ const TeacherLessonPlan: React.FC<{}> = () => {
         .then((response) => {
             let sections = response.data as PlanSection[]
             dispatch(loadLessonPlan(sections))
+            if (sections.length > 0){
+                setSelectedSection(0)
+            }
 
         })
         .catch(() => console.error("Request failed"))
@@ -104,8 +107,6 @@ const TeacherLessonPlan: React.FC<{}> = () => {
             window.onbeforeunload = () => {
                 return true;
             };
-
-            setSelectedSection(0);
         }
         else{
             setSelectedSection(-1)
@@ -114,8 +115,8 @@ const TeacherLessonPlan: React.FC<{}> = () => {
 
     
     const renderSectionsList = () => {
-        return planSections.map((section) => {
-            return <LessonPlanSectionListItem key={section.name} section={section}></LessonPlanSectionListItem>
+        return planSections.map((section, index) => {
+            return <LessonPlanSectionListItem key={section.name} section_name={section.name} position={index} callback={changeSection}></LessonPlanSectionListItem>
         })
     }
 
@@ -141,6 +142,11 @@ const TeacherLessonPlan: React.FC<{}> = () => {
             dispatch(createNewSection({name:newName,section_type:"LECTURE",elements:[],order_pos:planSections.length,changed:false}));
         })
         .catch(() => console.error("Request failed"))
+    }
+
+    // Passed to the section list items as a callback
+    const changeSection = (index:number) => {
+        setSelectedSection(index)
     }
 
     return(<div className="full-page">
