@@ -1,5 +1,3 @@
-import { callbackify } from "util"
-import { PlanSection } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import "./LessonPlanSectionListItem.scss"
 interface LessonPlanSectionListItemProps {
     section_name:String,

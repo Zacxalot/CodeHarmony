@@ -13,7 +13,7 @@ class LargeCallbackButton extends React.Component<LargeCallbackButtonProps,{}>{
 
     render(){
         return (
-            <button className="large-button" onClick={this.props.callback}>
+            <button className="large-button button-hover" onClick={this.props.callback}>
                 {this.props.children}
                 <span className="emoji">{this.props.emoji}</span>
             </button>

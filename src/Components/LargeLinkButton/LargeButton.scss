@@ -12,7 +12,7 @@
     font-family: base.$font-family;
     font-weight: 700;
     box-shadow: 0px 10px 12px base.$shadow;
-
+    user-select: none;
     .emoji{
 
         display: block;

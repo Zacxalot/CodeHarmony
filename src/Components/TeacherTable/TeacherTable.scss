@@ -47,19 +47,18 @@ ul {
 .tt-item{
     max-width:auto;
     display:flex;
-    text-align: left;
     padding: 0.5rem;
     background-color: base.$background;
-    box-shadow: inset 0rem 0.7rem 0.7rem base.$shadow;
-    border-radius: 1rem;
+    box-shadow: inset 0rem 0rem 0.7rem base.$shadow;
+    margin-bottom: 0.5rem;
+    height: 3rem;
     align-items: center;
-    
+    border-radius: 1rem;
 }
 
 .session-name{
     flex: 10;
-    min-width: 0;
-    text-overflow: ellipsis;
+    text-align: left;
 }
 
 .lesson-name{
@@ -72,24 +71,53 @@ ul {
     padding-right: 1rem;
 }
 
-.manage-button{
+.tt-button{
     flex:3;
+    height:100%;
     display: flex;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
     background-color: base.$manage;
     border-radius: 1rem;
-    align-items: center;
-    padding: 0rem 0.4rem;
-    min-width:0;
+    margin: 0 0.5rem;
     user-select: none;
-    
     img{
-        flex:1;
-        line-height: 0.3rem;
-        padding:0.4rem;
-        display: inline;
+        height: 65%;
         
-        height:1.6rem;
-        filter: invert(100%);
     }
 }
+
+.start-button{
+    background-color: base.$accent-green;
+}
+
+// .tt-button{
+    
+//     flex:3;
+//     display: flex;
+//     text-align: center;
+//     height: 100%;
+//     border-radius: 1rem;
+//     align-items: center;
+//     padding: 0rem 0.4rem;
+//     min-width:0;
+//     user-select: none;
+
+//     height:100%;
+
+//     img{
+//         flex:1;
+//         line-height: 0.3rem;
+//         padding:0.4rem;
+//         display: inline;
+        
+//         height:1.6rem;
+//         filter: invert(100%);
+//     }
+// }
+
+// .manage-button{
+//     background-color: base.$manage;
+    
+    
+// }

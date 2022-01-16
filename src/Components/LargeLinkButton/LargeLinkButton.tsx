@@ -13,7 +13,7 @@ class LargeLinkButton extends React.Component<LargeLinkButtonProps,{}>{
 
     render(){
         return (
-            <Link className="large-button" to={this.props.to}>
+            <Link className="large-button button-hover" to={this.props.to}>
                 {this.props.children}
                 <span className="emoji">{this.props.emoji}</span>
             </Link>
