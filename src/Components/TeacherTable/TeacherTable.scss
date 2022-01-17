@@ -33,13 +33,15 @@ ul {
 }
 
 .tt-head{
-    width:auto;
+    max-width:auto;
     display:flex;
-    text-align: left;
     padding: 0.5rem;
+    height: 3rem;
+    align-items: center;
+    border-radius: 1rem;
 }
 
-.manage-head{
+.head-flex{
     flex:3;
     text-align: center;
 }

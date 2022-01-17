@@ -40,8 +40,8 @@ interface PlanListResponse{
 }
 
 export interface Session {
-    session_name: String,
-    lesson_name: String
+    session_name: string,
+    plan_name: string
 }
 
 export interface Plan {
