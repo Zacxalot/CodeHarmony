@@ -74,7 +74,7 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
 
         // Redirects to the session page when a new session is made
         if(this.state.openNewSession.plan_name !== ""){
-            return(<Navigate to={"/t/session/" + this.state.openNewSession.plan_name + "/" + this.state.openNewSession.session_name}/>)
+            return(<Navigate to={"/t/session/" + encodeURIComponent(this.state.openNewSession.plan_name) + "/" + encodeURIComponent(this.state.openNewSession.session_name)}/>)
         }
 
 
