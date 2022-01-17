@@ -27,7 +27,6 @@ class TeacherPlanTable extends React.PureComponent<TeacherTableProps,{}> {
             <div className="list-border">
                 <h2>Plans</h2>
                 <ul className="list-inner">
-                    <li className="tt-head"><span className="session-name">Plan Name</span><span className="manage-head">Manage</span></li>
                     {planItems}
                 </ul>
             </div>

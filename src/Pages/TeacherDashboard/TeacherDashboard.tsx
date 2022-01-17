@@ -35,13 +35,13 @@ interface CreateNewSessionResponse {
 }
 
 interface PlanListResponse{
-    plans:Plan[]
+    plans:Plan[],
+    sessions:Session[]
 }
 
 export interface Session {
     session_name: String,
-    lesson_name: String,
-    participant_count: Number
+    lesson_name: String
 }
 
 export interface Plan {
@@ -122,7 +122,7 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
     componentDidMount(){
         axios.get<PlanListResponse>("/plan/list")
         .then(planlist => {
-            this.setState({plans:planlist.data.plans})
+            this.setState({plans:planlist.data.plans, sessions:planlist.data.sessions})
         })
         .catch(err => {
             console.log(err)

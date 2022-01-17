@@ -15,7 +15,6 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
             <li className="tt-item" key={session.session_name.toString()}>
                 <span className="session-name">{session.session_name}</span>
                 <span className="lesson-name">{session.lesson_name}</span>
-                <span className="participant-count">{session.participant_count}</span>
                 <Link to="manage/" className="manage-button" draggable="false"><img alt="Gear symbol" src={gear} /></Link>
             </li>
         );
@@ -26,7 +25,6 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
             <div className="list-border">
                 <h2>Sessions</h2>
                 <ul className="list-inner">
-                    <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Lecture Name</span><span className="participant-count">Participant Count</span><span className="manage-head">Manage</span></li>
                     {sessionsItems}
                 </ul>
             </div>
