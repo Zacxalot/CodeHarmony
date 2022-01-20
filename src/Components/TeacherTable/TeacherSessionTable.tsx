@@ -1,6 +1,5 @@
 import React from "react";
 import "./TeacherTable.scss";
-import gear from "../../Vectors/gear.svg";
 import run from "../../Vectors/run.svg"
 import { Link } from "react-router-dom";
 import {Session} from "../../Pages/TeacherDashboard/TeacherDashboard";
@@ -26,7 +25,7 @@ class TeacherSessionTable extends React.PureComponent<TeacherTableProps,{}> {
             <div className="list-border">
                 <h2>Sessions</h2>
                 <ul className="list-inner">
-                    <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Plan Name</span><span className="head-flex">Plan Name</span></li>
+                    <li className="tt-head"><span className="session-name">Session Name</span><span className="lesson-name">Plan Name</span><span className="head-flex"></span></li>
                     {sessionsItems}
                 </ul>
             </div>

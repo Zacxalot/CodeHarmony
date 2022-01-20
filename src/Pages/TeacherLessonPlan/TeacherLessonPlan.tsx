@@ -57,11 +57,11 @@ const TeacherLessonPlan: React.FC<{}> = () => {
     
     // First load
     useEffect(() => {
-        axios.get("/plan/info/" + plan_name)
-        .then((response) => {
-            let sections = response.data as PlanSection[]
-            dispatch(loadLessonPlan(sections))
-            if (sections.length > 0){
+        axios.get<PlanSection[]>("/plan/info/" + plan_name)
+        .then((sections) => {
+
+            dispatch(loadLessonPlan(sections.data))
+            if (sections.data.length > 0){
                 setSelectedSection(0)
             }
 

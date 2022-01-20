@@ -1,0 +1,52 @@
+@use "../../BaseStyle.scss" as base;
+
+$border-radius: 1.5rem;
+
+.teacher-session-width{
+    max-width: 95%;
+    width:65rem;
+}
+
+.sections-picker{
+    width: 100%;
+    display: flex;
+    background-color: base.$main-colour;
+    border:solid base.$light-grey 1px;
+    height:5rem;
+    flex-direction: row;
+    align-items: center;
+    margin: 0.5rem 0rem;
+    border-radius: $border-radius;
+}
+
+.arrow-flex{
+    flex:1;
+    height:100%;
+    background-color: base.$main-colour;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow-left{
+    border-radius:$border-radius 0 0 $border-radius;
+    border-right:solid base.$light-grey 1px;
+}
+
+.arrow-right{
+    border-radius:0 $border-radius $border-radius 0;
+    border-left:solid base.$light-grey 1px;
+}
+
+.arrow-image{
+    height:2rem;
+    flex:1;
+    user-select: none;
+}
+
+.title-flex{
+    display: inline;
+    flex:10;
+    vertical-align:bottom;
+    font-size: 1.6rem;
+}
