@@ -19,12 +19,10 @@ export interface PlanSection {
 
 export interface CHElement{
     el_type:string,
-    props:CHElementProps,
+    props:{},
     children:CHElementChild
 }
 
-export interface CHElementProps{
-}
 
 interface CHElementChild{
     JSX?:CHElement[]
@@ -151,7 +149,7 @@ const TeacherLessonPlan: React.FC<{}> = () => {
 
     return(<div className="full-page">
                 <NavBar small></NavBar>
-                <div className="lesson-plan-container">
+                <div className="page-container">
                     <div className="section-options-container">
                         <h1>Sections</h1>
                         <ul>

@@ -105,16 +105,16 @@ class TeacherDashboard extends React.Component<{},TeacherDashboardState> {
                     </span>
                     <CHButton text="Create" disabled={this.state.newSessionNameValue.length < 4} fontBlack colour="#72e217" callback={this.requestNewSession}></CHButton>
                 </Modal>
-
-                <div >
-                    <LargeLinkButton to="session/new/" emoji="👨‍🏫️">New Session</LargeLinkButton>
-                    <LargeCallbackButton callback={this.openCreateLessonModal} emoji="✍️">New Lesson Plan</LargeCallbackButton>
+                <div className="page-container">
+                    <div>
+                        <LargeLinkButton to="session/new/" emoji="👨‍🏫️">New Session</LargeLinkButton>
+                        <LargeCallbackButton callback={this.openCreateLessonModal} emoji="✍️">New Lesson Plan</LargeCallbackButton>
+                    </div>
+                    <div style={{textAlign:"center",display:"flex", flexDirection:"column"}}>
+                        <TeacherSessionTable sessions={this.state.sessions}></TeacherSessionTable>
+                        <TeacherPlanTable plans={this.state.plans} newSessionCallback={this.openCreateSessionModal}></TeacherPlanTable>
+                    </div>
                 </div>
-                <div style={{textAlign:"center",display:"flex", flexDirection:"column"}}>
-                    <TeacherSessionTable sessions={this.state.sessions}></TeacherSessionTable>
-                    <TeacherPlanTable plans={this.state.plans} newSessionCallback={this.openCreateSessionModal}></TeacherPlanTable>
-                </div>
-                
             </div>
         );
     };

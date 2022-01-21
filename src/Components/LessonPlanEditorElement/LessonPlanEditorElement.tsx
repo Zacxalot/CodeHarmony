@@ -1,10 +1,11 @@
-import react, { ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState} from "react";
 import { CHElement } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
 import "./LessonPlanEditorElement.scss"
 import up_arrow from "../../Vectors/up.svg"
 import down_arrow from "../../Vectors/down.svg";
 import { useDispatch } from "react-redux";
 import { updateElement } from "../../Pages/TeacherLessonPlan/teacherLessonPlanSlice";
+import CHElementComponent from "../CHElementComponent/CHElementComponent";
 
 interface LessonPlanEditorElementProps {
     element: CHElement,
@@ -22,6 +23,12 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
     }, [element.children.String])
 
     const handleTypeChange = (e:ChangeEvent<HTMLSelectElement>) => {
+        // Clear the text value if the element is set to image
+        if (e.target.value === "img"){
+            setTextValue("")
+            dispatch(updateElement({type:"child",new_value:"",id,section_id}))
+        }
+
         dispatch(updateElement({type:"eltype",new_value:e.target.value,id,section_id}))
     }
 
@@ -36,22 +43,32 @@ const LessonPlanEditorElement: React.FC<LessonPlanEditorElementProps> = ({ eleme
     }
 
 
-    const handleTextboxChange = (e:ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextboxChange = (e:ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
         dispatch(updateElement({type:"child",new_value:e.target.value,id,section_id}))
         setTextValue(e.target.value)
     }
 
+    const renderInput = () => {
+        if(element.el_type === "img"){
+            return <input className="textbox" onChange={handleTextboxChange} value={textValue}></input>
+        }
+        else{
+            return <textarea className="textbox" onChange={handleTextboxChange} value={textValue}></textarea>
+        }
+    }
+
     return <div className="editor-element-container">
             <div className="editor-preview">
-                {react.createElement(element.el_type, element.props, element.children.String)}
+                <CHElementComponent element={element}/>
             </div>
             <div className="editor-options">
                 <div className="options-container" >
                     <select value={element.el_type} onChange={handleTypeChange}>
                         <option value="h1">Heading</option>
                         <option value="p">Paragraph</option>
+                        <option value="img">Image</option>
                     </select>
-                    <textarea className="textbox" onChange={handleTextboxChange} value={textValue}></textarea>
+                    {renderInput()}
                 </div>
                 
                 <div className="arrow-container">

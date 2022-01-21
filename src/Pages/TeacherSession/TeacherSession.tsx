@@ -7,6 +7,7 @@ import { PlanSection } from "../TeacherLessonPlan/TeacherLessonPlan";
 import left_arrow from "../../Vectors/left black.svg"
 import right_arrow from "../../Vectors/right black.svg";
 import "./TeacherSession.scss"
+import CHElementComponent from "../../Components/CHElementComponent/CHElementComponent";
 
 
 interface LessonSession{
@@ -40,7 +41,7 @@ const TeacherSession: React.FC<{}> = () => {
     const renderElements = () => {
         if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0){
             return planSections[currentSection].elements.map((element, index) => {
-                return React.createElement(element.el_type, {key:index}, element.children.String)
+                return <CHElementComponent element={element} key={index}/>
             })
         }
         else{
@@ -73,7 +74,7 @@ const TeacherSession: React.FC<{}> = () => {
     return(
     <div className="full-page">
         <NavBar small></NavBar>
-        <div className="teacher-session-width">
+        <div className="page-container">
             <div className="sections-picker">
                 <span className="arrow-flex button-hover arrow-left" onClick={() => regressSection()}><img className="arrow-image" alt="Left arrow"  src={left_arrow} draggable="false"/></span>
                 {renderSectionsTitle()}

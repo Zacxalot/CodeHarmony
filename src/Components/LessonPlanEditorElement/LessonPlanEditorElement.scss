@@ -26,8 +26,6 @@ $large-border-radius:1rem;
     display: flex;
     flex: 1;
     flex-direction: column;
-    padding: 0.2rem;
-    height: 5rem;
     justify-content: baseline;
     align-self: flex-end;
 }
@@ -80,16 +78,13 @@ $large-border-radius:1rem;
     .textbox{
         border: solid 1px base.$light-grey;
         border-radius: $inner-border-radius $inner-border-radius $inner-border-radius $large-border-radius;
-        padding: 0 1em 0 0;
-        margin-top: 0.2rem;
         width: fit-content;
         font-family: inherit;
         font-size: inherit;
         cursor: inherit;
         line-height: inherit;
-        width:96%;
+        width: 99%;
         resize: none;
-        padding: 0.4rem;
         background-color: base.$background;
         min-height: 3rem;
         font-weight: 150;

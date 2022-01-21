@@ -3,22 +3,19 @@
 $inner-border-radius:0.3rem;
 $large-border-radius:1rem;
 
-.lesson-plan-container{
-    flex:1;
-    width:40rem;
-    max-width: 100%;
-    padding:0.4rem;
-}
 
 .section-options-container{
-    width: 100%;
+    width: 40rem;
+    max-width: 100%;
     display:inline-block;
     background-color: base.$background;
     border: solid base.$light-grey 1px;
     border-radius: $large-border-radius;
+    margin-top: 1rem;
 }
 
 .new-section-button{
+    flex:1;
     display:flex;
     margin-left: 0;
     border-left: none;
@@ -37,6 +34,7 @@ $large-border-radius:1rem;
 }
 
 .new-section-name-box{
+    flex:7;
     display:inline;
     border: none;
     height:100%;

@@ -1,0 +1,15 @@
+.element-preview{
+    max-width: 100%;
+    display: flex;
+    overflow: hidden;
+    padding:1rem;
+    align-items: center;
+    justify-content: center;
+
+    img{
+        flex:1;
+        border-radius: 1rem;
+        width: 100%;
+        max-width: max-content;
+    }
+}

@@ -37,9 +37,17 @@ export const teacherLessonPlanSlice = createSlice({
                     state[payload.section_id].elements[payload.id] = temp
                 }
             }
+            // Sets the child value of the component
+            // Also sets appropriate props for specific elements
             else if(payload.type === "child"){
                 if(payload.new_value){
-                    state[payload.section_id].elements[payload.id].children = {String:payload.new_value}
+                    if(state[payload.section_id].elements[payload.id].el_type === "img"){
+                        state[payload.section_id].elements[payload.id].props = {src:payload.new_value}
+                    }
+                    else{
+                        state[payload.section_id].elements[payload.id].children = {String:payload.new_value}
+                    }
+                    
                 }
                 else{
                     state[payload.section_id].elements[payload.id].children = {String:""}

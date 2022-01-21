@@ -11,7 +11,7 @@ class HomePage extends React.Component {
         return (
             <div className="full-page">
                 <NavBar></NavBar>
-                    <div className="selection-card-area">
+                    <div className="selection-card-area page-container">
                         <Link to={"/s/dashboard"} className="selection-card-link">
                             <h1>I'm a student</h1>
                             <span className="large-emoji">🙋</span>

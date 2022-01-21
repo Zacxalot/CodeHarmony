@@ -5,13 +5,12 @@ ul {
 }
 
 .list-border{
+    width: 100%;
     max-width: 100%;
-    width: 40rem;
     padding: 0rem;
     background-color: base.$accent;
     display:inline-block;
     border-radius: 1rem 1rem 2rem 2rem;
-    margin: 1rem;
     box-shadow: 0px 12px 7px base.$shadow;
 
     h2{
