@@ -9,6 +9,30 @@ import { python } from '@codemirror/lang-python';
 import './Codemirror.scss';
 import { ViewPlugin, ViewUpdate } from '@codemirror/view';
 
+const runExtension = () => {
+  const plugin = ViewPlugin.fromClass(class {
+    timerRunning = false;
+
+    // Run when a change is made to the document.
+    // Sets a timer to send the changes, calls send bundle
+    // when timer finishes.
+    update(update: ViewUpdate) {
+      if (update.docChanged) {
+        if (this.timerRunning === false) {
+          this.timerRunning = true;
+          setTimeout(this.sendBundle, 1000);
+        }
+      }
+    }
+
+    sendBundle = () => {
+      console.log('Sending');
+      this.timerRunning = false;
+    }
+  });
+  return plugin;
+};
+
 class Codemirror extends React.Component {
   view: EditorView | undefined;
 
@@ -35,6 +59,7 @@ class Codemirror extends React.Component {
   }
 
   // Returns the code in the editor
+  // eslint-disable-next-line react/no-unused-class-component-methods
   getEditorState() {
     return (this.view?.state.doc.toJSON());
   }
@@ -45,29 +70,5 @@ class Codemirror extends React.Component {
     );
   }
 }
-
-const runExtension = () => {
-  const plugin = ViewPlugin.fromClass(class {
-    timerRunning = false;
-
-    // Run when a change is made to the document.
-    // Sets a timer to send the changes, calls send bundle
-    // when timer finishes.
-    update(update: ViewUpdate) {
-      if (update.docChanged) {
-        if (this.timerRunning === false) {
-          this.timerRunning = true;
-          setTimeout(this.sendBundle, 1000);
-        }
-      }
-    }
-
-    sendBundle = () => {
-      console.log('Sending');
-      this.timerRunning = false;
-    }
-  });
-  return plugin;
-};
 
 export default Codemirror;
