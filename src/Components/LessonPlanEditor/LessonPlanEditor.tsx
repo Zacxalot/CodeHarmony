@@ -1,40 +1,48 @@
-import { PlanSection } from "../../Pages/TeacherLessonPlan/TeacherLessonPlan"
-import LessonPlanEditorElement from "../LessonPlanEditorElement/LessonPlanEditorElement"
-import { useDispatch } from "react-redux";
-import { addNewElement } from "../../Pages/TeacherLessonPlan/teacherLessonPlanSlice";
-import "./LessonPlanEditor.scss"
+// TODO FIX THESE
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
+import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditorElement';
+import { addNewElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
+import './LessonPlanEditor.scss';
 
 interface LessonPlanEditorProps {
-    plan_section:PlanSection,
-    section_id:number
+  planSection: PlanSection,
+  sectionId: number
 }
 
-const LessonPlanEditor: React.FC<LessonPlanEditorProps> = ({plan_section,section_id}) => {
-    const dispatch = useDispatch();
+function LessonPlanEditor({ planSection, sectionId }: LessonPlanEditorProps) {
+  const dispatch = useDispatch();
 
-    const renderSectionElements = () => {
-        return plan_section.elements.map((element, index) => {
-            return <LessonPlanEditorElement element={element} key={index.toString()} section_id={section_id} id={index}></LessonPlanEditorElement>
-        })
-    }
+  const renderSectionElements = () => (
+    planSection.elements.map((element, index) => (
+      <LessonPlanEditorElement
+        element={element}
+        key={index.toString()}
+        sectionId={sectionId}
+        id={index}
+      />
+    ))
+  );
 
-    const handleAddNewElement = (e:React.MouseEvent<HTMLElement>) => {
-        dispatch(addNewElement({section_id:section_id}))
-        console.log("Down")
-    }
+  const handleAddNewElement = (e: React.MouseEvent<HTMLElement>) => {
+    dispatch(addNewElement({ sectionId }));
+    console.log('Down');
+  };
 
-    if (plan_section.section_type === "undefined"){
-        return(<div>To get started, add a new section!</div>)
-    }
-    else{
-        return(
-        <div className="editor-elements">
-            {renderSectionElements()}
-            <span onClick={handleAddNewElement} className="editor-element-container button-hover add-element-button">+</span>
-        
-        </div>)
-    }
+  if (planSection.sectionType === 'undefined') {
+    return (<div>To get started, add a new section!</div>);
+  }
 
+  return (
+    <div className="editor-elements">
+      {renderSectionElements()}
+      <span onClick={handleAddNewElement} className="editor-element-container button-hover add-element-button">+</span>
+
+    </div>
+  );
 }
 
-export default LessonPlanEditor
+export default LessonPlanEditor;
