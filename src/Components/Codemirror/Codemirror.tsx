@@ -41,8 +41,10 @@ class Codemirror extends React.Component {
 
     // Create Code Mirror state and view
     if (parent) {
+      const state = EditorState.create({ extensions: [basicSetup, python(), runExtension()] });
+
       this.view = new EditorView({
-        state: EditorState.create({ extensions: [basicSetup, python(), runExtension()] }),
+        state,
         parent,
 
       });
