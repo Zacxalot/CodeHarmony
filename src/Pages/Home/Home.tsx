@@ -1,31 +1,27 @@
-import React from "react";
+import React from 'react';
 import {
-    Link
-  } from "react-router-dom";
+  Link,
+} from 'react-router-dom';
 import './Home.scss';
-import NavBar from "../../Components/NavBar/NavBar";
+import NavBar from '../../Components/NavBar/NavBar';
 
-class HomePage extends React.Component {
+function HomePage() {
+  return (
+    <div className="full-page">
+      <NavBar />
+      <div className="selection-card-area page-container">
+        <Link to="/s/dashboard" className="selection-card-link">
+          <h1>I&apos;m a student</h1>
+          <span className="large-emoji">🙋</span>
+        </Link>
+        <Link to="/t/dashboard" className="selection-card-link">
+          <h1>I&apos;m a teacher</h1>
+          <span className="large-emoji">👨‍🏫️</span>
+        </Link>
+      </div>
 
-    render(){
-        return (
-            <div className="full-page">
-                <NavBar></NavBar>
-                    <div className="selection-card-area page-container">
-                        <Link to={"/s/dashboard"} className="selection-card-link">
-                            <h1>I'm a student</h1>
-                            <span className="large-emoji">🙋</span>
-                        </Link>
-                        <Link to={"/t/dashboard"} className="selection-card-link">
-                            <h1>I'm a teacher</h1>
-                            <span className="large-emoji">👨‍🏫️</span>
-                        </Link>
-                    </div>
-                
-            </div>
-        );
-    };
-    
+    </div>
+  );
 }
 
 export default HomePage;

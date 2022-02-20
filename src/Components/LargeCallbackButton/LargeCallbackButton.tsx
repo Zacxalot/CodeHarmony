@@ -1,25 +1,22 @@
+import React, { PropsWithChildren } from 'react';
+import '../LargeLinkButton/LargeButton.scss';
 
-import React from "react";
-import "../LargeLinkButton/LargeButton.scss";
+type LargeCallbackButtonProps = PropsWithChildren<{
+  callback: () => void,
+  emoji?: string
+}>
 
-interface LargeCallbackButtonProps {
-    callback: () => void,
-    emoji?: string
+function LargeCallbackButton({ callback, emoji, children }: LargeCallbackButtonProps) {
+  return (
+    <button className="large-button button-hover" onClick={callback} type="button">
+      {children}
+      <span className="emoji">{emoji}</span>
+    </button>
+  );
 }
 
-
-
-class LargeCallbackButton extends React.Component<LargeCallbackButtonProps,{}>{
-
-    render(){
-        return (
-            <button className="large-button button-hover" onClick={this.props.callback}>
-                {this.props.children}
-                <span className="emoji">{this.props.emoji}</span>
-            </button>
-        );
-    };
-    
-}
+LargeCallbackButton.defaultProps = {
+  emoji: '😀',
+};
 
 export default LargeCallbackButton;

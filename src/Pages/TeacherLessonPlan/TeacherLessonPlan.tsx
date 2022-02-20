@@ -140,7 +140,7 @@ function TeacherLessonPlan() {
   const renderSectionsList = () => planSections.map((section, index) => (
     <LessonPlanSectionListItem
       key={section.name}
-      section_name={section.name}
+      sectionName={section.name}
       position={index}
       callback={changeSection}
     />

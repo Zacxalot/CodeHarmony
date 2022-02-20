@@ -1,18 +1,28 @@
-import "./LessonPlanSectionListItem.scss"
+// TODO FIX THESE
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
+import React from 'react';
+import './LessonPlanSectionListItem.scss';
+
 interface LessonPlanSectionListItemProps {
-    section_name:String,
-    position:number,
-    callback:(index:number) => void
+  sectionName: String,
+  position: number,
+  callback: (index: number) => void
 }
 
-const LessonPlanSectionListItem: React.FC<LessonPlanSectionListItemProps> = ({section_name,position,callback}) => {
-    const handleSelect = (e:React.MouseEvent<HTMLElement>) => {
-        callback(position)
-    }
+function LessonPlanSectionListItem(
+  { sectionName, position, callback }: LessonPlanSectionListItemProps,
+) {
+  const handleSelect = () => {
+    callback(position);
+  };
 
-    return(<li onClick={handleSelect} className="lesson-plan-section-item button-hover">
-        <span>{section_name}</span>
-    </li>)
+  return (
+    <li onClick={handleSelect} className="lesson-plan-section-item button-hover">
+      <span>{sectionName}</span>
+    </li>
+  );
 }
 
-export default LessonPlanSectionListItem
+export default LessonPlanSectionListItem;
