@@ -4,6 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import {
+  Button,
+  Container, Paper, Stack, TextField, Typography,
+} from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import LessonPlanSectionListItem from '../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem';
 import LessonPlanEditor from '../../Components/LessonPlanEditor/LessonPlanEditor';
@@ -106,13 +110,13 @@ function TeacherLessonPlan() {
   const renderLessonPlanEditor = () => {
     if (selectedSection !== -1) {
       return (
-        <div>
-          <h1>{planSections[selectedSection].name}</h1>
+        <Container>
+          <Typography align="center" variant="h4">{planSections[selectedSection].name}</Typography>
           <LessonPlanEditor
             planSection={planSections[selectedSection]}
             sectionId={selectedSection}
           />
-        </div>
+        </Container>
       );
     }
 
@@ -123,7 +127,7 @@ function TeacherLessonPlan() {
   const addNewSection = () => {
     const newName = newSectionName;
 
-    axios.post(`/plan/info/${planName}`, { request: 'new-section', data: { section_name: newSectionName, orderPos: planSections.length } })
+    axios.post(`/plan/info/${planName}`, { request: 'new-section', data: { sectionName: newSectionName, orderPos: planSections.length } })
       .then(() => {
         dispatch(createNewSection({
           name: newName, sectionType: 'LECTURE', elements: [], orderPos: planSections.length, changed: false,
@@ -147,23 +151,26 @@ function TeacherLessonPlan() {
   ));
 
   return (
-    <div className="full-page">
+    <Stack alignItems="center" spacing={2}>
       <NavBar small />
-      <div className="page-container">
-        <div className="section-options-container">
-          <h1>Sections</h1>
-          <ul>
-            {renderSectionsList()}
-          </ul>
-          <form action="" onSubmit={(e) => { e.preventDefault(); addNewSection(); }} className="new-section-container">
-            <input onChange={(e) => { setNewSectionName(e.target.value); }} className="new-section-name-box" type="text" />
-            <input type="submit" value="Add" className="new-section-button button-hover" />
-          </form>
-
-        </div>
+      <Stack maxWidth="lg" width="100%" spacing={2}>
+        <Container maxWidth="md">
+          <Paper>
+            <Stack py={2} spacing={2}>
+              <Typography variant="h4" align="center">Sections</Typography>
+              <ul>
+                {renderSectionsList()}
+              </ul>
+              <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+                <TextField onChange={(e) => { setNewSectionName(e.target.value); }} />
+                <Button size="large" onClick={() => { addNewSection(); }} variant="contained">Add</Button>
+              </Stack>
+            </Stack>
+          </Paper>
+        </Container>
         {renderLessonPlanEditor()}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 }
 

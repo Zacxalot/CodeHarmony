@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, IconButton, Typography } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { PlayArrow, Settings } from '@mui/icons-material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Plan } from '../../Pages/TeacherDashboard/TeacherDashboard';
 
@@ -27,7 +27,7 @@ const columns: GridColDef[] = [
     field: 'configure',
     headerName: 'Configure',
     sortable: false,
-    renderCell: ({ row }) => <IconButton component={Link} to={`/t/plan/${row.planName}`}><PlayArrow /></IconButton>,
+    renderCell: ({ row }) => <IconButton component={Link} to={`/t/plan/${row.planName}`}><Settings /></IconButton>,
   },
 ];
 

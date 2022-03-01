@@ -1,4 +1,5 @@
-import { createTheme } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import { createTheme, styled } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -13,5 +14,9 @@ const theme = createTheme({
     borderRadius: 4,
   },
 });
+
+export const PaperBox = styled(Paper)`
+  border-radius:${theme.shape.borderRadius}px;
+`;
 
 export default theme;

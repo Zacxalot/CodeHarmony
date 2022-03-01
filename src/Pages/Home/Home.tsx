@@ -3,7 +3,7 @@ import {
   Link,
 } from 'react-router-dom';
 import {
-  Box, Stack, ButtonBase, Paper, Button,
+  Box, Stack, Button,
 } from '@mui/material';
 import './Home.scss';
 import NavBar from '../../Components/NavBar/NavBar';

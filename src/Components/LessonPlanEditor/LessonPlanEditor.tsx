@@ -1,12 +1,9 @@
-// TODO FIX THESE
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Stack } from '@mui/material';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditorElement';
 import { addNewElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
-import './LessonPlanEditor.scss';
 
 interface LessonPlanEditorProps {
   planSection: PlanSection,
@@ -27,7 +24,7 @@ function LessonPlanEditor({ planSection, sectionId }: LessonPlanEditorProps) {
     ))
   );
 
-  const handleAddNewElement = (e: React.MouseEvent<HTMLElement>) => {
+  const handleAddNewElement = () => {
     dispatch(addNewElement({ sectionId }));
     console.log('Down');
   };
@@ -37,11 +34,10 @@ function LessonPlanEditor({ planSection, sectionId }: LessonPlanEditorProps) {
   }
 
   return (
-    <div className="editor-elements">
+    <Stack spacing={2}>
       {renderSectionElements()}
-      <span onClick={handleAddNewElement} className="editor-element-container button-hover add-element-button">+</span>
 
-    </div>
+    </Stack>
   );
 }
 

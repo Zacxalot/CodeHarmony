@@ -1,14 +1,13 @@
-// TODO FIX THESE
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import {
+  IconButton, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
+} from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
-import './LessonPlanEditorElement.scss';
-import upArrow from '../../Vectors/up.svg';
-import downArrow from '../../Vectors/down.svg';
 import { updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
 import CHElementComponent from '../CHElementComponent/CHElementComponent';
+import { PaperBox } from '../../Theme';
 
 interface LessonPlanEditorElementProps {
   element: CHElement,
@@ -24,7 +23,7 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
     setTextValue(element.children.String);
   }, [element.children.String]);
 
-  const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleTypeChange = (e: SelectChangeEvent) => {
     // Clear the text value if the element is set to image
     if (e.target.value === 'img') {
       setTextValue('');
@@ -38,14 +37,14 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
     }));
   };
 
-  const handlePositionUp = (e: React.MouseEvent<HTMLElement>) => {
+  const handlePositionUp = () => {
     dispatch(updateElement({
       type: 'move', newValue: 'up', id, sectionId,
     }));
     console.log('Up');
   };
 
-  const handlePositionDown = (e: React.MouseEvent<HTMLElement>) => {
+  const handlePositionDown = () => {
     dispatch(updateElement({
       type: 'move', newValue: 'down', id, sectionId,
     }));
@@ -61,38 +60,38 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
 
   const renderInput = () => {
     if (element.elType === 'img') {
-      return <input className="textbox" onChange={handleTextboxChange} value={textValue} />;
+      return <TextField onChange={handleTextboxChange} value={textValue} />;
     }
 
-    return <textarea className="textbox" onChange={handleTextboxChange} value={textValue} />;
+    return <TextField onChange={handleTextboxChange} value={textValue} />;
   };
 
   return (
-    <div className="editor-element-container">
-      <div className="editor-preview">
+    <PaperBox elevation={2}>
+      <Paper elevation={1}>
         <CHElementComponent element={element} />
-      </div>
-      <div className="editor-options">
-        <div className="options-container">
-          <select value={element.elType} onChange={handleTypeChange}>
-            <option value="h1">Heading</option>
-            <option value="p">Paragraph</option>
-            <option value="img">Image</option>
-          </select>
+      </Paper>
+      <Stack direction="row" p={0.5} spacing={0.5}>
+        <Stack flex={1} spacing={0.5}>
+          <Select value={element.elType} onChange={handleTypeChange}>
+            <MenuItem value="h1">Heading</MenuItem>
+            <MenuItem value="p">Paragraph</MenuItem>
+            <MenuItem value="img">Image</MenuItem>
+          </Select>
           {renderInput()}
-        </div>
+        </Stack>
 
-        <div className="arrow-container">
-          <span onClick={handlePositionUp} className="arrow-button button-hover">
-            <img src={upArrow} className="arrow-image" alt="up arrow" />
-          </span>
-          <span onClick={handlePositionDown} className="arrow-button arrow-button-down button-hover">
-            <img src={downArrow} className="arrow-image" alt="down arrow" />
-          </span>
-        </div>
-      </div>
+        <Stack flex={0} justifyContent="center">
+          <IconButton onClick={handlePositionUp}>
+            <ArrowDropUp fontSize="large" />
+          </IconButton>
+          <IconButton onClick={handlePositionDown}>
+            <ArrowDropDown fontSize="large" />
+          </IconButton>
+        </Stack>
+      </Stack>
 
-    </div>
+    </PaperBox>
   );
 }
 
