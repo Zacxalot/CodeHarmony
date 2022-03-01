@@ -1,41 +1,39 @@
 import React from 'react';
-import './TeacherTable.scss';
 import { Link } from 'react-router-dom';
-import run from '../../Vectors/run.svg';
+import { Container, IconButton, Typography } from '@mui/material';
+import { PlayArrow } from '@mui/icons-material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Session } from '../../Pages/TeacherDashboard/TeacherDashboard';
 
 interface TeacherTableProps {
   sessions: Session[]
 }
 
-class TeacherSessionTable extends React.PureComponent<TeacherTableProps, {}> {
-  render() {
-    const { sessions } = this.props;
-    const sessionsItems = sessions.map((session) => (
-      <li className="tt-item" key={session.sessionName.toString()}>
-        <span className="session-name">{session.sessionName}</span>
-        <span className="lesson-name">{session.planName}</span>
-        <Link to={`/t/session/${encodeURIComponent(session.planName)}/${encodeURIComponent(session.sessionName)}`} className="start-button tt-button button-hover" draggable="false"><img alt="Run symbol" src={run} /></Link>
-      </li>
-    ));
+const columns: GridColDef[] = [
+  { field: 'sessionName', headerName: 'Session Name', flex: 1 },
+  { field: 'planName', headerName: 'Plan Name', flex: 1 },
+  {
+    field: 'open',
+    headerName: 'Open',
+    sortable: false,
+    renderCell: ({ row }) => <IconButton component={Link} to={`/t/session/${encodeURIComponent(row.planName)}/${encodeURIComponent(row.sessionName)}`}><PlayArrow /></IconButton>,
+  },
+];
 
-    console.log(sessionsItems);
-
-    return (
-      <div className="list-border">
-        <h2>Sessions</h2>
-        <ul className="list-inner">
-          <li className="tt-head">
-            <span className="session-name">Session Name</span>
-            <span className="lesson-name">Plan Name</span>
-            <span className="head-flex" />
-          </li>
-          {sessionsItems}
-        </ul>
-      </div>
-
-    );
-  }
+function TeacherSessionTable({ sessions }: TeacherTableProps) {
+  return (
+    <Container>
+      <Typography variant="h4">Sessions</Typography>
+      <DataGrid
+        rows={sessions}
+        columns={columns}
+        getRowId={(row) => row.sessionName}
+        autoHeight
+        rowCount={20}
+        rowsPerPageOptions={[]}
+      />
+    </Container>
+  );
 }
 
 export default TeacherSessionTable;

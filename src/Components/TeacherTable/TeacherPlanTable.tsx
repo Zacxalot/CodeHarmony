@@ -1,38 +1,55 @@
-// TODO FIX THESE
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
-import './TeacherTable.scss';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import gear from '../../Vectors/gear.svg';
-import run from '../../Vectors/run.svg';
+import { Container, IconButton, Typography } from '@mui/material';
+import { PlayArrow } from '@mui/icons-material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Plan } from '../../Pages/TeacherDashboard/TeacherDashboard';
 
 interface TeacherTableProps {
   plans: Plan[],
+  // eslint-disable-next-line no-unused-vars
   newSessionCallback: (planName: string) => void
 }
 
-class TeacherPlanTable extends React.PureComponent<TeacherTableProps, {}> {
-  render() {
-    const { plans, newSessionCallback } = this.props;
-    const planItems = plans.map((plan) => (
-      <li className="tt-item" key={plan.planName.toString()}>
-        <span className="session-name">{plan.planName}</span>
-        <span className="start-button tt-button button-hover" onClick={() => newSessionCallback(plan.planName)}><img alt="Run symbol" src={run} /></span>
-        <Link to={`/t/plan/${plan.planName}`} className="manage-button tt-button button-hover" draggable="false"><img alt="Gear symbol" src={gear} /></Link>
-      </li>
-    ));
+const columns: GridColDef[] = [
+  { field: 'planName', headerName: 'Plan Name', flex: 1 },
+  {
+    field: 'start',
+    headerName: 'Start',
+    sortable: false,
+    renderCell: ({ row }) => (
+      <IconButton onClick={() => { row.callback(row.planName); }}>
+        <PlayArrow />
+      </IconButton>
+    ),
+  },
+  {
+    field: 'configure',
+    headerName: 'Configure',
+    sortable: false,
+    renderCell: ({ row }) => <IconButton component={Link} to={`/t/plan/${row.planName}`}><PlayArrow /></IconButton>,
+  },
+];
 
-    return (
-      <div className="list-border">
-        <h2>Plans</h2>
-        <ul className="list-inner">
-          {planItems}
-        </ul>
-      </div>
-    );
-  }
+function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
+  const plansWithCallback = useMemo(
+    () => (plans.map((plan) => ({ planName: plan.planName, callback: newSessionCallback }))),
+    [plans],
+  );
+
+  return (
+    <Container>
+      <Typography variant="h4">Plans</Typography>
+      <DataGrid
+        rows={plansWithCallback}
+        columns={columns}
+        getRowId={(row) => row.planName}
+        autoHeight
+        rowCount={20}
+        rowsPerPageOptions={[]}
+      />
+    </Container>
+  );
 }
 
 export default TeacherPlanTable;

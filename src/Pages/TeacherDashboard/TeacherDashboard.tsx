@@ -5,6 +5,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import axios, { AxiosError } from 'axios';
+import { Button, Container, Stack } from '@mui/material';
 import { Navigate } from 'react-router';
 import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
@@ -147,7 +148,7 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
     }
 
     return (
-      <div className="full-page">
+      <div>
         <NavBar small />
 
         {/* New lesson plan modal */}
@@ -177,19 +178,20 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
           </span>
           <CHButton text="Create" disabled={this.state.newSessionNameValue.length < 4} fontBlack colour="#72e217" callback={this.requestNewSession} />
         </Modal>
-        <div className="page-container">
-          <div>
-            <LargeLinkButton to="session/new/" emoji="👨‍🏫️">New Session</LargeLinkButton>
-            <LargeCallbackButton callback={this.openCreateLessonModal} emoji="✍️">New Lesson Plan</LargeCallbackButton>
-          </div>
-          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column' }}>
+        <Container maxWidth="lg">
+          <Stack alignItems="center" spacing={2} mt={2}>
+            <Stack direction="row" justifyContent="center">
+              <Button variant="contained" onClick={this.openCreateLessonModal}>New Lesson Plan</Button>
+            </Stack>
+
             <TeacherSessionTable sessions={this.state.sessions} />
             <TeacherPlanTable
               plans={this.state.plans}
               newSessionCallback={this.openCreateSessionModal}
             />
-          </div>
-        </div>
+          </Stack>
+        </Container>
+
       </div>
     );
   }

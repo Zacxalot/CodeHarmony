@@ -2,25 +2,30 @@ import React from 'react';
 import {
   Link,
 } from 'react-router-dom';
+import {
+  Box, Stack, ButtonBase, Paper, Button,
+} from '@mui/material';
 import './Home.scss';
 import NavBar from '../../Components/NavBar/NavBar';
 
 function HomePage() {
   return (
-    <div className="full-page">
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <NavBar />
-      <div className="selection-card-area page-container">
-        <Link to="/s/dashboard" className="selection-card-link">
-          <h1>I&apos;m a student</h1>
-          <span className="large-emoji">🙋</span>
-        </Link>
-        <Link to="/t/dashboard" className="selection-card-link">
-          <h1>I&apos;m a teacher</h1>
-          <span className="large-emoji">👨‍🏫️</span>
-        </Link>
-      </div>
-
-    </div>
+      <Box sx={{
+        flex: '1', justifyContent: 'center', alignItems: 'center', display: 'flex',
+      }}
+      >
+        <Stack direction="row" height="2rem" spacing={4}>
+          <Button variant="contained" component={Link} to="/s/dashboard">
+            I&apos;m a student
+          </Button>
+          <Button variant="contained" component={Link} to="/t/dashboard">
+            I&apos;m a teacher
+          </Button>
+        </Stack>
+      </Box>
+    </Box>
   );
 }
 
