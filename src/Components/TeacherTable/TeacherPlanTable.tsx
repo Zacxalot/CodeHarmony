@@ -47,6 +47,7 @@ function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
         autoHeight
         rowCount={20}
         rowsPerPageOptions={[]}
+        disableSelectionOnClick
       />
     </Container>
   );

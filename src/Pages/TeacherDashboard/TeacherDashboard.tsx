@@ -3,17 +3,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import Modal from 'react-modal';
 import axios, { AxiosError } from 'axios';
-import { Button, Container, Stack } from '@mui/material';
+import {
+  Button, Container, Stack, Modal, styled, Typography, TextField,
+} from '@mui/material';
 import { Navigate } from 'react-router';
 import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
-import LargeLinkButton from '../../Components/LargeLinkButton/LargeLinkButton';
-import LargeCallbackButton from '../../Components/LargeCallbackButton/LargeCallbackButton';
 import './TeacherDashboard.scss';
-import CHButton from '../../Components/Basic UI/CHButton/CHButton';
 import TeacherPlanTable from '../../Components/TeacherTable/TeacherPlanTable';
+import theme from '../../Theme';
 
 interface TeacherDashboardState {
   newLessonModalOpen: boolean;
@@ -22,6 +21,7 @@ interface TeacherDashboardState {
   newSessionNameValue: string;
   newSessionPlanName: string;
   newPlanErrorString: string;
+  newSessionErrorString: string;
   openNewPlan: string;
   openNewSession: { planName: string, sessionName: string };
   sessions: Session[];
@@ -53,6 +53,20 @@ export interface Plan {
   planName: string
 }
 
+const ModalBox = styled(Stack)`
+  background-color:${theme.palette.background.default};
+  padding: 2rem;
+  border-radius:${theme.shape.borderRadius}px;
+`;
+
+const ModalContainer = styled(Modal)`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
   constructor(props: any) {
     super(props);
@@ -60,9 +74,10 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
       newLessonModalOpen: false,
       newSessionModalOpen: false,
       newPlanNameValue: '',
+      newPlanErrorString: '',
       newSessionNameValue: '',
       newSessionPlanName: '',
-      newPlanErrorString: '',
+      newSessionErrorString: '',
       openNewPlan: '',
       openNewSession: { planName: '', sessionName: '' },
       sessions: [],
@@ -97,7 +112,7 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
   }
 
   lessonNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newPlanNameValue: event.target.value });
+    this.setState({ newPlanNameValue: event.target.value, newPlanErrorString: '' });
   }
 
   sessionNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,9 +145,9 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
       })
       .catch((err: AxiosError) => {
         if (err.response?.status === 400) {
-          // TODO
+          this.setState({ newSessionErrorString: 'Session name already in use' });
         } else {
-          // TODO
+          this.setState({ newSessionErrorString: 'There was a problem. Please try again later' });
         }
       });
   }
@@ -152,32 +167,41 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
         <NavBar small />
 
         {/* New lesson plan modal */}
-        <Modal ariaHideApp={false} className="new-lesson-modal-style" isOpen={this.state.newLessonModalOpen} onRequestClose={this.closeCreateLessonModal}>
-          <h4>Create New Lesson Plan</h4>
-          <span>
-            <label>Name:</label>
-            <input onChange={this.lessonNameChanged} type="text" maxLength={128} />
-          </span>
-          <span className="error">
-            {this.state.newPlanErrorString}
-          </span>
+        <ModalContainer
+          open={this.state.newLessonModalOpen}
+          onClose={this.closeCreateLessonModal}
+        >
+          <ModalBox alignItems="center" spacing={1}>
+            <Typography variant="h5">Create New Lesson Plan</Typography>
+            <TextField label="Name" onChange={this.lessonNameChanged} inputProps={{ maxLength: 128 }} error={this.state.newPlanErrorString.length > 0} helperText={this.state.newPlanErrorString} />
+            <Button
+              variant="contained"
+              disabled={this.state.newPlanNameValue.length < 4}
+              onClick={this.requestNewLessonPlan}
+            >
+              Create
+            </Button>
+          </ModalBox>
+        </ModalContainer>
 
-          <CHButton text="Create" disabled={this.state.newPlanNameValue.length < 4} fontBlack colour="#72e217" callback={this.requestNewLessonPlan} />
-        </Modal>
+        {/* New session modal */}
+        <ModalContainer
+          open={this.state.newSessionModalOpen}
+          onClose={this.closeCreateSessionModal}
+        >
+          <ModalBox alignItems="center" spacing={1}>
+            <Typography variant="h5">Create New Session</Typography>
+            <TextField label="name" onChange={this.sessionNameChanged} inputProps={{ maxLength: 128 }} error={this.state.newSessionErrorString.length > 0} helperText={this.state.newSessionErrorString} />
+            <Button
+              variant="contained"
+              disabled={this.state.newSessionNameValue.length < 4}
+              onClick={this.requestNewSession}
+            >
+              Create
+            </Button>
+          </ModalBox>
+        </ModalContainer>
 
-        <Modal ariaHideApp={false} className="new-lesson-modal-style" isOpen={this.state.newSessionModalOpen} onRequestClose={this.closeCreateSessionModal}>
-          <h4>Create New Session</h4>
-          <span>
-            <span>
-              Plan Name:
-              {' '}
-              {this.state.newSessionPlanName}
-            </span>
-            <label>Session Name:</label>
-            <input onChange={this.sessionNameChanged} type="text" maxLength={128} />
-          </span>
-          <CHButton text="Create" disabled={this.state.newSessionNameValue.length < 4} fontBlack colour="#72e217" callback={this.requestNewSession} />
-        </Modal>
         <Container maxWidth="lg">
           <Stack alignItems="center" spacing={2} mt={2}>
             <Stack direction="row" justifyContent="center">

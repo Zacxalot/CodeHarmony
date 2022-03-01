@@ -31,6 +31,7 @@ function TeacherSessionTable({ sessions }: TeacherTableProps) {
         autoHeight
         rowCount={20}
         rowsPerPageOptions={[]}
+        disableSelectionOnClick
       />
     </Container>
   );

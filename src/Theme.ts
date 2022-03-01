@@ -9,6 +9,9 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Hind,sans-serif',
   },
+  shape: {
+    borderRadius: 4,
+  },
 });
 
 export default theme;
