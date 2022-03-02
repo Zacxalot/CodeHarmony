@@ -107,6 +107,13 @@ function TeacherLessonPlan() {
     }
   }, [dispatch, planSections, planName]);
 
+  const isNameTaken = (sectionName: string): boolean => {
+    if (planSections.find((section) => section.name === sectionName)) {
+      return true;
+    }
+    return false;
+  };
+
   const renderLessonPlanEditor = () => {
     if (selectedSection !== -1) {
       return (
@@ -115,6 +122,7 @@ function TeacherLessonPlan() {
           <LessonPlanEditor
             planSection={planSections[selectedSection]}
             sectionId={selectedSection}
+            sectionNameChecker={isNameTaken}
           />
         </Container>
       );

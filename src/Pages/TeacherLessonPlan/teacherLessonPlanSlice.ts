@@ -16,51 +16,54 @@ export const teacherLessonPlanSlice = createSlice({
       action.payload.forEach((section) => state.push(section));
     },
     updateElement: (state, action: PayloadAction<EditorElementChange>) => {
-      const { payload } = action;
+      const {
+        payload: {
+          sectionId, type, newValue, id,
+        },
+      } = action;
 
-      state[payload.sectionId].changed = true;
+      state[sectionId].changed = true;
 
-      if (payload.type === 'eltype' && payload.newValue) {
+      if (type === 'eltype' && newValue) {
         // Set the element type to what was selected in the dropdown
-        state[payload.sectionId].elements[payload.id].elType = payload.newValue;
-      } else if (payload.type === 'move' && payload.newValue) {
+        state[sectionId].elements[id].elType = newValue;
+      } else if (type === 'move' && newValue) {
         // Move the element up if it isn't at the top
-        if (payload.newValue === 'up' && payload.id !== 0) {
-          const temp = state[payload.sectionId].elements[payload.id - 1];
-          state[payload.sectionId].elements[payload.id - 1] = (
-            state[payload.sectionId].elements[payload.id]
+        if (newValue === 'up' && id !== 0) {
+          const temp = state[sectionId].elements[id - 1];
+          state[sectionId].elements[id - 1] = (
+            state[sectionId].elements[id]
           );
-          state[payload.sectionId].elements[payload.id] = temp;
+          state[sectionId].elements[id] = temp;
         }
 
         // Move the element down if it isn't at the bottom
-        if (payload.newValue === 'down' && payload.id < state[payload.sectionId].elements.length - 1) {
-          const temp = state[payload.sectionId].elements[payload.id + 1];
-          state[payload.sectionId].elements[payload.id + 1] = (
-            state[payload.sectionId].elements[payload.id]
+        if (newValue === 'down' && id < state[sectionId].elements.length - 1) {
+          const temp = state[sectionId].elements[id + 1];
+          state[sectionId].elements[id + 1] = (
+            state[sectionId].elements[id]
           );
-          state[payload.sectionId].elements[payload.id] = temp;
+          state[sectionId].elements[id] = temp;
         }
-      } else if (payload.type === 'child') {
+      } else if (type === 'child') {
         // Sets the child value of the component
         // Also sets appropriate props for specific elements
-        if (payload.newValue) {
-          if (state[payload.sectionId].elements[payload.id].elType === 'img') {
-            state[payload.sectionId].elements[payload.id].props = { src: payload.newValue };
+        if (newValue) {
+          if (state[sectionId].elements[id].elType === 'img') {
+            state[sectionId].elements[id].props = { src: newValue };
           } else {
-            state[payload.sectionId].elements[payload.id].children = { String: payload.newValue };
+            state[sectionId].elements[id].children = { String: newValue };
           }
         } else {
-          state[payload.sectionId].elements[payload.id].children = { String: '' };
+          state[sectionId].elements[id].children = { String: '' };
         }
       }
     },
     // Add new element to the selected section
     addNewElement: (state, action: PayloadAction<EditorElementNew>) => {
-      const { payload } = action;
-      const { sectionId, index } = payload;
+      const { payload: { sectionId, index } } = action;
       state[sectionId].elements.splice(index, 0, { elType: 'h1', children: { String: '' }, props: [] });
-      state[payload.sectionId].changed = true;
+      state[sectionId].changed = true;
     },
     removeElement: (state, action: PayloadAction<EditorElementNew>) => {
       const { payload } = action;
@@ -75,6 +78,15 @@ export const teacherLessonPlanSlice = createSlice({
           state[i].orderPos = i;
           state[i].changed = true;
         }
+      }
+    },
+
+    // Set the section name
+    setSectionName: (state, action: PayloadAction<{ sectionId: number, newName: string }>) => {
+      const { payload: { sectionId, newName } } = action;
+      if (!state.find((section) => section.name === newName)) {
+        state[sectionId].name = newName;
+        state[sectionId].changed = true;
       }
     },
 
@@ -99,5 +111,6 @@ export const {
   clearChangedFlag,
   createNewSection,
   removeElement,
+  setSectionName,
 } = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer;
