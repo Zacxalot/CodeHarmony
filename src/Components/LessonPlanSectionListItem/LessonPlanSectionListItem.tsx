@@ -8,6 +8,7 @@ import './LessonPlanSectionListItem.scss';
 interface LessonPlanSectionListItemProps {
   sectionName: String,
   position: number,
+  // eslint-disable-next-line no-unused-vars
   callback: (index: number) => void
 }
 

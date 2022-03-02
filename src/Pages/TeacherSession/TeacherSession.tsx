@@ -2,9 +2,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
+import {
+  Button,
+  Container, Stack, Step, StepLabel, Stepper,
+} from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import leftArrow from '../../Vectors/left black.svg';
@@ -21,12 +25,21 @@ interface SessionInfo {
   date: number
 }
 
+function renderSection(section: PlanSection) {
+  return (
+    section.elements.map((element, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <CHElementComponent element={element} key={section.name + index} />
+    ))
+  );
+}
+
 function TeacherSession() {
   const location = useLocation();
   const planName = location.pathname.split('/').slice(-2)[0];
   const sessionName = location.pathname.split('/').slice(-1)[0];
 
-  const [planSections, setPlanSections] = useState<PlanSection[]>();
+  const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
 
   // First load
@@ -39,17 +52,13 @@ function TeacherSession() {
       .catch(() => console.error('Request failed'));
   }, [planName, sessionName]);
 
-  const renderElements = () => {
+  const renderElements = useMemo(() => {
     if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
-      // TODO fix key
-      return planSections[currentSection].elements.map(
-        // eslint-disable-next-line react/no-array-index-key
-        (element, index) => <CHElementComponent element={element} key={index} />,
-      );
+      return (renderSection(planSections[currentSection]));
     }
 
     return <span>Could not display section!</span>;
-  };
+  }, [planSections, currentSection]);
 
   const renderSectionsTitle = () => {
     if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
@@ -71,17 +80,32 @@ function TeacherSession() {
     }
   };
 
+  const sectionNavButtons = () => (
+    <Stack direction="row" justifyContent="space-between" mt={2}>
+      <Button variant="outlined" disabled={currentSection <= 0} onClick={regressSection}>Previous</Button>
+      <Button variant="outlined" disabled={currentSection >= (planSections.length - 1)} onClick={advanceSection}>Next</Button>
+    </Stack>
+  );
+
   return (
-    <div className="full-page">
+    <div>
       <NavBar small />
-      <div className="page-container">
-        <div className="sections-picker">
-          <span className="arrow-flex button-hover arrow-left" onClick={() => regressSection()}><img className="arrow-image" alt="Left arrow" src={leftArrow} draggable="false" /></span>
-          {renderSectionsTitle()}
-          <span className="arrow-flex button-hover arrow-right" onClick={() => advanceSection()}><img className="arrow-image" alt="Right arrow" src={rightArrow} draggable="false" /></span>
-        </div>
-        {renderElements()}
-      </div>
+      <Stack alignItems="center" mt={2} spacing={2}>
+        <Container>
+          <Stepper activeStep={currentSection}>
+            {planSections?.map((section) => (
+              <Step key={section.name}>
+                <StepLabel>{section.name}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {sectionNavButtons()}
+        </Container>
+        {renderElements}
+        <Container>
+          {sectionNavButtons()}
+        </Container>
+      </Stack>
     </div>
   );
 }

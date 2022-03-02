@@ -1,5 +1,3 @@
-// TODO Fix
-/* eslint-disable no-undef */
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -56,6 +54,7 @@ function TeacherLessonPlan() {
   const planName = location.pathname.split('/').slice(-1)[0];
 
   // Timer that waits before changes stop before sending update request
+  // eslint-disable-next-line no-undef
   const updateTimer = useRef<NodeJS.Timeout>();
 
   // First load
