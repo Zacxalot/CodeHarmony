@@ -58,7 +58,15 @@ export const teacherLessonPlanSlice = createSlice({
     // Add new element to the selected section
     addNewElement: (state, action: PayloadAction<EditorElementNew>) => {
       const { payload } = action;
-      state[payload.sectionId].elements.push({ elType: 'h1', children: { String: '' }, props: [] });
+      const { sectionId, index } = payload;
+      state[sectionId].elements.splice(index, 0, { elType: 'h1', children: { String: '' }, props: [] });
+      state[payload.sectionId].changed = true;
+    },
+    removeElement: (state, action: PayloadAction<EditorElementNew>) => {
+      const { payload } = action;
+      const { sectionId, index } = payload;
+      state[sectionId].elements.splice(index, 1);
+      state[payload.sectionId].changed = true;
     },
     // Re assign the section orders
     setSectionOrders: (state) => {
@@ -90,5 +98,6 @@ export const {
   setSectionOrders,
   clearChangedFlag,
   createNewSection,
+  removeElement,
 } = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer;

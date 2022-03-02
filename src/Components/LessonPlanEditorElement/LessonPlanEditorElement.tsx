@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, Remove } from '@mui/icons-material';
 import {
   IconButton, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
 } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
-import { updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
+import { removeElement, updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
 import CHElementComponent from '../CHElementComponent/CHElementComponent';
 import { PaperBox } from '../../Theme';
 
@@ -58,6 +58,10 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
     setTextValue(e.target.value);
   };
 
+  const handleRemoveElement = () => {
+    dispatch(removeElement({ index: id, sectionId }));
+  };
+
   const renderInput = () => {
     if (element.elType === 'img') {
       return <TextField onChange={handleTextboxChange} value={textValue} />;
@@ -83,10 +87,13 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
 
         <Stack flex={0} justifyContent="center">
           <IconButton onClick={handlePositionUp}>
-            <ArrowDropUp fontSize="large" />
+            <ArrowDropUp color="primary" fontSize="large" />
+          </IconButton>
+          <IconButton onClick={handleRemoveElement}>
+            <Remove color="primary" fontSize="large" />
           </IconButton>
           <IconButton onClick={handlePositionDown}>
-            <ArrowDropDown fontSize="large" />
+            <ArrowDropDown color="primary" fontSize="large" />
           </IconButton>
         </Stack>
       </Stack>

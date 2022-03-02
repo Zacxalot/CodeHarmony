@@ -42,6 +42,7 @@ export interface EditorElementChange {
 }
 
 export interface EditorElementNew {
+  index: number,
   sectionId: number
 }
 
