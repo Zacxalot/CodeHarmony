@@ -53,13 +53,13 @@ export interface Plan {
   planName: string
 }
 
-const ModalBox = styled(Stack)`
+export const ModalBox = styled(Stack)`
   background-color:${theme.palette.background.default};
   padding: 2rem;
   border-radius:${theme.shape.borderRadius}px;
 `;
 
-const ModalContainer = styled(Modal)`
+export const ModalContainer = styled(Modal)`
   height: 100%;
   width: 100%;
   display: flex;

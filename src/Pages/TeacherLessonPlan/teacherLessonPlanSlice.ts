@@ -82,11 +82,11 @@ export const teacherLessonPlanSlice = createSlice({
     },
 
     // Set the section name
+    // eslint-disable-next-line max-len
     setSectionName: (state, action: PayloadAction<{ sectionId: number, newName: string }>) => {
       const { payload: { sectionId, newName } } = action;
       if (!state.find((section) => section.name === newName)) {
         state[sectionId].name = newName;
-        state[sectionId].changed = true;
       }
     },
 
@@ -95,6 +95,11 @@ export const teacherLessonPlanSlice = createSlice({
       for (let i = 0; i < state.length; i += 1) {
         state[i].changed = false;
       }
+    },
+
+    setSectionType: (state, action: PayloadAction<{ sectionId: number, newType: string }>) => {
+      const { payload: { sectionId, newType } } = action;
+      state[sectionId].sectionType = newType;
     },
 
     createNewSection: (state, action: PayloadAction<PlanSection>) => {
@@ -112,5 +117,6 @@ export const {
   createNewSection,
   removeElement,
   setSectionName,
+  setSectionType,
 } = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer;

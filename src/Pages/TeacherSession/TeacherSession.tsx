@@ -11,8 +11,6 @@ import {
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
-import leftArrow from '../../Vectors/left black.svg';
-import rightArrow from '../../Vectors/right black.svg';
 import './TeacherSession.scss';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
 
@@ -59,14 +57,6 @@ function TeacherSession() {
 
     return <span>Could not display section!</span>;
   }, [planSections, currentSection]);
-
-  const renderSectionsTitle = () => {
-    if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
-      return <span className="title-flex">{planSections[currentSection].name}</span>;
-    }
-
-    return <span>No Section Selected</span>;
-  };
 
   const regressSection = () => {
     if (planSections !== undefined && currentSection > 0) {

@@ -79,6 +79,7 @@ function TeacherLessonPlan() {
         dispatch(setSectionOrders());
 
         if (planSections[i].changed) {
+          console.log(planSections[i]);
           axios.put(`/plan/info/${planName}`, planSections[i])
             .then((response) => {
             })
@@ -123,6 +124,7 @@ function TeacherLessonPlan() {
             planSection={planSections[selectedSection]}
             sectionId={selectedSection}
             sectionNameChecker={isNameTaken}
+            planName={planName}
           />
         </Container>
       );
