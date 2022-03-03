@@ -7,7 +7,9 @@ import axios from 'axios';
 import { Add } from '@mui/icons-material';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditorElement';
-import { addNewElement, setSectionName, setSectionType } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
+import {
+  addNewElement, setSectionLanguage, setSectionName, setSectionType,
+} from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
 
 interface LessonPlanEditorProps {
   planSection: PlanSection,
@@ -28,9 +30,10 @@ function LessonPlanEditor(
   const [updateSectionNameText, setUpdateSectionNameText] = useState(planSection.name);
   const [updateSectionNameError, setUpdateSectionNameError] = useState('');
   const [sectionTypeSelect, setSectionTypeSelect] = useState(planSection.sectionType);
+  // eslint-disable-next-line max-len
+  const [sectionLanguageSelect, setSectionLanguageSelect] = useState(planSection.codingData.language);
 
   const dispatch = useDispatch();
-  console.log(planSection.sectionType);
 
   const handleAddNewElement = (index: number) => {
     dispatch(addNewElement({ index, sectionId }));
@@ -51,12 +54,21 @@ function LessonPlanEditor(
     ))
   );
 
+  const changeSectionLanguage = (({ target: { value } }: SelectChangeEvent) => {
+    dispatch(setSectionLanguage({ sectionId, newLanguage: value }));
+    setSectionLanguageSelect(value);
+  });
+
   const renderCodingOptions = () => {
     if (planSection.sectionType === 'CODING  ') {
       return (
-        <Stack>
-          <TextField />
-        </Stack>
+        <FormControl>
+          <Select value={sectionLanguageSelect} onChange={changeSectionLanguage}>
+            <MenuItem value="python">Python</MenuItem>
+            <MenuItem value="javascript">Javascript</MenuItem>
+          </Select>
+          <FormHelperText>Section Type</FormHelperText>
+        </FormControl>
       );
     }
 

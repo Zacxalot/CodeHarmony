@@ -15,12 +15,19 @@ import {
 import { useAppSelector } from '../../Redux/hooks';
 import './TeacherLessonPlan.scss';
 
+export interface CodingData {
+  language: string,
+  startingCode: string,
+  expectedOutput: string,
+}
+
 export interface PlanSection {
   name: string,
   sectionType: string,
   elements: CHElement[],
   orderPos: number,
-  changed: boolean
+  changed: boolean,
+  codingData: CodingData,
 }
 
 export interface CHElement {
@@ -79,9 +86,8 @@ function TeacherLessonPlan() {
         dispatch(setSectionOrders());
 
         if (planSections[i].changed) {
-          console.log(planSections[i]);
           axios.put(`/plan/info/${planName}`, planSections[i])
-            .then((response) => {
+            .then(() => {
             })
             .catch(() => console.error('Upload failed'));
         }
@@ -140,7 +146,7 @@ function TeacherLessonPlan() {
     axios.post(`/plan/info/${planName}`, { request: 'new-section', data: { sectionName: newSectionName, orderPos: planSections.length } })
       .then(() => {
         dispatch(createNewSection({
-          name: newName, sectionType: 'LECTURE', elements: [], orderPos: planSections.length, changed: false,
+          name: newName, sectionType: 'LECTURE', elements: [], orderPos: planSections.length, changed: false, codingData: { language: 'python', startingCode: '', expectedOutput: '' },
         }));
       })
       .catch(() => console.error('Request failed'));

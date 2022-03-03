@@ -105,6 +105,13 @@ export const teacherLessonPlanSlice = createSlice({
     createNewSection: (state, action: PayloadAction<PlanSection>) => {
       state.push(action.payload);
     },
+
+    // eslint-disable-next-line max-len
+    setSectionLanguage: (state, action: PayloadAction<{ sectionId: number, newLanguage: string }>) => {
+      const { payload: { sectionId, newLanguage } } = action;
+      state[sectionId].codingData.language = newLanguage;
+      state[sectionId].changed = true;
+    },
   },
 });
 
@@ -118,5 +125,6 @@ export const {
   removeElement,
   setSectionName,
   setSectionType,
+  setSectionLanguage,
 } = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer;

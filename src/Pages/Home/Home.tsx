@@ -5,7 +5,6 @@ import {
 import {
   Box, Stack, Button,
 } from '@mui/material';
-import './Home.scss';
 import NavBar from '../../Components/NavBar/NavBar';
 
 function HomePage() {
