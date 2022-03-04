@@ -23,7 +23,7 @@ interface SessionInfo {
   date: number
 }
 
-function renderSection(section: PlanSection) {
+export function renderSection(section: PlanSection) {
   return (
     section.elements.map((element, index) => (
       // eslint-disable-next-line react/no-array-index-key

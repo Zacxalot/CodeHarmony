@@ -68,7 +68,12 @@ class Codemirror extends React.Component {
 
   render() {
     return (
-      <div id="code-window" className="Codemirror" />
+      <div
+        id="code-window"
+        style={{
+          flex: 1, width: '100%', paddingTop: '1rem', paddingBottom: '1rem',
+        }}
+      />
     );
   }
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
+import {
+  Button, Paper, Stack,
+} from '@mui/material';
+import { PlayArrow } from '@mui/icons-material';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import NavBar from '../../Components/NavBar/NavBar';
 import Console from '../../Components/Console/Console';
 import CodingInfoWindow from '../../Components/CodingInfoWindow/CodingInfoWindow';
-import RunbarButton from '../../Components/RunbarButton/RunbarButton';
-
-import './StudentCoding.scss';
 
 interface CodeSendResponse {
   language: string,
@@ -64,26 +65,26 @@ class StudentCoding extends React.Component {
 
   render() {
     return (
-      <div className="full-page student-coding">
+      <Stack minHeight="100vh">
         <NavBar small />
-
-        <div className="coding-flex">
-          <div className="codemirror-container">
-            <Codemirror ref={this.codemirrorRef} />
-          </div>
-
-          <div className="info-console">
+        <Stack flex={1} direction="row" p={1} spacing={1}>
+          <Paper sx={{ flex: 1 }}>
+            <Stack alignItems="center" height="100%" width="100%">
+              <Codemirror ref={this.codemirrorRef} />
+            </Stack>
+          </Paper>
+          <Stack flex={1} spacing={1}>
             <CodingInfoWindow />
             <Console ref={this.consoleRef} />
-            <div className="runbar-container">
-              <div className="runbar">
-                <RunbarButton icon="run" callback={this.runCode} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+            <Paper>
+              <Stack direction="row" spacing={1} padding={1}>
+                <Button variant="contained" onClick={this.runCode} endIcon={<PlayArrow />}>Run</Button>
+                <Button variant="outlined">Test</Button>
+              </Stack>
+            </Paper>
+          </Stack>
+        </Stack>
+      </Stack>
 
     );
   }

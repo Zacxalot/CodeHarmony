@@ -1,6 +1,9 @@
 // TODO Fix
 /* eslint-disable react/destructuring-assignment */
+import { ThemeProvider } from '@emotion/react';
+import { Paper } from '@mui/material';
 import React, { RefObject } from 'react';
+import { darkTheme } from '../../Theme';
 import './Console.scss';
 
 interface ConsoleProps {
@@ -34,11 +37,13 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
     }
 
     return (
-      <div className="console-container">
-        <pre ref={this.scrollRef} className="console">
-          {contents}
-        </pre>
-      </div>
+      <ThemeProvider theme={darkTheme}>
+        <Paper sx={{ flex: 1 }}>
+          <pre ref={this.scrollRef}>
+            {contents}
+          </pre>
+        </Paper>
+      </ThemeProvider>
     );
   }
 }

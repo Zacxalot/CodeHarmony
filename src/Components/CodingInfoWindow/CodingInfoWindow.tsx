@@ -1,20 +1,13 @@
 // import axios from "axios";
+import { Paper } from '@mui/material';
 import React from 'react';
 import './CodingInfoWindow.scss';
 
-// interface CodeInfoElement{
-//     type:String,
-//     props:any,
-//     children:String
-// }
-
 function CodingInfoWindow() {
   return (
-    <div className="info-window-container">
-      <div className="info-window">
-        This is just a placeholder
-      </div>
-    </div>
+    <Paper sx={{ flex: 1 }}>
+      This is just a placeholder
+    </Paper>
   );
 }
 
