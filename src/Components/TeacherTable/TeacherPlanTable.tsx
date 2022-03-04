@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, IconButton, Typography } from '@mui/material';
+import {
+  Container, IconButton, Typography, Paper,
+} from '@mui/material';
 import { PlayArrow, Settings } from '@mui/icons-material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Plan } from '../../Pages/TeacherDashboard/TeacherDashboard';
@@ -40,15 +42,17 @@ function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
   return (
     <Container>
       <Typography variant="h4">Plans</Typography>
-      <DataGrid
-        rows={plansWithCallback}
-        columns={columns}
-        getRowId={(row) => row.planName}
-        autoHeight
-        rowCount={20}
-        rowsPerPageOptions={[]}
-        disableSelectionOnClick
-      />
+      <Paper>
+        <DataGrid
+          rows={plansWithCallback}
+          columns={columns}
+          getRowId={(row) => row.planName}
+          autoHeight
+          rowCount={20}
+          rowsPerPageOptions={[]}
+          disableSelectionOnClick
+        />
+      </Paper>
     </Container>
   );
 }

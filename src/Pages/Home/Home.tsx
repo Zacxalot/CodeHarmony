@@ -1,9 +1,10 @@
 import React from 'react';
+import { Person, School } from '@mui/icons-material';
 import {
   Link,
 } from 'react-router-dom';
 import {
-  Box, Stack, Button,
+  Box, Stack, Button, Card, CardActionArea, Typography, CardContent,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 
@@ -15,13 +16,31 @@ function HomePage() {
         flex: '1', justifyContent: 'center', alignItems: 'center', display: 'flex',
       }}
       >
-        <Stack direction="row" height="2rem" spacing={4}>
-          <Button variant="contained" component={Link} to="/s/dashboard">
-            I&apos;m a student
-          </Button>
-          <Button variant="contained" component={Link} to="/t/dashboard">
-            I&apos;m a teacher
-          </Button>
+        <Stack direction="row" spacing={4}>
+          <Card>
+            <CardActionArea component={Link} to="/s/dashboard">
+              <CardContent>
+                <Stack alignItems="center" fontSize="large">
+                  <Person sx={{ fontSize: 240 }} />
+                  <Typography variant="h2">
+                    I&apos;m a student
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          <Card>
+            <CardActionArea component={Link} to="/t/dashboard">
+              <CardContent>
+                <Stack alignItems="center" fontSize="large">
+                  <School sx={{ fontSize: 240 }} />
+                  <Typography variant="h2">
+                    I&apos;m a teacher
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         </Stack>
       </Box>
     </Box>
