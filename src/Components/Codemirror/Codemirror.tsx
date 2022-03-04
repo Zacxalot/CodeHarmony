@@ -1,7 +1,5 @@
 // TODO FIX
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable max-classes-per-file */
-// eslint-disable-next-line react/no-unused-class-component-methods
 
 import React from 'react';
 import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';

@@ -7,7 +7,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   Button,
-  Container, Stack, Step, StepLabel, Stepper,
+  Container,
+  Stack,
+  Step, StepLabel, Stepper, CircularProgress,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
@@ -24,12 +26,15 @@ interface SessionInfo {
 }
 
 export function renderSection(section: PlanSection) {
-  return (
-    section.elements.map((element, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <CHElementComponent element={element} key={section.name + index} />
-    ))
-  );
+  if (section.elements) {
+    return (
+      section.elements.map((element, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <CHElementComponent element={element} key={section.name + index} />
+      ))
+    );
+  }
+  return <CircularProgress />;
 }
 
 function TeacherSession() {
@@ -42,7 +47,6 @@ function TeacherSession() {
 
   // First load
   useEffect(() => {
-    console.log(planName);
     axios.get<LessonSession>(`/session/info/${planName}/${sessionName}`)
       .then((lessonSession) => {
         setPlanSections(lessonSession.data.plan);

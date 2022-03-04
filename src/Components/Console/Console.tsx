@@ -38,7 +38,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
     return (
       <ThemeProvider theme={darkTheme}>
-        <Paper sx={{ flex: 1 }}>
+        <Paper sx={{ flex: 1, paddingLeft: 1, color: '#11c429' }}>
           <pre ref={this.scrollRef}>
             {contents}
           </pre>

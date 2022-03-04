@@ -1,14 +1,35 @@
 // import axios from "axios";
-import { Paper } from '@mui/material';
+import {
+  CircularProgress, Paper, Stack, Typography,
+} from '@mui/material';
 import React from 'react';
+import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
+import { renderSection } from '../../Pages/TeacherSession/TeacherSession';
 import './CodingInfoWindow.scss';
 
-function CodingInfoWindow() {
+interface CodingInfoWindowProps {
+  planSection?: PlanSection
+}
+
+function CodingInfoWindow({ planSection }: CodingInfoWindowProps) {
+  const renderPlanSection = () => {
+    if (planSection) {
+      return (renderSection(planSection));
+    }
+    return (<CircularProgress />);
+  };
+
   return (
-    <Paper sx={{ flex: 1 }}>
-      This is just a placeholder
+    <Paper sx={{ flex: 3 }}>
+      <Stack alignItems="center" height="100%" justifyContent="center">
+        {renderPlanSection()}
+      </Stack>
     </Paper>
   );
 }
+
+CodingInfoWindow.defaultProps = {
+  planSection: {},
+};
 
 export default CodingInfoWindow;
