@@ -2,13 +2,12 @@
     max-width: 100%;
     display: flex;
     overflow: hidden;
-    padding:1rem;
     align-items: center;
     justify-content: center;
 
     img{
         flex:1;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         width: 100%;
         max-width: max-content;
     }

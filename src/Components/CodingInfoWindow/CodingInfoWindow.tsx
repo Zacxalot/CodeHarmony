@@ -1,6 +1,6 @@
 // import axios from "axios";
 import {
-  CircularProgress, Paper, Stack, Typography,
+  CircularProgress, Paper, Stack,
 } from '@mui/material';
 import React from 'react';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';

@@ -4,7 +4,7 @@ import {
   Link,
 } from 'react-router-dom';
 import {
-  Box, Stack, Button, Card, CardActionArea, Typography, CardContent,
+  Box, Stack, Card, CardActionArea, Typography, CardContent,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 
