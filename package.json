@@ -72,5 +72,8 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "react-app-rewired": "^2.1.8"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }
