@@ -10,7 +10,6 @@ import {
 import { Navigate } from 'react-router';
 import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
-import './TeacherDashboard.scss';
 import TeacherPlanTable from '../../Components/TeacherTable/TeacherPlanTable';
 import theme from '../../Theme';
 
