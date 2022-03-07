@@ -16,7 +16,7 @@ function HomePage() {
         flex: '1', justifyContent: 'center', alignItems: 'center', display: 'flex',
       }}
       >
-        <Stack direction="row" spacing={4}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={4}>
           <Card>
             <CardActionArea component={Link} to="/s/dashboard">
               <CardContent>

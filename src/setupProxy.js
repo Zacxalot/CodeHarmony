@@ -1,25 +1,33 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-module.exports = function(app) {
+// eslint-disable-next-line func-names
+module.exports = function (app) {
   app.use(
-    "/api",
+    '/api',
     createProxyMiddleware({
-      target: "http://localhost:2000/",
+      target: 'http://localhost:2000/',
       changeOrigin: true,
-    })
+    }),
   );
   app.use(
-    "/plan",
+    '/plan',
     createProxyMiddleware({
-      target: "http://localhost:8080",
-      changeOrigin:true,
-    })
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }),
   );
   app.use(
-    "/session",
+    '/session',
     createProxyMiddleware({
-      target: "http://localhost:8080",
-      changeOrigin:true,
-    })
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }),
+  );
+  app.use(
+    '/ws',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    }),
   );
 };

@@ -39,20 +39,38 @@ export function renderSection(section: PlanSection) {
 
 function TeacherSession() {
   const location = useLocation();
-  const planName = location.pathname.split('/').slice(-2)[0];
-  const sessionName = location.pathname.split('/').slice(-1)[0];
 
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
 
+  const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+
   // First load
   useEffect(() => {
+    const [planName, sessionName] = location.pathname.split('/').splice(-2);
+    setSocket(new WebSocket('ws://localhost:8080/ws'));
     axios.get<LessonSession>(`/session/info/${planName}/${sessionName}`)
       .then((lessonSession) => {
         setPlanSections(lessonSession.data.plan);
       })
       .catch(() => console.error('Request failed'));
-  }, [planName, sessionName]);
+  }, []);
+
+  // When the socket connection is made
+  useEffect(() => {
+    const [planName, sessionName] = location.pathname.split('/').splice(-2);
+    if (socket) {
+      socket.onopen = () => {
+        socket.send(`tJoin ${planName}:${sessionName}:user1`);
+        console.log('opened');
+      };
+
+      socket.onmessage = (message) => {
+        const g = message.data;
+        console.log(g);
+      };
+    }
+  }, [socket]);
 
   const renderElements = useMemo(() => {
     if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
@@ -62,15 +80,22 @@ function TeacherSession() {
     return <span>Could not display section!</span>;
   }, [planSections, currentSection]);
 
+  const setSection = (val: number) => {
+    if (socket) {
+      socket.send(`tInst setSection ${val}`);
+    }
+    setCurrentSection(val);
+  };
+
   const regressSection = () => {
     if (planSections !== undefined && currentSection > 0) {
-      setCurrentSection(currentSection - 1);
+      setSection(currentSection - 1);
     }
   };
 
   const advanceSection = () => {
     if (planSections !== undefined && currentSection < planSections.length - 1) {
-      setCurrentSection(currentSection + 1);
+      setSection(currentSection + 1);
     }
   };
 
