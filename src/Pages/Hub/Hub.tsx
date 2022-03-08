@@ -12,6 +12,7 @@ import TeacherLessonPlan from '../TeacherLessonPlan/TeacherLessonPlan';
 import TeacherSession from '../TeacherSession/TeacherSession';
 import StudentDashboard from '../StudentDashboard/StudentDashboard';
 import StudentSession from '../StudentSession/StudentSession';
+import LoginRegister from '../LoginRegister/LoginRegister';
 
 function Hub() {
   return (
@@ -23,6 +24,7 @@ function Hub() {
         <Route path="/t/session/*" element={<TeacherSession />} />
         <Route path="/s/session/*" element={<StudentSession />} />
         <Route path="/s/session/c/*" element={<StudentCoding />} />
+        <Route path="/login" element={<LoginRegister />} />
         <Route path="/" element={<HomePage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
