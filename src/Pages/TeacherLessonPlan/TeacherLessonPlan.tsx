@@ -168,7 +168,7 @@ function TeacherLessonPlan() {
 
   return (
     <Stack alignItems="center" spacing={2}>
-      <NavBar small />
+      <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md">
           <Paper>

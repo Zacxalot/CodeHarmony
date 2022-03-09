@@ -12,8 +12,10 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
-import NavBar from '../../Components/NavBar/NavBar';
+import { useNavigate } from 'react-router-dom';
+import CodeHarmonyLogo from '../../Components/Code Harmony Logo/CodeHarmonyLogo';
+import { Account, login } from '../../Redux/userAccountSlice';
+import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 
 // Password validator
 
@@ -25,6 +27,8 @@ passwordValidatorSchema.is().min(8, 'Minimum 8 characters')
   .uppercase(2, 'Must contain at least 2 uppercase characters')
   .has()
   .symbols(2, 'Must contain at least 2 symbols');
+
+// Username validator
 
 // eslint-disable-next-line new-cap
 const usernameValidatorSchema = new passwordValidator();
@@ -38,6 +42,9 @@ usernameValidatorSchema.is().min(3, 'Must be 3 or more characters')
 export default function LoginRegister() {
   const navigate = useNavigate();
 
+  const account: Account = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
+
   const [page, setPage] = useState(0);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -47,6 +54,13 @@ export default function LoginRegister() {
   const [passwordError, setPasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordHidden, setPasswordHidden] = useState('password');
+
+  // Login variable check
+  useEffect(() => {
+    if (account.username) {
+      navigate('/');
+    }
+  }, [account]);
 
   const validateUsername = () => {
     const res = usernameValidatorSchema.validate(username, { details: true }) as any[];
@@ -90,8 +104,11 @@ export default function LoginRegister() {
   };
 
   const doLogin = () => {
+    const attemptedUsername = username;
     axios.post('/account/login', { username, password })
-      .then(() => { navigate('/'); })
+      .then(() => {
+        dispatch(login({ username: attemptedUsername }));
+      })
       .catch(() => {
         setErrorMessage('Invalid Details');
       });
@@ -122,8 +139,10 @@ export default function LoginRegister() {
 
   return (
     <Box>
-      <NavBar small />
-      <Stack flex={1} justifyContent="center" pt="5rem">
+      <Stack flex={1} justifyContent="center" pt="5rem" textAlign="center">
+        <Box sx={{ mb: '5rem' }}>
+          <CodeHarmonyLogo variant="h2" linked={false} />
+        </Box>
         <Container maxWidth="xs">
           <Paper>
             <Tabs value={page} onChange={tabClicked} variant="fullWidth">

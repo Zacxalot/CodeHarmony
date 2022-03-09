@@ -42,7 +42,7 @@ export default function StudentDashboard() {
 
   return (
     <div>
-      <NavBar small />
+      <NavBar />
       <Container maxWidth="lg">
         <Stack alignItems="center" spacing={2} mt={2}>
           <Container>

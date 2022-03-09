@@ -162,7 +162,7 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
 
     return (
       <div>
-        <NavBar small />
+        <NavBar />
 
         {/* New lesson plan modal */}
         <ModalContainer

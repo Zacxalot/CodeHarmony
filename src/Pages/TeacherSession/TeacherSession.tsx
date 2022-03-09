@@ -108,7 +108,7 @@ function TeacherSession() {
 
   return (
     <div>
-      <NavBar small />
+      <NavBar />
       <Stack alignItems="center" mt={2} spacing={2}>
         <Container>
           <Stepper activeStep={currentSection}>

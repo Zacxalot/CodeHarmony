@@ -62,7 +62,7 @@ export function StudentCoding() {
 
   return (
     <Stack minHeight="100vh">
-      <NavBar small />
+      <NavBar />
       <Stack flex={1} direction="row" p={1} spacing={1}>
         <Paper sx={{ flex: 1 }}>
           <Stack alignItems="center" height="100%" width="100%">

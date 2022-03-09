@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './NavBar.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
-  Typography, AppBar, Toolbar, Stack, Box, Button,
+  AppBar, Toolbar, Box,
 } from '@mui/material';
+import CodeHarmonyLogo from '../Code Harmony Logo/CodeHarmonyLogo';
+import { Account } from '../../Redux/userAccountSlice';
+import { useAppSelector } from '../../Redux/hooks';
 
-interface NavBarProps {
-  small?: boolean
-}
-
-function NavBar({ small }: NavBarProps) {
+export default function NavBar() {
   const navigate = useNavigate();
+  const account: Account = useAppSelector((state) => state.account);
+
+  // If not logged in, navigate to login
+  useEffect(() => {
+    if (!account.username) {
+      navigate('/login');
+    }
+  }, []);
+
   return (
     // Use a smaller font size if the small prop is given
     <AppBar
@@ -21,19 +29,9 @@ function NavBar({ small }: NavBarProps) {
     >
       <Toolbar style={{ minHeight: '0px' }}>
         <Box sx={{ flex: 1, textAlign: 'center' }}>
-          <Typography variant="h6" fontWeight={700} sx={{ userSelect: 'none', cursor: 'pointer' }} onClick={() => { navigate('/'); }}>
-            Code
-            <Stack component="span" style={{ display: 'inline' }} sx={{ color: 'primary.main' }}>_</Stack>
-            Harmony
-          </Typography>
+          <CodeHarmonyLogo />
         </Box>
       </Toolbar>
     </AppBar>
   );
 }
-
-NavBar.defaultProps = {
-  small: false,
-};
-
-export default NavBar;

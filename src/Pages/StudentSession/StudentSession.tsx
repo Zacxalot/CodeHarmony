@@ -63,7 +63,7 @@ export default function StudentSession() {
 
   return (
     <div>
-      <NavBar small />
+      <NavBar />
       <Stack alignItems="center">
         {renderElements}
         {renderLoading()}

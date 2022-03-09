@@ -9,7 +9,7 @@ import { store } from './Redux/store';
 import theme, { darkTheme } from './Theme';
 
 ReactDOM.render(
-  <ThemeProvider theme={darkTheme}>
+  <ThemeProvider theme={theme}>
     <Stack sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
       <Provider store={store}>
         <React.StrictMode>
