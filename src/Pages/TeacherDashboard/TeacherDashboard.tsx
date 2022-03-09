@@ -53,7 +53,6 @@ export interface Plan {
 }
 
 export const ModalBox = styled(Stack)`
-  background-color:${theme.palette.background.default};
   padding: 2rem;
   border-radius:${theme.shape.borderRadius}px;
 `;
@@ -170,8 +169,8 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
           open={this.state.newLessonModalOpen}
           onClose={this.closeCreateLessonModal}
         >
-          <ModalBox alignItems="center" spacing={1}>
-            <Typography variant="h5">Create New Lesson Plan</Typography>
+          <ModalBox alignItems="center" spacing={1} bgcolor="background.default">
+            <Typography variant="h5" color="text.primary">Create New Lesson Plan</Typography>
             <TextField label="Name" onChange={this.lessonNameChanged} inputProps={{ maxLength: 128 }} error={this.state.newPlanErrorString.length > 0} helperText={this.state.newPlanErrorString} />
             <Button
               variant="contained"
@@ -187,9 +186,10 @@ class TeacherDashboard extends React.Component<{}, TeacherDashboardState> {
         <ModalContainer
           open={this.state.newSessionModalOpen}
           onClose={this.closeCreateSessionModal}
+
         >
-          <ModalBox alignItems="center" spacing={1}>
-            <Typography variant="h5">Create New Session</Typography>
+          <ModalBox alignItems="center" spacing={1} bgcolor="background.default">
+            <Typography variant="h5" color="text.primary">Create New Session</Typography>
             <TextField label="name" onChange={this.sessionNameChanged} inputProps={{ maxLength: 128 }} error={this.state.newSessionErrorString.length > 0} helperText={this.state.newSessionErrorString} />
             <Button
               variant="contained"

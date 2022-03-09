@@ -4,6 +4,7 @@ import Isemail from 'isemail';
 import {
   Alert,
   AlertTitle,
+  Box,
   Button,
   Container,
   IconButton,
@@ -120,7 +121,7 @@ export default function LoginRegister() {
   const enableButton = username.trim() !== '' && password !== '' && (page === 0 || (usernameError === '' && passwordError === '' && emailError === '' && email.trim() !== ''));
 
   return (
-    <div>
+    <Box>
       <NavBar small />
       <Stack flex={1} justifyContent="center" pt="5rem">
         <Container maxWidth="xs">
@@ -171,6 +172,6 @@ export default function LoginRegister() {
           </Paper>
         </Container>
       </Stack>
-    </div>
+    </Box>
   );
 }

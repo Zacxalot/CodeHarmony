@@ -22,7 +22,7 @@ function HomePage() {
               <CardContent>
                 <Stack alignItems="center" fontSize="large">
                   <Person sx={{ fontSize: 240 }} />
-                  <Typography variant="h2">
+                  <Typography variant="h2" textAlign="center">
                     I&apos;m a student
                   </Typography>
                 </Stack>
@@ -34,7 +34,7 @@ function HomePage() {
               <CardContent>
                 <Stack alignItems="center" fontSize="large">
                   <School sx={{ fontSize: 240 }} />
-                  <Typography variant="h2">
+                  <Typography variant="h2" textAlign="center">
                     I&apos;m a teacher
                   </Typography>
                 </Stack>

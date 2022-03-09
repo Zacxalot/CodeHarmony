@@ -37,7 +37,7 @@ export default function StudentDashboard() {
       .then(({ data }) => {
         setActiveTeacherSessions(data);
       })
-      .catch();
+      .catch(() => { });
   }, []);
 
   return (
@@ -46,7 +46,7 @@ export default function StudentDashboard() {
       <Container maxWidth="lg">
         <Stack alignItems="center" spacing={2} mt={2}>
           <Container>
-            <Typography variant="h4">Active sessions</Typography>
+            <Typography variant="h4" color="text.primary">Active sessions</Typography>
             <Paper>
               <DataGrid
                 rows={activeTeacherSessions}

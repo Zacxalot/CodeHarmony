@@ -25,7 +25,7 @@ const columns: GridColDef[] = [
 function TeacherSessionTable({ sessions }: TeacherTableProps) {
   return (
     <Container>
-      <Typography variant="h4">Sessions</Typography>
+      <Typography variant="h4" color="text.primary">Sessions</Typography>
       <Paper>
         <DataGrid
           rows={sessions}

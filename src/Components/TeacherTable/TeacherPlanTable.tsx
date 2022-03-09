@@ -41,7 +41,7 @@ function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
 
   return (
     <Container>
-      <Typography variant="h4">Plans</Typography>
+      <Typography variant="h4" color="text.primary">Plans</Typography>
       <Paper>
         <DataGrid
           rows={plansWithCallback}
