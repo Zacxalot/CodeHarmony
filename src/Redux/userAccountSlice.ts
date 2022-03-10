@@ -15,9 +15,12 @@ const userAccountSlice = createSlice({
       const { payload: { username } } = action;
       state.username = username;
     },
+    logout: (state) => {
+      state.username = undefined;
+    },
   },
 });
 
-export const { login } = userAccountSlice.actions;
+export const { login, logout } = userAccountSlice.actions;
 
 export default userAccountSlice.reducer;
