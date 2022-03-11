@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import CodeHarmonyLogo from '../Code Harmony Logo/CodeHarmonyLogo';
-import { Account, logout } from '../../Redux/userAccountSlice';
+import { Account, login, logout } from '../../Redux/userAccountSlice';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
 
 export default function NavBar() {
@@ -22,7 +22,13 @@ export default function NavBar() {
   // If not logged in, navigate to login
   useEffect(() => {
     if (!account.username) {
-      navigate('/login');
+      axios.get<{ username: String }>('/account/check')
+        .then(({ data: { username } }) => {
+          dispatch(login({ username }));
+        })
+        .catch(() => {
+          navigate('/login');
+        });
     }
   }, [account]);
 
