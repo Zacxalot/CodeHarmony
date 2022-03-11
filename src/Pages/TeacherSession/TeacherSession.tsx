@@ -15,6 +15,7 @@ import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import './TeacherSession.scss';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
+import { useAppSelector } from '../../Redux/hooks';
 
 interface LessonSession {
   plan: PlanSection[],
@@ -42,6 +43,7 @@ function TeacherSession() {
 
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
+  const username = useAppSelector((state) => state.account.username);
 
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
 
@@ -49,11 +51,13 @@ function TeacherSession() {
   useEffect(() => {
     const [planName, sessionName] = location.pathname.split('/').splice(-2);
     setSocket(new WebSocket('ws://localhost:8080/ws'));
-    axios.get<LessonSession>(`/session/info/${planName}/${sessionName}`)
-      .then((lessonSession) => {
-        setPlanSections(lessonSession.data.plan);
-      })
-      .catch(() => console.error('Request failed'));
+    if (username) {
+      axios.get<LessonSession>(`/session/info/${planName}/${sessionName}/${username}`)
+        .then((lessonSession) => {
+          setPlanSections(lessonSession.data.plan);
+        })
+        .catch(() => console.error('Request failed'));
+    }
   }, []);
 
   // When the socket connection is made

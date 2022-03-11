@@ -146,7 +146,7 @@ function TeacherLessonPlan() {
     axios.post(`/plan/info/${planName}`, { request: 'new-section', data: { sectionName: newSectionName, orderPos: planSections.length } })
       .then(() => {
         dispatch(createNewSection({
-          name: newName, sectionType: 'LECTURE', elements: [], orderPos: planSections.length, changed: false, codingData: { language: 'python', startingCode: '', expectedOutput: '' },
+          name: newName, sectionType: 'LECTURE ', elements: [], orderPos: planSections.length, changed: false, codingData: { language: 'python', startingCode: '', expectedOutput: '' },
         }));
       })
       .catch(() => console.error('Request failed'));
