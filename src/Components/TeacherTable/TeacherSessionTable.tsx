@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Container, IconButton, Typography, Paper,
+  Container, IconButton, Typography, Paper, Stack,
 } from '@mui/material';
 import { PlayArrow } from '@mui/icons-material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
@@ -25,18 +25,20 @@ const columns: GridColDef[] = [
 function TeacherSessionTable({ sessions }: TeacherTableProps) {
   return (
     <Container>
-      <Typography variant="h4" color="text.primary">Sessions</Typography>
-      <Paper>
-        <DataGrid
-          rows={sessions}
-          columns={columns}
-          getRowId={(row) => row.sessionName}
-          autoHeight
-          rowCount={20}
-          rowsPerPageOptions={[]}
-          disableSelectionOnClick
-        />
-      </Paper>
+      <Stack spacing={1}>
+        <Typography variant="h4" color="text.primary">Sessions</Typography>
+        <Paper>
+          <DataGrid
+            rows={sessions}
+            columns={columns}
+            getRowId={(row) => row.sessionName}
+            autoHeight
+            rowCount={20}
+            rowsPerPageOptions={[]}
+            disableSelectionOnClick
+          />
+        </Paper>
+      </Stack>
     </Container>
   );
 }
