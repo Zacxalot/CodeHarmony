@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { PlayArrow } from '@mui/icons-material';
 import {
-  Box,
   Button,
   Container, IconButton, Paper, Stack, TextField, Typography,
 } from '@mui/material';
