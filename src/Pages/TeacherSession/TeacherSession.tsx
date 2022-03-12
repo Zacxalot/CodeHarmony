@@ -49,16 +49,19 @@ function TeacherSession() {
 
   // First load
   useEffect(() => {
-    const [planName, sessionName] = location.pathname.split('/').splice(-2);
     setSocket(new WebSocket('ws://localhost:8080/ws'));
+  }, []);
+
+  useEffect(() => {
     if (username) {
+      const [planName, sessionName] = location.pathname.split('/').splice(-2);
       axios.get<LessonSession>(`/session/info/${planName}/${sessionName}/${username}`)
         .then((lessonSession) => {
           setPlanSections(lessonSession.data.plan);
         })
         .catch(() => console.error('Request failed'));
     }
-  }, []);
+  }, [username]);
 
   // When the socket connection is made
   useEffect(() => {
@@ -81,7 +84,7 @@ function TeacherSession() {
       return (renderSection(planSections[currentSection]));
     }
 
-    return <span>Could not display section!</span>;
+    return <CircularProgress />;
   }, [planSections, currentSection]);
 
   const setSection = (val: number) => {
