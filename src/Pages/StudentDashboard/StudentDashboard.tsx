@@ -32,16 +32,7 @@ const teacherColumns: GridColDef[] = [
 
 export default function StudentDashboard() {
   const [activeTeacherSessions, setActiveTeacherSessions] = useState<ActiveTeacherSession[]>([]);
-  const [teacherList, setTeacherList] = useState<String[]>([]);
   const [code, setCode] = useState<String>('');
-
-  const getTeacherList = () => {
-    axios.get<String[]>('/account/teachers')
-      .then(({ data }) => {
-        setTeacherList(data);
-      })
-      .catch(() => { });
-  };
 
   useEffect(() => {
     axios.get<ActiveTeacherSession[]>('/session/active')
@@ -49,15 +40,11 @@ export default function StudentDashboard() {
         setActiveTeacherSessions(data);
       })
       .catch(() => { });
-
-    getTeacherList();
   }, []);
 
   const requestAddTeacher = () => {
     axios.post(`/account/add-teacher/${code}`)
-      .then(() => {
-        getTeacherList();
-      })
+      .then(() => { })
       .catch(() => { });
   };
 
