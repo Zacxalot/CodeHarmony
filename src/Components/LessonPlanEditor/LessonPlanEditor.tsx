@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Button, FormControl, FormHelperText, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
@@ -10,6 +10,7 @@ import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditor
 import {
   addNewElement, setSectionLanguage, setSectionName, setSectionType,
 } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
+import TextFieldWithButton from '../TextFieldWithButton/TextFieldWithButton';
 
 interface LessonPlanEditorProps {
   planSection: PlanSection,
@@ -40,6 +41,11 @@ function LessonPlanEditor(
   };
 
   const addElementSlimButton = (index: number) => <Button variant="outlined" onClick={() => handleAddNewElement(index)} endIcon={<Add />} fullWidth />;
+
+  useEffect(() => {
+    setUpdateSectionNameText(planSection.name);
+    setUpdateSectionNameError('');
+  }, [planSection]);
 
   const renderSectionElements = () => (
     planSection.elements.map((element, index) => (
@@ -98,22 +104,17 @@ function LessonPlanEditor(
       <Paper>
         <Stack p={2} spacing={2}>
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-            <TextField
-              onChange={(e) => {
-                setUpdateSectionNameText(e.target.value);
-                if (sectionNameChecker(e.target.value) === true) {
+            <TextFieldWithButton
+              onChange={(value) => {
+                setUpdateSectionNameText(value);
+                if (sectionNameChecker(value) === true) {
                   setUpdateSectionNameError('Section name in use');
                 } else {
                   setUpdateSectionNameError('');
                 }
               }}
-              error={updateSectionNameError !== ''}
               helperText={updateSectionNameError}
               label="Section Name"
-              value={updateSectionNameText}
-            />
-            <Button
-              size="large"
               onClick={() => {
                 axios.put(`/plan/info/${planName}/rename`, { old_section_name: planSection.name, new_section_name: updateSectionNameText })
                   .then(() => {
@@ -121,11 +122,10 @@ function LessonPlanEditor(
                   })
                   .catch();
               }}
-              variant="contained"
-              disabled={updateSectionNameText.trim().length === 0 || updateSectionNameError !== ''}
-            >
-              Update
-            </Button>
+              buttonDisabled={updateSectionNameText.trim().length === 0 || updateSectionNameError !== ''}
+              buttonText="Update"
+              value={updateSectionNameText}
+            />
           </Stack>
           <FormControl>
             <Select value={sectionTypeSelect} onChange={changeSectionType}>

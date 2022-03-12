@@ -9,6 +9,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
+import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
 
 interface ActiveTeacherSession {
   teacher: String,
@@ -73,10 +74,12 @@ export default function StudentDashboard() {
               <Stack alignItems="center" py={2} spacing={2}>
                 <Typography variant="h6" color="text.primary">Add a teacher</Typography>
                 <Stack direction="row">
-                  <TextField
-                    InputProps={{ endAdornment: <Button onClick={requestAddTeacher} sx={{ height: '100%', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} variant="contained">Add</Button>, style: { padding: '1px' } }}
-                    onChange={(({ target: { value } }) => setCode(value))}
+                  <TextFieldWithButton
+                    buttonText="Add"
+                    onChange={(value) => setCode(value)}
                     label="Code"
+                    onClick={requestAddTeacher}
+                    helperText=""
                   />
                 </Stack>
               </Stack>

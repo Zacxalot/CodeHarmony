@@ -14,6 +14,7 @@ import {
 } from './teacherLessonPlanSlice';
 import { useAppSelector } from '../../Redux/hooks';
 import './TeacherLessonPlan.scss';
+import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
 
 export interface CodingData {
   language: string,
@@ -178,9 +179,14 @@ function TeacherLessonPlan() {
                   {renderSectionsList()}
                 </List>
               </Paper>
-              <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
-                <TextField onChange={(e) => { setNewSectionName(e.target.value); }} />
-                <Button size="large" onClick={() => { addNewSection(); }} variant="contained">Add</Button>
+              <Stack direction="row" justifyContent="center" alignItems="center">
+                <TextFieldWithButton
+                  onChange={(value) => { setNewSectionName(value); }}
+                  onClick={addNewSection}
+                  helperText=""
+                  label="New Section Name"
+                  buttonText="Add"
+                />
               </Stack>
             </Stack>
           </Paper>
