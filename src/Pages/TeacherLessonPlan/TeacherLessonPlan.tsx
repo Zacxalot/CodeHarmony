@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import {
   Button,
-  Container, Paper, Stack, TextField, Typography,
+  Container, List, Paper, Stack, TextField, Typography,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import LessonPlanSectionListItem from '../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem';
@@ -161,8 +161,7 @@ function TeacherLessonPlan() {
     <LessonPlanSectionListItem
       key={section.name}
       sectionName={section.name}
-      position={index}
-      callback={changeSection}
+      callback={() => changeSection(index)}
     />
   ));
 
@@ -171,12 +170,14 @@ function TeacherLessonPlan() {
       <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md">
+          <Typography variant="h4">Sections</Typography>
           <Paper>
-            <Stack py={2} spacing={2}>
-              <Typography variant="h4" align="center">Sections</Typography>
-              <ul>
-                {renderSectionsList()}
-              </ul>
+            <Stack p={2} spacing={2}>
+              <Paper variant="outlined">
+                <List sx={{ p: 0 }}>
+                  {renderSectionsList()}
+                </List>
+              </Paper>
               <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
                 <TextField onChange={(e) => { setNewSectionName(e.target.value); }} />
                 <Button size="large" onClick={() => { addNewSection(); }} variant="contained">Add</Button>

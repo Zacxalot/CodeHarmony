@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './NavBar.scss';
-import { Person } from '@mui/icons-material';
+import { ArrowBack, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import {
-  AppBar, Toolbar, Box, Button, Menu, MenuItem,
+  AppBar, Toolbar, Box, Button, Menu, MenuItem, IconButton,
 } from '@mui/material';
 import axios from 'axios';
 import CodeHarmonyLogo from '../Code Harmony Logo/CodeHarmonyLogo';
@@ -77,7 +77,11 @@ export default function NavBar() {
       }}
     >
       <Toolbar disableGutters style={{ minHeight: '0px' }}>
-        <Box sx={{ flex: 1 }} />
+        <Box sx={{ flex: 1 }}>
+          <IconButton onClick={() => { navigate(-1); }}>
+            <ArrowBack />
+          </IconButton>
+        </Box>
         <Box sx={{ textAlign: 'center' }}>
           <CodeHarmonyLogo />
         </Box>

@@ -1,7 +1,7 @@
 import Paper from '@mui/material/Paper';
-import { createTheme, styled } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes, styled } from '@mui/material/styles';
 
-const theme = createTheme({
+const theme = responsiveFontSizes(createTheme({
   palette: {
     primary: {
       main: '#9f35f5',
@@ -13,9 +13,9 @@ const theme = createTheme({
   shape: {
     borderRadius: 4,
   },
-});
+}));
 
-export const darkTheme = createTheme({
+export const darkTheme = responsiveFontSizes(createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -28,7 +28,7 @@ export const darkTheme = createTheme({
   shape: {
     borderRadius: 4,
   },
-});
+}));
 
 export const PaperBox = styled(Paper)`
   border-radius:${theme.shape.borderRadius}px;

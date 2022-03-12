@@ -2,27 +2,25 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
+import { ListItem, ListItemButton } from '@mui/material';
 import React from 'react';
 import './LessonPlanSectionListItem.scss';
 
 interface LessonPlanSectionListItemProps {
   sectionName: String,
-  position: number,
   // eslint-disable-next-line no-unused-vars
-  callback: (index: number) => void
+  callback: () => void
 }
 
 function LessonPlanSectionListItem(
-  { sectionName, position, callback }: LessonPlanSectionListItemProps,
+  { sectionName, callback }: LessonPlanSectionListItemProps,
 ) {
-  const handleSelect = () => {
-    callback(position);
-  };
-
   return (
-    <li onClick={handleSelect} className="lesson-plan-section-item button-hover">
-      <span>{sectionName}</span>
-    </li>
+    <ListItem disablePadding>
+      <ListItemButton sx={{ justifyContent: 'center' }} onClick={callback}>
+        {sectionName}
+      </ListItemButton>
+    </ListItem>
   );
 }
 

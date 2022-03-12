@@ -140,7 +140,7 @@ export default function LoginRegister() {
   return (
     <Box>
       <Stack flex={1} justifyContent="center" pt="5rem" textAlign="center">
-        <Box sx={{ mb: '5rem' }}>
+        <Box sx={{ pb: '5rem' }}>
           <CodeHarmonyLogo variant="h2" linked={false} />
         </Box>
         <Container maxWidth="xs">

@@ -72,7 +72,7 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
 
   return (
     <PaperBox elevation={2}>
-      <Paper elevation={1}>
+      <Paper elevation={1} sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
         <CHElementComponent element={element} />
       </Paper>
       <Stack direction="row" p={0.5} spacing={0.5}>

@@ -94,7 +94,7 @@ function LessonPlanEditor(
 
   return (
     // eslint-disable-next-line react/no-unstable-nested-components
-    <Stack spacing={2}>
+    <Stack spacing={1}>
       <Paper>
         <Stack p={2} spacing={2}>
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
