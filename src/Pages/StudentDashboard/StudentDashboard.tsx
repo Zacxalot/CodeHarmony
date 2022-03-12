@@ -32,6 +32,16 @@ const teacherColumns: GridColDef[] = [
 
 export default function StudentDashboard() {
   const [activeTeacherSessions, setActiveTeacherSessions] = useState<ActiveTeacherSession[]>([]);
+  const [teacherList, setTeacherList] = useState<String[]>([]);
+  const [code, setCode] = useState<String>('');
+
+  const getTeacherList = () => {
+    axios.get<String[]>('/account/teachers')
+      .then(({ data }) => {
+        setTeacherList(data);
+      })
+      .catch(() => { });
+  };
 
   useEffect(() => {
     axios.get<ActiveTeacherSession[]>('/session/active')
@@ -39,7 +49,17 @@ export default function StudentDashboard() {
         setActiveTeacherSessions(data);
       })
       .catch(() => { });
+
+    getTeacherList();
   }, []);
+
+  const requestAddTeacher = () => {
+    axios.post(`/account/add-teacher/${code}`)
+      .then(() => {
+        getTeacherList();
+      })
+      .catch(() => { });
+  };
 
   return (
     <div>
@@ -60,26 +80,18 @@ export default function StudentDashboard() {
               />
             </Paper>
           </Container>
-          <Container>
+          <Container maxWidth="sm">
             <Typography variant="h4" color="text.primary">Teachers</Typography>
             <Paper>
-              <Stack alignItems="center" pt={2} spacing={2}>
+              <Stack alignItems="center" py={2} spacing={2}>
                 <Typography variant="h6" color="text.primary">Add a teacher</Typography>
                 <Stack direction="row">
                   <TextField
-                    InputProps={{ endAdornment: <Button sx={{ height: '100%', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} variant="contained">Add</Button>, style: { padding: '1px' } }}
+                    InputProps={{ endAdornment: <Button onClick={requestAddTeacher} sx={{ height: '100%', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} variant="contained">Add</Button>, style: { padding: '1px' } }}
+                    onChange={(({ target: { value } }) => setCode(value))}
+                    label="Code"
                   />
                 </Stack>
-                <DataGrid
-                  rows={activeTeacherSessions}
-                  columns={teacherColumns}
-                  getRowId={(row) => row.session_date}
-                  autoHeight
-                  rowCount={20}
-                  rowsPerPageOptions={[]}
-                  disableSelectionOnClick
-                  sx={{ width: '100%' }}
-                />
               </Stack>
             </Paper>
           </Container>

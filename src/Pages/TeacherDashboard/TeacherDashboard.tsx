@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import {
-  Button, Container, Stack, Modal, styled, Typography, TextField,
+  Button, Container, Stack, Modal, styled, Typography, TextField, Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import NavBar from '../../Components/NavBar/NavBar';
@@ -36,6 +36,7 @@ export interface Plan {
 export const ModalBox = styled(Stack)`
   padding: 2rem;
   border-radius:${theme.shape.borderRadius}px;
+  ailign-items:center;
 `;
 
 export const ModalContainer = styled(Modal)`
@@ -55,6 +56,9 @@ export default function TeacherDashboard() {
   const [newSessionName, setNewSessionName] = useState('');
   const [newSessionPlanName, setNewSessionPlanName] = useState('');
   const [newSessionError, setNewSessionError] = useState('');
+
+  const [codeModalOpen, setCodeModalOpen] = useState(false);
+  const [teacherCode, setTeacherCode] = useState('');
 
   useEffect(() => {
     axios.get<PlanListResponse>('/plan/list')
@@ -88,6 +92,14 @@ export default function TeacherDashboard() {
     setNewSessionModalOpen(true);
   };
 
+  const openCodeModal = () => {
+    axios.get<{ code: string }>('/account/my-code')
+      .then(({ data: { code } }) => {
+        setCodeModalOpen(true);
+        setTeacherCode(code);
+      }).catch(() => { });
+  };
+
   return (
     <div>
       <NavBar />
@@ -97,7 +109,7 @@ export default function TeacherDashboard() {
         open={newSessionModalOpen}
         onClose={() => { setNewSessionModalOpen(false); }}
       >
-        <ModalBox alignItems="center" spacing={1} bgcolor="background.default">
+        <ModalBox spacing={1} bgcolor="background.default">
           <Typography variant="h5" color="text.primary">Create New Session</Typography>
           <TextField label="name" onChange={({ target: { value } }) => setNewSessionName(value)} inputProps={{ maxLength: 128 }} error={newSessionError !== ''} helperText={newSessionError} />
           <Button
@@ -110,10 +122,27 @@ export default function TeacherDashboard() {
         </ModalBox>
       </ModalContainer>
 
+      <ModalContainer
+        open={codeModalOpen}
+        onClose={() => { setCodeModalOpen(false); }}
+      >
+        <ModalBox spacing={1} bgcolor="background.default" alignItems="center">
+          <Typography variant="h5" color="text.primary" style={{ userSelect: 'none' }}>Teacher Code</Typography>
+          <Paper elevation={0} variant="outlined" sx={{ p: 2 }}>
+            <Typography variant="h1" minHeight="2rem" textAlign="center">{teacherCode}</Typography>
+          </Paper>
+        </ModalBox>
+      </ModalContainer>
+
       <Container maxWidth="lg">
         <Stack alignItems="center" spacing={2} mt={2}>
-          <Stack direction="row" justifyContent="center" spacing={2} />
-
+          <Container>
+            <Paper>
+              <Stack direction="row" p={1} justifyContent="center">
+                <Button variant="contained" onClick={openCodeModal}>Show Code</Button>
+              </Stack>
+            </Paper>
+          </Container>
           <TeacherSessionTable sessions={sessionList} />
           <TeacherPlanTable
             plans={planList}
