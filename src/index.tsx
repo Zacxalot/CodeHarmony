@@ -6,17 +6,25 @@ import { Stack } from '@mui/material';
 import { Provider } from 'react-redux';
 import Hub from './Pages/Hub/Hub';
 import { store } from './Redux/store';
-import theme, { darkTheme } from './Theme';
+import { lightTheme, darkTheme } from './Theme';
+import { useAppSelector } from './Redux/hooks';
 
-ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <Stack sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Provider store={store}>
+function ThemePicker() {
+  const selectedTheme = useAppSelector(({ themeSelector: { theme } }) => theme);
+
+  return (
+    <ThemeProvider theme={selectedTheme === 'light' ? lightTheme : darkTheme}>
+      <Stack sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
         <React.StrictMode>
           <Hub />
         </React.StrictMode>
-      </Provider>
-    </Stack>
-  </ThemeProvider>,
+      </Stack>
+    </ThemeProvider>
+  );
+}
+ReactDOM.render(
+  <Provider store={store}>
+    <ThemePicker />
+  </Provider>,
   document.getElementById('root'),
 );

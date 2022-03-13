@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
 import TeacherPlanTable from '../../Components/TeacherTable/TeacherPlanTable';
-import theme from '../../Theme';
+import { lightTheme } from '../../Theme';
 
 interface CreateNewSessionResponse {
   planName: string,
@@ -35,7 +35,7 @@ export interface Plan {
 
 export const ModalBox = styled(Stack)`
   padding: 2rem;
-  border-radius:${theme.shape.borderRadius}px;
+  border-radius:${lightTheme.shape.borderRadius}px;
   ailign-items:center;
 `;
 
@@ -129,7 +129,7 @@ export default function TeacherDashboard() {
         <ModalBox spacing={1} bgcolor="background.default" alignItems="center">
           <Typography variant="h5" color="text.primary" style={{ userSelect: 'none' }}>Teacher Code</Typography>
           <Paper elevation={0} variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="h1" minHeight="2rem" textAlign="center">{teacherCode}</Typography>
+            <Typography variant="h1" minHeight="2rem" textAlign="center" fontWeight={700}>{teacherCode}</Typography>
           </Paper>
         </ModalBox>
       </ModalContainer>

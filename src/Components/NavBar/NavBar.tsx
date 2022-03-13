@@ -9,12 +9,14 @@ import axios from 'axios';
 import CodeHarmonyLogo from '../Code Harmony Logo/CodeHarmonyLogo';
 import { Account, login, logout } from '../../Redux/userAccountSlice';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { setTheme } from '../../Redux/themeSelectorSlice';
 
 export default function NavBar() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const account: Account = useAppSelector((state) => state.account);
+  const selectedTheme = useAppSelector(({ themeSelector }) => themeSelector.theme);
 
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorElement);
@@ -65,6 +67,7 @@ export default function NavBar() {
       }}
     >
       <MenuItem onClick={() => { navigate('/profile'); }}>Profile</MenuItem>
+      <MenuItem onClick={() => { dispatch(setTheme({ theme: (selectedTheme === 'light' ? 'dark' : 'light') })); }}>Switch Theme</MenuItem>
       <MenuItem onClick={doLogout}>Logout</MenuItem>
     </Menu>
   );
