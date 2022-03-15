@@ -1,9 +1,10 @@
 .element-preview{
     max-width: 100%;
-    display: flex;
-    overflow: hidden;
+    padding:0.5rem;
     align-items: center;
     justify-content: center;
+
+    word-wrap: break-word;
 
     img{
         flex:1;

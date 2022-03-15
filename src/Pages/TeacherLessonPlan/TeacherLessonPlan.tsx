@@ -33,7 +33,7 @@ export interface PlanSection {
 
 export interface CHElement {
   elType: string,
-  props: {},
+  props: { [k: string]: string },
   children: CHElementChild
 }
 
@@ -126,7 +126,7 @@ function TeacherLessonPlan() {
     if (selectedSection !== -1) {
       return (
         <Container>
-          <Typography align="center" variant="h4">{planSections[selectedSection].name}</Typography>
+          <Typography align="center" variant="h3" color="text.primary">{planSections[selectedSection].name}</Typography>
           <LessonPlanEditor
             planSection={planSections[selectedSection]}
             sectionId={selectedSection}
@@ -171,7 +171,7 @@ function TeacherLessonPlan() {
       <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md">
-          <Typography variant="h4">Sections</Typography>
+          <Typography variant="h4" sx={{ color: 'text.primary' }}>Sections</Typography>
           <Paper>
             <Stack p={2} spacing={2}>
               <Paper variant="outlined">

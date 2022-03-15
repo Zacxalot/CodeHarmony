@@ -1,17 +1,28 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import './CHElementComponent.scss';
+import Image from '../Image';
 
 interface CHElementComponentProps {
   element: CHElement
 }
 
 function renderElementPreview(element: CHElement) {
-  if (element.elType === 'img') {
-    return React.createElement(element.elType, element.props);
+  // Get the element class to render
+  const elClass = () => {
+    switch (element.elType) {
+      case 'Typography': return (Typography);
+      case 'Image': return (Image);
+      default: return (element.elType);
+    }
+  };
+
+  if (element.elType === 'Image') {
+    return React.createElement(elClass() as any, { src: element.children.String });
   }
 
-  return React.createElement(element.elType, element.props, element.children.String);
+  return React.createElement(elClass() as any, element.props, element.children.String);
 }
 
 function CHElementComponent({ element }: CHElementComponentProps) {

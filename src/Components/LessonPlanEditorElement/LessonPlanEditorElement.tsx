@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDropDown, ArrowDropUp, Remove } from '@mui/icons-material';
 import {
-  IconButton, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
+  IconButton, Menu, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
 } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import { removeElement, updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
@@ -25,7 +25,7 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
 
   const handleTypeChange = (e: SelectChangeEvent) => {
     // Clear the text value if the element is set to image
-    if (e.target.value === 'img') {
+    if (e.target.value === 'Image') {
       setTextValue('');
       dispatch(updateElement({
         type: 'child', newValue: '', id, sectionId,
@@ -63,8 +63,28 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
   };
 
   const renderInput = () => {
-    if (element.elType === 'img') {
+    if (element.elType === 'Image') {
       return <TextField onChange={handleTextboxChange} value={textValue} />;
+    }
+    if (element.elType === 'Typography') {
+      return (
+        <Stack direction="row" spacing={0.5}>
+          <TextField sx={{ flex: 3 }} onChange={handleTextboxChange} value={textValue} />
+          <Select
+            sx={{ flex: 1 }}
+            value={element.props.variant || 'p'}
+            onChange={({ target: { value } }: SelectChangeEvent) => {
+              dispatch(updateElement({
+                type: 'prop', newValue: `variant:${value}`, id, sectionId,
+              }));
+            }}
+          >
+            <MenuItem value="h1">Title</MenuItem>
+            <MenuItem value="h3">Subtitle</MenuItem>
+            <MenuItem value="p">Paragraph</MenuItem>
+          </Select>
+        </Stack>
+      );
     }
 
     return <TextField onChange={handleTextboxChange} value={textValue} />;
@@ -78,9 +98,8 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
       <Stack direction="row" p={0.5} spacing={0.5}>
         <Stack flex={1} spacing={0.5}>
           <Select value={element.elType} onChange={handleTypeChange}>
-            <MenuItem value="h1">Heading</MenuItem>
-            <MenuItem value="p">Paragraph</MenuItem>
-            <MenuItem value="img">Image</MenuItem>
+            <MenuItem value="Typography">Text</MenuItem>
+            <MenuItem value="Image">Image</MenuItem>
           </Select>
           {renderInput()}
         </Stack>

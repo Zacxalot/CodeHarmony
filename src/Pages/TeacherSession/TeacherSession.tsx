@@ -9,7 +9,7 @@ import {
   Button,
   Container,
   Stack,
-  Step, StepLabel, Stepper, CircularProgress,
+  Step, StepLabel, Stepper, CircularProgress, Paper,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
@@ -127,7 +127,11 @@ function TeacherSession() {
           </Stepper>
           {sectionNavButtons()}
         </Container>
-        {renderElements}
+        <Container>
+          <Paper sx={{ p: 2 }}>
+            {renderElements}
+          </Paper>
+        </Container>
         <Container>
           {sectionNavButtons()}
         </Container>

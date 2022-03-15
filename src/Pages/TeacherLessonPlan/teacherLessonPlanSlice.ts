@@ -27,6 +27,7 @@ export const teacherLessonPlanSlice = createSlice({
       if (type === 'eltype' && newValue) {
         // Set the element type to what was selected in the dropdown
         state[sectionId].elements[id].elType = newValue;
+        state[sectionId].elements[id].props = {};
       } else if (type === 'move' && newValue) {
         // Move the element up if it isn't at the top
         if (newValue === 'up' && id !== 0) {
@@ -57,12 +58,20 @@ export const teacherLessonPlanSlice = createSlice({
         } else {
           state[sectionId].elements[id].children = { String: '' };
         }
+      } else if (type === 'prop') {
+        // Set the value of a prop
+        if (newValue) {
+          const [key, val] = newValue.split(':');
+          console.log(key);
+          console.log(val);
+          state[sectionId].elements[id].props[key] = val;
+        }
       }
     },
     // Add new element to the selected section
     addNewElement: (state, action: PayloadAction<EditorElementNew>) => {
       const { payload: { sectionId, index } } = action;
-      state[sectionId].elements.splice(index, 0, { elType: 'h1', children: { String: '' }, props: [] });
+      state[sectionId].elements.splice(index, 0, { elType: 'Typography', children: { String: '' }, props: {} });
       state[sectionId].changed = true;
     },
     removeElement: (state, action: PayloadAction<EditorElementNew>) => {

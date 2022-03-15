@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-  Stack, CircularProgress,
+  Stack, CircularProgress, Container, Paper,
 } from '@mui/material';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
@@ -64,8 +64,12 @@ export default function StudentSession() {
   return (
     <div>
       <NavBar />
-      <Stack alignItems="center">
-        {renderElements}
+      <Stack alignItems="center" pt={2}>
+        <Container>
+          <Paper sx={{ p: 2 }}>
+            {renderElements}
+          </Paper>
+        </Container>
         {renderLoading()}
       </Stack>
     </div>
