@@ -15,7 +15,7 @@ interface ConsoleState {
 }
 
 class Console extends React.Component<ConsoleProps, ConsoleState> {
-  scrollRef: RefObject<HTMLPreElement>;
+  scrollRef: RefObject<HTMLDivElement>;
 
   constructor(props: ConsoleProps) {
     super(props);
@@ -38,8 +38,14 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
 
     return (
       <ThemeProvider theme={darkTheme}>
-        <Paper sx={{ flex: 1, paddingLeft: 1, color: '#11c429' }}>
-          <pre ref={this.scrollRef}>
+        <Paper
+          elevation={5}
+          sx={{
+            paddingLeft: 1, color: '#11c429', height: '33%', overflowY: 'scroll',
+          }}
+          ref={this.scrollRef}
+        >
+          <pre>
             {contents}
           </pre>
         </Paper>

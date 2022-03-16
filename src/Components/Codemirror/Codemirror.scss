@@ -1,13 +1,6 @@
 @use "../../BaseStyle.scss" as base;
 
-.Codemirror{
-    text-align: left;
-    height: auto;
-    display: inline;
-    flex:1;
-}
 
 .cm-editor{
-    max-height: calc(93vh - 1rem);
-    height: 100%;
+    flex: 1 1 auto;
 }

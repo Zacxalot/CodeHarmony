@@ -20,8 +20,8 @@ function CodingInfoWindow({ planSection }: CodingInfoWindowProps) {
   };
 
   return (
-    <Paper sx={{ flex: 3 }}>
-      <Stack alignItems="center" height="100%" justifyContent="center">
+    <Paper sx={{ height: 'calc(60% - 10px)', overflowY: 'scroll' }}>
+      <Stack>
         {renderPlanSection()}
       </Stack>
     </Paper>

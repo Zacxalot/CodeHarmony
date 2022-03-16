@@ -76,7 +76,7 @@ export default function NavBar() {
     <AppBar
       position="static"
       sx={{
-        bgcolor: 'background.paper', color: 'text.primary',
+        bgcolor: 'background.paper', color: 'text.primary', maxHeight: '40px', minHeight: '40px',
       }}
     >
       <Toolbar disableGutters style={{ minHeight: '0px' }}>

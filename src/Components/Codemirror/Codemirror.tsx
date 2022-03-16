@@ -7,6 +7,8 @@ import { python } from '@codemirror/lang-python';
 import './Codemirror.scss';
 import { ViewPlugin, ViewUpdate } from '@codemirror/view';
 
+const darkMode = EditorView.theme({}, { dark: true });
+
 const runExtension = () => {
   const plugin = ViewPlugin.fromClass(class {
     timerRunning = false;
@@ -24,7 +26,6 @@ const runExtension = () => {
     }
 
     sendBundle = () => {
-      console.log('Sending');
       this.timerRunning = false;
     }
   });
@@ -39,12 +40,13 @@ class Codemirror extends React.Component {
 
     // Create Code Mirror state and view
     if (parent) {
-      const state = EditorState.create({ extensions: [basicSetup, python(), runExtension()] });
+      const state = EditorState.create({
+        extensions: [basicSetup, python(), runExtension(), darkMode],
+      });
 
       this.view = new EditorView({
         state,
         parent,
-
       });
     } else {
       console.log('Could not find parent element');
@@ -68,9 +70,6 @@ class Codemirror extends React.Component {
     return (
       <div
         id="code-window"
-        style={{
-          flex: 1, width: '100%', paddingTop: '1rem', paddingBottom: '1rem',
-        }}
       />
     );
   }
