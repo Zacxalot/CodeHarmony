@@ -119,16 +119,19 @@ export default function StudentSession() {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
       return (
         <Box>
-          <Paper
-            sx={{
-              position: 'absolute', width: 'calc(50% - 7.5px)', height: '100%', maxHeight: 'calc(100vh - 50px)', left: '5px', top: '45px', overflowY: 'scroll',
-            }}
-          >
-            <Codemirror ref={codemirrorRef} />
-          </Paper>
+          <ThemeProvider theme={darkTheme}>
+            <Paper
+              sx={{
+                position: 'absolute', width: 'calc(50% - 7.5px)', height: '100%', maxHeight: 'calc(100vh - 50px)', left: '5px', top: '45px', overflowY: 'scroll', display: 'flex', flexDirection: 'column',
+              }}
+            >
+              <Codemirror ref={codemirrorRef} />
+              <Box sx={{ flex: 1 }} onClick={() => { codemirrorRef.current?.focusEditor(); }} />
+            </Paper>
+          </ThemeProvider>
           <Stack
             flex={1}
-            spacing={1}
+            spacing="5px"
             sx={{
               position: 'absolute', width: 'calc(50% - 7.5px)', height: '100%', maxHeight: 'calc(100vh - 50px)', right: '5px', top: '45px',
             }}

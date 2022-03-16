@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-class-component-methods */
 // TODO FIX
 /* eslint-disable max-classes-per-file */
 
@@ -6,8 +7,7 @@ import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
 import { python } from '@codemirror/lang-python';
 import './Codemirror.scss';
 import { ViewPlugin, ViewUpdate } from '@codemirror/view';
-
-const darkMode = EditorView.theme({}, { dark: true });
+import { oneDark } from '@codemirror/theme-one-dark';
 
 const runExtension = () => {
   const plugin = ViewPlugin.fromClass(class {
@@ -41,7 +41,7 @@ class Codemirror extends React.Component {
     // Create Code Mirror state and view
     if (parent) {
       const state = EditorState.create({
-        extensions: [basicSetup, python(), runExtension(), darkMode],
+        extensions: [basicSetup, python(), runExtension(), oneDark],
       });
 
       this.view = new EditorView({
@@ -64,6 +64,11 @@ class Codemirror extends React.Component {
   // eslint-disable-next-line react/no-unused-class-component-methods
   getEditorState() {
     return (this.view?.state.doc.toJSON());
+  }
+
+  // Focus editor
+  focusEditor() {
+    this.view?.focus();
   }
 
   render() {

@@ -41,7 +41,7 @@ class Console extends React.Component<ConsoleProps, ConsoleState> {
         <Paper
           elevation={5}
           sx={{
-            paddingLeft: 1, color: '#11c429', height: '33%', overflowY: 'scroll',
+            paddingLeft: 1, color: '#11c429', height: '33%', overflowY: 'scroll', fontSize: '1rem',
           }}
           ref={this.scrollRef}
         >
