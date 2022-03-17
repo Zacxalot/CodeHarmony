@@ -137,7 +137,7 @@ function TeacherLessonPlan() {
       );
     }
 
-    return <div>Add a section to get started</div>;
+    return <Typography color="text.primary" textAlign="center">Add a section to get started</Typography>;
   };
 
   // Request to add a new section to the plan

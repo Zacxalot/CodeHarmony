@@ -9,7 +9,7 @@ import {
   Button,
   Container,
   Stack,
-  Step, StepLabel, Stepper, CircularProgress, Paper,
+  Step, StepLabel, Stepper, CircularProgress, Paper, Box, Card, styled,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
@@ -37,6 +37,13 @@ export function renderSection(section: PlanSection) {
   }
   return <CircularProgress />;
 }
+
+const CodeCard = styled(Card)`
+  max-width: 30%;
+  width: 100%;
+  height: 6rem;
+  margin-bottom: 1rem;
+`;
 
 function TeacherSession() {
   const location = useLocation();
@@ -113,10 +120,48 @@ function TeacherSession() {
     </Stack>
   );
 
+  const renderLectureOrCoding = () => {
+    if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
+      return (
+        <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">
+          <Stack
+            sx={{
+              p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
+            }}
+            direction="row"
+            flexWrap="wrap"
+            alignContent="flex-start"
+            justifyContent="space-around"
+          >
+            <CodeCard>
+              Hey there
+            </CodeCard>
+          </Stack>
+          <Paper sx={{ p: 2, minHeight: '100%', flex: 1 }}>
+            {renderElements}
+          </Paper>
+        </Stack>
+      );
+    }
+
+    return (
+      <Box width="100%">
+        <Container>
+          <Paper sx={{ p: 2 }}>
+            {renderElements}
+          </Paper>
+        </Container>
+        <Container>
+          {sectionNavButtons()}
+        </Container>
+      </Box>
+    );
+  };
+
   return (
     <div>
       <NavBar />
-      <Stack alignItems="center" mt={2} spacing={2}>
+      <Stack mt={2} spacing={2}>
         <Container>
           <Stepper activeStep={currentSection}>
             {planSections?.map((section) => (
@@ -127,14 +172,7 @@ function TeacherSession() {
           </Stepper>
           {sectionNavButtons()}
         </Container>
-        <Container>
-          <Paper sx={{ p: 2 }}>
-            {renderElements}
-          </Paper>
-        </Container>
-        <Container>
-          {sectionNavButtons()}
-        </Container>
+        {renderLectureOrCoding()}
       </Stack>
     </div>
   );
