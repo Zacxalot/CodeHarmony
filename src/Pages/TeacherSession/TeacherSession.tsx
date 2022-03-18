@@ -50,9 +50,19 @@ function TeacherSession() {
 
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
+  const [connectedStudents, setConnectedStudents] = useState<String[]>([]);
   const username = useAppSelector((state) => state.account.username);
 
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+
+  const getStudentList = () => {
+    if (username) {
+      const [planName, sessionName] = location.pathname.split('/').splice(-2);
+      axios.get<String[]>(`/session/connected/${username}/${planName}/${sessionName}`).then(({ data }) => {
+        setConnectedStudents(data);
+      }).catch(() => { });
+    }
+  };
 
   // First load
   useEffect(() => {
@@ -70,12 +80,18 @@ function TeacherSession() {
     }
   }, [username]);
 
+  useEffect(() => {
+    if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
+      getStudentList();
+    }
+  }, [currentSection]);
+
   // When the socket connection is made
   useEffect(() => {
     const [planName, sessionName] = location.pathname.split('/').splice(-2);
     if (socket) {
       socket.onopen = () => {
-        socket.send(`tJoin ${planName}:${sessionName}:user1`);
+        socket.send(`tJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:user1`);
         console.log('opened');
       };
 
@@ -133,9 +149,11 @@ function TeacherSession() {
             alignContent="flex-start"
             justifyContent="space-around"
           >
-            <CodeCard>
-              Hey there
-            </CodeCard>
+            {connectedStudents.map((sUsername) => (
+              <CodeCard key={`s-${sUsername}`}>
+                {sUsername}
+              </CodeCard>
+            ))}
           </Stack>
           <Paper sx={{ p: 2, minHeight: '100%', flex: 1 }}>
             {renderElements}
@@ -144,6 +162,7 @@ function TeacherSession() {
       );
     }
 
+    // Render lecture section
     return (
       <Box width="100%">
         <Container>

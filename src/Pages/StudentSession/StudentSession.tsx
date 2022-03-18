@@ -49,7 +49,7 @@ export default function StudentSession() {
     const [planName, sessionName] = location.pathname.split('/').splice(-2);
     if (socket) {
       socket.onopen = () => {
-        socket.send(`sJoin ${planName}:${sessionName}:user1`);
+        socket.send(`sJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:user1`);
         console.log('opened');
       };
 
