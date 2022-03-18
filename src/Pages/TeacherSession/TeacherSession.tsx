@@ -6,10 +6,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import {
-  Button,
-  Container,
-  Stack,
-  Step, StepLabel, Stepper, CircularProgress, Paper, Box, Card, styled,
+  Button, Container, Stack, Step, StepLabel, Stepper, CircularProgress, Paper,
+  Box, Card, styled, CardActionArea, CardContent, Typography,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
@@ -151,7 +149,13 @@ function TeacherSession() {
           >
             {connectedStudents.map((sUsername) => (
               <CodeCard key={`s-${sUsername}`}>
-                {sUsername}
+                <CardActionArea sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Stack>
+                      <Typography variant="h5" textAlign="center">{sUsername}</Typography>
+                    </Stack>
+                  </CardContent>
+                </CardActionArea>
               </CodeCard>
             ))}
           </Stack>
