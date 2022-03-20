@@ -3,30 +3,26 @@
 /* eslint-disable max-classes-per-file */
 
 import React from 'react';
-import { EditorState, EditorView, basicSetup } from '@codemirror/basic-setup';
+import { EditorState, basicSetup } from '@codemirror/basic-setup';
 import { python } from '@codemirror/lang-python';
-import './Codemirror.scss';
-import { ViewPlugin, ViewUpdate } from '@codemirror/view';
+import { ChangeSet } from '@codemirror/state';
+import { ViewPlugin, ViewUpdate, EditorView } from '@codemirror/view';
 import { oneDark } from '@codemirror/theme-one-dark';
+import './Codemirror.scss';
+
+let changes: ChangeSet[] = [];
 
 const runExtension = () => {
   const plugin = ViewPlugin.fromClass(class {
-    timerRunning = false;
+    // eslint-disable-next-line no-useless-constructor, no-empty-function, no-unused-vars
+    constructor(private view: EditorView) { }
 
-    // Run when a change is made to the document.
-    // Sets a timer to send the changes, calls send bundle
-    // when timer finishes.
-    update(update: ViewUpdate) {
-      if (update.docChanged) {
-        if (this.timerRunning === false) {
-          this.timerRunning = true;
-          setTimeout(this.sendBundle, 1000);
-        }
+    // Save the update to a list of updates
+    // eslint-disable-next-line class-methods-use-this
+    update(u: ViewUpdate) {
+      if (u.docChanged) {
+        changes.push(u.changes);
       }
-    }
-
-    sendBundle = () => {
-      this.timerRunning = false;
     }
   });
   return plugin;
@@ -36,6 +32,7 @@ class Codemirror extends React.Component {
   view: EditorView | undefined;
 
   componentDidMount() {
+    changes = [];
     const parent = document.getElementById('code-window');
 
     // Create Code Mirror state and view
