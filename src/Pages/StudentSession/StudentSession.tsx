@@ -29,9 +29,29 @@ export default function StudentSession() {
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState(0);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+  const [sendingUpdates, setSendingUpdates] = useState(true);
+  const [currentVersion, setCurrentVersion] = useState(0);
+
+  // eslint-disable-next-line no-undef
+  const updateInterval = useRef<NodeJS.Timeout>();
 
   const codemirrorRef = useRef<Codemirror>(null);
   const consoleRef = useRef<Console>(null);
+
+  // Gets the updates from codemirror and tries sending them to the teacher
+  // Only if they are being told to send
+  const getUpdates = () => {
+    if (codemirrorRef.current && sendingUpdates) {
+      const changes = codemirrorRef.current.getChanges(currentVersion);
+      if (changes.length !== 0) {
+        if (socket) {
+          socket.send(`sUpdate ${JSON.stringify(changes)}`);
+          setCurrentVersion(currentVersion + changes.length);
+        }
+        console.log(changes);
+      }
+    }
+  };
 
   useEffect(() => {
     console.log('running');
@@ -42,7 +62,24 @@ export default function StudentSession() {
         setPlanSections(data);
       })
       .catch(() => { });
+
+    return function cleanup() {
+      if (updateInterval.current) {
+        clearTimeout(updateInterval.current);
+      }
+    };
   }, []);
+
+  // When the requested version changes
+  useEffect(() => {
+    if (updateInterval.current) {
+      clearTimeout(updateInterval.current);
+    }
+
+    updateInterval.current = setInterval(() => {
+      getUpdates();
+    }, 1000);
+  }, [currentVersion]);
 
   // When socket connects
   useEffect(() => {
@@ -59,6 +96,10 @@ export default function StudentSession() {
 
         if (split[0] === 'sec') {
           setCurrentSection(parseInt(split[1], 10));
+        } else if (split[0] === 'unsub') {
+          setSendingUpdates(false);
+        } else if (split[0] === 'sub') {
+          setSendingUpdates(true);
         }
       };
     }

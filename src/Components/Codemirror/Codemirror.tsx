@@ -1,6 +1,7 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-class-component-methods */
-// TODO FIX
 /* eslint-disable max-classes-per-file */
+// TODO FIX
 
 import React from 'react';
 import { EditorState, basicSetup } from '@codemirror/basic-setup';
@@ -60,7 +61,14 @@ class Codemirror extends React.Component {
   // Returns the code in the editor
   // eslint-disable-next-line react/no-unused-class-component-methods
   getEditorState() {
-    return (this.view?.state.doc.toJSON());
+    if (this.view) {
+      return (this.view.state.doc.toJSON());
+    }
+    return (['']);
+  }
+
+  getChanges(version: number) {
+    return (changes.slice(version));
   }
 
   // Focus editor
