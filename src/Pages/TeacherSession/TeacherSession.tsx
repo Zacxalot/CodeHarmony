@@ -2,7 +2,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 
 import { useLocation } from 'react-router-dom';
 import {
@@ -14,6 +16,8 @@ import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import './TeacherSession.scss';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
 import { useAppSelector } from '../../Redux/hooks';
+import Codemirror from '../../Components/Codemirror/Codemirror';
+import { ModalBox, ModalContainer } from '../TeacherDashboard/TeacherDashboard';
 
 interface LessonSession {
   plan: PlanSection[],
@@ -48,15 +52,18 @@ function TeacherSession() {
 
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
-  const [connectedStudents, setConnectedStudents] = useState<String[]>([]);
+  const [connectedStudents, setConnectedStudents] = useState<string[]>([]);
+  const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+  const [subbedName, setSubbedName] = useState('');
+
   const username = useAppSelector((state) => state.account.username);
 
-  const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+  const codemirrorRef = useRef<Codemirror>(null);
 
   const getStudentList = () => {
     if (username) {
       const [planName, sessionName] = location.pathname.split('/').splice(-2);
-      axios.get<String[]>(`/session/connected/${username}/${planName}/${sessionName}`).then(({ data }) => {
+      axios.get<string[]>(`/session/connected/${username}/${planName}/${sessionName}`).then(({ data }) => {
         setConnectedStudents(data);
       }).catch(() => { });
     }
@@ -127,6 +134,16 @@ function TeacherSession() {
     }
   };
 
+  useEffect(() => {
+    if (socket) {
+      if (subbedName === '') {
+        socket.send('unsub');
+      } else {
+        socket.send(`tInst subscribe ${subbedName}`);
+      }
+    }
+  }, [subbedName]);
+
   const sectionNavButtons = () => (
     <Stack direction="row" justifyContent="space-between" mt={2}>
       <Button variant="outlined" disabled={currentSection <= 0} onClick={regressSection}>Previous</Button>
@@ -137,32 +154,44 @@ function TeacherSession() {
   const renderLectureOrCoding = () => {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
       return (
-        <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">
-          <Stack
-            sx={{
-              p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
-            }}
-            direction="row"
-            flexWrap="wrap"
-            alignContent="flex-start"
-            justifyContent="space-around"
-          >
-            {connectedStudents.map((sUsername) => (
-              <CodeCard key={`s-${sUsername}`}>
-                <CardActionArea sx={{ height: '100%' }}>
-                  <CardContent>
-                    <Stack>
-                      <Typography variant="h5" textAlign="center">{sUsername}</Typography>
-                    </Stack>
-                  </CardContent>
-                </CardActionArea>
-              </CodeCard>
-            ))}
+        <div>
+          <ModalContainer open={subbedName !== ''}>
+            <ModalBox
+              sx={{
+                maxWidth: '90vw', width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'scroll', p: 1,
+              }}
+              bgcolor="background.default"
+            >
+              <Codemirror ref={codemirrorRef} />
+            </ModalBox>
+          </ModalContainer>
+          <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">
+            <Stack
+              sx={{
+                p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
+              }}
+              direction="row"
+              flexWrap="wrap"
+              alignContent="flex-start"
+              justifyContent="space-around"
+            >
+              {connectedStudents.map((sUsername) => (
+                <CodeCard key={`s-${sUsername}`}>
+                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName(sUsername); }}>
+                    <CardContent>
+                      <Stack>
+                        <Typography variant="h5" textAlign="center">{sUsername}</Typography>
+                      </Stack>
+                    </CardContent>
+                  </CardActionArea>
+                </CodeCard>
+              ))}
+            </Stack>
+            <Paper sx={{ p: 2, minHeight: '100%', flex: 1 }}>
+              {renderElements}
+            </Paper>
           </Stack>
-          <Paper sx={{ p: 2, minHeight: '100%', flex: 1 }}>
-            {renderElements}
-          </Paper>
-        </Stack>
+        </div>
       );
     }
 

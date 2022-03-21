@@ -29,7 +29,7 @@ export default function StudentSession() {
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState(0);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
-  const [sendingUpdates, setSendingUpdates] = useState(true);
+  const [sendingUpdates, setSendingUpdates] = useState(false);
   const [currentVersion, setCurrentVersion] = useState(0);
 
   // eslint-disable-next-line no-undef
@@ -47,8 +47,8 @@ export default function StudentSession() {
         if (socket) {
           socket.send(`sUpdate ${JSON.stringify(changes)}`);
           setCurrentVersion(currentVersion + changes.length);
+          console.log(changes);
         }
-        console.log(changes);
       }
     }
   };
@@ -79,7 +79,7 @@ export default function StudentSession() {
     updateInterval.current = setInterval(() => {
       getUpdates();
     }, 1000);
-  }, [currentVersion]);
+  }, [currentVersion, sendingUpdates]);
 
   // When socket connects
   useEffect(() => {
@@ -91,14 +91,17 @@ export default function StudentSession() {
       };
 
       socket.onmessage = (message) => {
+        console.log(message);
         const text: String = message.data;
         const split = text.split(' ');
 
+        console.log(text);
+
         if (split[0] === 'sec') {
           setCurrentSection(parseInt(split[1], 10));
-        } else if (split[0] === 'unsub') {
+        } else if (text === 'unsub') {
           setSendingUpdates(false);
-        } else if (split[0] === 'sub') {
+        } else if (text === 'subscribe') {
           setSendingUpdates(true);
         }
       };
