@@ -54,14 +54,16 @@ export default function StudentSession() {
   };
 
   useEffect(() => {
-    console.log('running');
-    const [planName] = location.pathname.split('/').splice(-2);
-    setSocket(new WebSocket('ws://localhost:8080/ws'));
-    axios.get<PlanSection[]>(`/plan/info/${planName}`)
-      .then(({ data }) => {
-        setPlanSections(data);
-      })
-      .catch(() => { });
+    const [planName, , teacherName] = location.pathname.split('/').splice(-3);
+
+    if (planName && teacherName) {
+      setSocket(new WebSocket('ws://localhost:8080/ws'));
+      axios.get<PlanSection[]>(`/plan/info/student/${planName}/${teacherName}`)
+        .then(({ data }) => {
+          setPlanSections(data);
+        })
+        .catch(() => { });
+    }
 
     return function cleanup() {
       if (updateInterval.current) {
@@ -83,10 +85,10 @@ export default function StudentSession() {
 
   // When socket connects
   useEffect(() => {
-    const [planName, sessionName] = location.pathname.split('/').splice(-2);
-    if (socket) {
+    const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
+    if (socket && planName && sessionName && teacherName) {
       socket.onopen = () => {
-        socket.send(`sJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:user1`);
+        socket.send(`sJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:${decodeURIComponent(teacherName)}`);
         console.log('opened');
       };
 
@@ -102,6 +104,10 @@ export default function StudentSession() {
         } else if (text === 'unsub') {
           setSendingUpdates(false);
         } else if (text === 'subscribe') {
+          if (codemirrorRef.current) {
+            socket.send(`sDoc ${JSON.stringify(codemirrorRef.current.getEditorState())}`);
+            codemirrorRef.current.clearChanges();
+          }
           setSendingUpdates(true);
         }
       };

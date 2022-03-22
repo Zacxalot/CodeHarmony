@@ -94,9 +94,9 @@ function TeacherSession() {
   // When the socket connection is made
   useEffect(() => {
     const [planName, sessionName] = location.pathname.split('/').splice(-2);
-    if (socket) {
+    if (socket && planName && sessionName && username) {
       socket.onopen = () => {
-        socket.send(`tJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:user1`);
+        socket.send(`tJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:${decodeURIComponent(username)}`);
         console.log('opened');
       };
 
@@ -176,7 +176,7 @@ function TeacherSession() {
               justifyContent="space-around"
             >
               {connectedStudents.map((sUsername) => (
-                <CodeCard key={`s-${sUsername}`}>
+                <CodeCard key={`s - ${sUsername}`}>
                   <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName(sUsername); }}>
                     <CardContent>
                       <Stack>

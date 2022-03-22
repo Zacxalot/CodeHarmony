@@ -71,6 +71,10 @@ class Codemirror extends React.Component {
     return (changes.slice(version));
   }
 
+  clearChanges() {
+    changes = [];
+  }
+
   // Focus editor
   focusEditor() {
     this.view?.focus();
