@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface Account {
-  username: String | undefined,
+  username: string | undefined,
 }
 
 const initialState: Account = { username: undefined };
@@ -11,7 +11,7 @@ const userAccountSlice = createSlice({
   name: 'userAccount',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ username: String }>) => {
+    login: (state, action: PayloadAction<{ username: string }>) => {
       const { payload: { username } } = action;
       state.username = username;
     },

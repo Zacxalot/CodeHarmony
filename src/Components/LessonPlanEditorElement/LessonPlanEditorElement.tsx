@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDropDown, ArrowDropUp, Remove } from '@mui/icons-material';
 import {
-  IconButton, Menu, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
+  IconButton, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
 } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import { removeElement, updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';

@@ -3,8 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import {
-  Button,
-  Container, List, Paper, Stack, TextField, Typography,
+  Container, List, Paper, Stack, Typography,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import LessonPlanSectionListItem from '../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem';

@@ -24,7 +24,7 @@ export default function NavBar() {
   // If not logged in, navigate to login
   useEffect(() => {
     if (!account.username) {
-      axios.get<{ username: String }>('/account/check')
+      axios.get<{ username: string }>('/account/check')
         .then(({ data: { username } }) => {
           dispatch(login({ username }));
         })
