@@ -57,8 +57,6 @@ function TeacherSession() {
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
   const [subbedName, setSubbedName] = useState('');
 
-  const [waitingForDoc, setWaitingForDoc] = useState(true);
-
   const username = useAppSelector((state) => state.account.username);
 
   const codemirrorRef = useRef<Codemirror>(null);

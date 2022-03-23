@@ -11,10 +11,10 @@ import NavBar from '../../Components/NavBar/NavBar';
 import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
 
 interface ActiveTeacherSession {
-  teacher: String,
-  plan_name: String,
-  username: String,
+  plan_name: string,
+  username: string,
   session_date: Date
+  session_name: string,
 }
 
 const teacherColumns: GridColDef[] = [
@@ -26,13 +26,13 @@ const teacherColumns: GridColDef[] = [
     field: 'open',
     headerName: 'Open',
     sortable: false,
-    renderCell: ({ row }) => <IconButton component={Link} to={`/s/session/${encodeURIComponent(row.plan_name)}/${encodeURIComponent(row.session_name)}`}><PlayArrow /></IconButton>,
+    renderCell: ({ row }) => <IconButton component={Link} to={`/s/session/${encodeURIComponent(row.plan_name)}/${encodeURIComponent(row.session_name)}/${encodeURIComponent(row.username)}`}><PlayArrow /></IconButton>,
   },
 ];
 
 export default function StudentDashboard() {
   const [activeTeacherSessions, setActiveTeacherSessions] = useState<ActiveTeacherSession[]>([]);
-  const [code, setCode] = useState<String>('');
+  const [code, setCode] = useState<string>('');
 
   useEffect(() => {
     axios.get<ActiveTeacherSession[]>('/session/active')
