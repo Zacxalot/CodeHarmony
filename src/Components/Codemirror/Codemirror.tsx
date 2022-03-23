@@ -6,7 +6,7 @@
 import React from 'react';
 import { EditorState, basicSetup } from '@codemirror/basic-setup';
 import { python } from '@codemirror/lang-python';
-import { ChangeSet } from '@codemirror/state';
+import { ChangeSet, TransactionSpec } from '@codemirror/state';
 import { ViewPlugin, ViewUpdate, EditorView } from '@codemirror/view';
 import { oneDark } from '@codemirror/theme-one-dark';
 import './Codemirror.scss';
@@ -29,6 +29,11 @@ const runExtension = () => {
   return plugin;
 };
 
+const createState = (doc: string) => (EditorState.create({
+  doc,
+  extensions: [basicSetup, python(), runExtension(), oneDark],
+}));
+
 class Codemirror extends React.Component {
   view: EditorView | undefined;
 
@@ -38,9 +43,7 @@ class Codemirror extends React.Component {
 
     // Create Code Mirror state and view
     if (parent) {
-      const state = EditorState.create({
-        extensions: [basicSetup, python(), runExtension(), oneDark],
-      });
+      const state = createState('');
 
       this.view = new EditorView({
         state,
@@ -67,12 +70,28 @@ class Codemirror extends React.Component {
     return (['']);
   }
 
+  // Clears the document and sets it to the value passed
+  setEditorState(doc: string) {
+    if (this.view) {
+      this.view.setState(createState(doc));
+    }
+  }
+
   getChanges(version: number) {
     return (changes.slice(version));
   }
 
   clearChanges() {
     changes = [];
+  }
+
+  // Dispatch each transaction spec
+  applyChanges(newChanges: TransactionSpec[]) {
+    newChanges.forEach((change) => {
+      if (this.view) {
+        this.view.dispatch(change);
+      }
+    });
   }
 
   // Focus editor

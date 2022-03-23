@@ -11,6 +11,7 @@ import {
   Button, Container, Stack, Step, StepLabel, Stepper, CircularProgress, Paper,
   Box, Card, styled, CardActionArea, CardContent, Typography,
 } from '@mui/material';
+import { ChangeSet } from '@codemirror/state';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import './TeacherSession.scss';
@@ -55,6 +56,8 @@ function TeacherSession() {
   const [connectedStudents, setConnectedStudents] = useState<string[]>([]);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
   const [subbedName, setSubbedName] = useState('');
+
+  const [waitingForDoc, setWaitingForDoc] = useState(true);
 
   const username = useAppSelector((state) => state.account.username);
 
@@ -101,8 +104,24 @@ function TeacherSession() {
       };
 
       socket.onmessage = (message) => {
-        const g = message.data;
-        console.log(g);
+        const text: string = message.data;
+        const split = text.split(' ');
+
+        if (split[0] === 'sDoc') {
+          // Set the inital state of the editor
+          const doc = JSON.parse(text.slice(5)).join('\n');
+          if (codemirrorRef.current && codemirrorRef.current.view) {
+            codemirrorRef.current.setEditorState(doc);
+          }
+        } else if (split[0] === 'sUpdate') {
+          // Get the changes array and turn it into an array of TransactionSpecs
+          // Then let the editor update with them
+          const rawArray: any[] = JSON.parse(text.slice(8));
+          const changes = rawArray.map((change: any) => ({ changes: ChangeSet.fromJSON(change) }));
+          if (codemirrorRef.current) {
+            codemirrorRef.current.applyChanges(changes);
+          }
+        }
       };
     }
   }, [socket]);

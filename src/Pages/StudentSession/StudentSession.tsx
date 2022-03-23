@@ -80,7 +80,7 @@ export default function StudentSession() {
 
     updateInterval.current = setInterval(() => {
       getUpdates();
-    }, 1000);
+    }, 333);
   }, [currentVersion, sendingUpdates]);
 
   // When socket connects
@@ -93,11 +93,8 @@ export default function StudentSession() {
       };
 
       socket.onmessage = (message) => {
-        console.log(message);
         const text: String = message.data;
         const split = text.split(' ');
-
-        console.log(text);
 
         if (split[0] === 'sec') {
           setCurrentSection(parseInt(split[1], 10));
