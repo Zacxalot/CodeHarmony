@@ -172,7 +172,7 @@ function TeacherSession() {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
       return (
         <div>
-          <ModalContainer open={subbedName !== ''}>
+          <ModalContainer open={subbedName !== ''} onClose={() => { setSubbedName(''); }}>
             <ModalBox
               sx={{
                 maxWidth: '90vw', width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'scroll', p: 1,
@@ -204,7 +204,10 @@ function TeacherSession() {
                 </CodeCard>
               ))}
             </Stack>
-            <Paper sx={{ p: 2, minHeight: '100%', flex: 1 }}>
+            <Paper sx={{
+              p: 2, minHeight: '100%', flex: 1, overflowY: 'auto',
+            }}
+            >
               {renderElements}
             </Paper>
           </Stack>

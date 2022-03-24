@@ -14,7 +14,7 @@ function ThemePicker() {
 
   return (
     <ThemeProvider theme={selectedTheme === 'light' ? lightTheme : darkTheme}>
-      <Stack sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
+      <Stack sx={{ bgcolor: 'background.default', minHeight: '100vh', height: 'fit-content' }}>
         <React.StrictMode>
           <Hub />
         </React.StrictMode>

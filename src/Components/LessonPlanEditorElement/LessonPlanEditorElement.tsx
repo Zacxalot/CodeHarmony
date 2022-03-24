@@ -2,7 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDropDown, ArrowDropUp, Remove } from '@mui/icons-material';
 import {
-  IconButton, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
+  FormControl,
+  IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack, TextField,
 } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import { removeElement, updateElement } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
@@ -64,25 +65,34 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
 
   const renderInput = () => {
     if (element.elType === 'Image') {
-      return <TextField onChange={handleTextboxChange} value={textValue} />;
+      return (
+        <FormControl>
+          <InputLabel>URL</InputLabel>
+          <TextField onChange={handleTextboxChange} value={textValue} />
+        </FormControl>
+      );
     }
     if (element.elType === 'Typography') {
       return (
         <Stack direction="row" spacing={0.5}>
-          <TextField sx={{ flex: 3 }} onChange={handleTextboxChange} value={textValue} />
-          <Select
-            sx={{ flex: 1 }}
-            value={element.props.variant || 'p'}
-            onChange={({ target: { value } }: SelectChangeEvent) => {
-              dispatch(updateElement({
-                type: 'prop', newValue: `variant:${value}`, id, sectionId,
-              }));
-            }}
-          >
-            <MenuItem value="h1">Title</MenuItem>
-            <MenuItem value="h3">Subtitle</MenuItem>
-            <MenuItem value="p">Paragraph</MenuItem>
-          </Select>
+          <TextField sx={{ flex: 3 }} onChange={handleTextboxChange} value={textValue} multiline />
+          <FormControl sx={{ height: 'fit-content' }}>
+            <InputLabel>Font Size</InputLabel>
+            <Select
+              sx={{ flex: 1 }}
+              value={element.props.variant || 'p'}
+              label="Font Size"
+              onChange={({ target: { value } }: SelectChangeEvent) => {
+                dispatch(updateElement({
+                  type: 'prop', newValue: `variant:${value}`, id, sectionId,
+                }));
+              }}
+            >
+              <MenuItem value="h1">Title</MenuItem>
+              <MenuItem value="h3">Subtitle</MenuItem>
+              <MenuItem value="p">Paragraph</MenuItem>
+            </Select>
+          </FormControl>
         </Stack>
       );
     }
@@ -97,10 +107,13 @@ function LessonPlanEditorElement({ element, sectionId, id }: LessonPlanEditorEle
       </Paper>
       <Stack direction="row" p={0.5} spacing={0.5}>
         <Stack flex={1} spacing={0.5}>
-          <Select value={element.elType} onChange={handleTypeChange}>
-            <MenuItem value="Typography">Text</MenuItem>
-            <MenuItem value="Image">Image</MenuItem>
-          </Select>
+          <FormControl>
+            <InputLabel>Type</InputLabel>
+            <Select value={element.elType} onChange={handleTypeChange} sx={{ width: 'fit-content' }} label="Type">
+              <MenuItem value="Typography">Text</MenuItem>
+              <MenuItem value="Image">Image</MenuItem>
+            </Select>
+          </FormControl>
           {renderInput()}
         </Stack>
 

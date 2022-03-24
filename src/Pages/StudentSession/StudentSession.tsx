@@ -208,7 +208,7 @@ export default function StudentSession() {
   };
 
   return (
-    <Stack minHeight="100vh" maxHeight="100vh">
+    <Stack minHeight="100vh" maxHeight={planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ' ? '100vh' : 'default'} sx={{ backgroundColor: 'background.default' }}>
       <NavBar />
       {renderLectureOrCoding()}
     </Stack>
