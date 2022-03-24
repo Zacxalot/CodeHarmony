@@ -1,11 +1,13 @@
 import React, {
+  useCallback,
   useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   Stack, CircularProgress, Container, Paper, Button, ThemeProvider, Box,
 } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { PlayArrow, Save } from '@mui/icons-material';
+import { debounce } from 'lodash';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
@@ -148,6 +150,34 @@ export default function StudentSession() {
     }
   };
 
+  const runHandler = useCallback(debounce(runCode, 2000, { leading: true }), []);
+
+  const saveCode = () => {
+    let code;
+
+    // Get code from the Codemirror
+    if (codemirrorRef.current) {
+      code = codemirrorRef.current.getEditorState();
+    }
+
+    const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
+
+    console.log(code);
+
+    // If we can get all the info we need, post the code
+    if (code !== undefined
+      && planName
+      && sessionName
+      && teacherName
+      && planSections[currentSection]
+    ) {
+      console.log('Saving code');
+      axios.post(`/session/save/${encodeURIComponent(planName)}/${encodeURIComponent(sessionName)}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`, code);
+    }
+  };
+
+  const saveHandler = useCallback(debounce(saveCode, 2000, { leading: true }), []);
+
   const renderLoading = () => {
     if (planSections.length === 0) {
       return (<CircularProgress />);
@@ -187,8 +217,8 @@ export default function StudentSession() {
             <Console ref={consoleRef} />
             <Paper sx={{ height: '7%' }}>
               <Stack direction="row" spacing={1} padding={1}>
-                <Button variant="contained" onClick={runCode} endIcon={<PlayArrow />}>Run</Button>
-                <Button variant="outlined">Test</Button>
+                <Button variant="contained" onClick={() => { runHandler(); }} endIcon={<PlayArrow />}>Run</Button>
+                <Button variant="contained" onClick={() => { saveHandler(); }} endIcon={<Save />}>Save</Button>
               </Stack>
             </Paper>
           </Stack>
