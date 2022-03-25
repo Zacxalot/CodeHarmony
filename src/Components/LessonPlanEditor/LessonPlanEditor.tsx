@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  Button, FormControl, FormHelperText, MenuItem, Paper, Select, SelectChangeEvent, Stack,
+  Box,
+  Button, FormControl, InputLabel,
+  MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography,
 } from '@mui/material';
 import axios from 'axios';
-import { Add } from '@mui/icons-material';
+import { Add, Build, Save } from '@mui/icons-material';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditorElement';
 import {
   addNewElement, setSectionLanguage, setSectionName, setSectionType,
 } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
 import TextFieldWithButton from '../TextFieldWithButton/TextFieldWithButton';
+import { ModalBox, ModalContainer } from '../../Pages/TeacherDashboard/TeacherDashboard';
+import Codemirror from '../Codemirror/Codemirror';
 
 interface LessonPlanEditorProps {
   planSection: PlanSection,
@@ -33,6 +37,9 @@ function LessonPlanEditor(
   const [sectionTypeSelect, setSectionTypeSelect] = useState(planSection.sectionType);
   // eslint-disable-next-line max-len
   const [sectionLanguageSelect, setSectionLanguageSelect] = useState(planSection.codingData.language);
+  const [editingCode, setEditingCode] = useState('');
+
+  const codemirrorRef = useRef<Codemirror>(null);
 
   const dispatch = useDispatch();
 
@@ -68,13 +75,29 @@ function LessonPlanEditor(
   const renderCodingOptions = () => {
     if (planSection.sectionType === 'CODING  ') {
       return (
-        <FormControl>
-          <Select value={sectionLanguageSelect} onChange={changeSectionLanguage}>
-            <MenuItem value="python">Python</MenuItem>
-            <MenuItem value="javascript">Javascript</MenuItem>
-          </Select>
-          <FormHelperText>Section Type</FormHelperText>
-        </FormControl>
+        <Stack justifyContent="center" direction="row" spacing={1}>
+          <FormControl>
+            <InputLabel>Language</InputLabel>
+            <Select value={sectionLanguageSelect} onChange={changeSectionLanguage} label="Language">
+              <MenuItem value="python">Python</MenuItem>
+              <MenuItem value="javascript">Javascript</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            endIcon={<Build />}
+            onClick={() => { setEditingCode('Starter Code'); }}
+          >
+            Starter Code
+          </Button>
+          <Button
+            variant="contained"
+            endIcon={<Build />}
+            onClick={() => { setEditingCode('Expected Console Output'); }}
+          >
+            Answers
+          </Button>
+        </Stack>
       );
     }
 
@@ -101,9 +124,37 @@ function LessonPlanEditor(
   return (
     // eslint-disable-next-line react/no-unstable-nested-components
     <Stack spacing={1}>
+      <ModalContainer open={editingCode !== ''} onClose={() => { setEditingCode(''); }}>
+        <ModalBox
+          sx={{
+            maxWidth: '90vw', width: '90vw', maxHeight: '90vh', p: 1,
+          }}
+          bgcolor="background.default"
+          spacing={1}
+        >
+          <Typography variant="h6" color="text.primary" textAlign="center">{editingCode}</Typography>
+          <Box sx={{
+            flex: 1,
+            minHeight: '80vh',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+          }}
+          >
+            <Codemirror ref={codemirrorRef} />
+          </Box>
+          <Button variant="contained" endIcon={<Save />}>Save</Button>
+        </ModalBox>
+      </ModalContainer>
       <Paper>
         <Stack p={2} spacing={2}>
           <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+            <FormControl sx={{ width: 'fit-content' }}>
+              <InputLabel>Section Type</InputLabel>
+              <Select value={sectionTypeSelect} onChange={changeSectionType} label="Section Type">
+                <MenuItem value="LECTURE ">Lecture</MenuItem>
+                <MenuItem value="CODING  ">Coding</MenuItem>
+              </Select>
+            </FormControl>
             <TextFieldWithButton
               onChange={(value) => {
                 setUpdateSectionNameText(value);
@@ -127,13 +178,7 @@ function LessonPlanEditor(
               value={updateSectionNameText}
             />
           </Stack>
-          <FormControl>
-            <Select value={sectionTypeSelect} onChange={changeSectionType}>
-              <MenuItem value="LECTURE ">Lecture</MenuItem>
-              <MenuItem value="CODING  ">Coding</MenuItem>
-            </Select>
-            <FormHelperText>Section Type</FormHelperText>
-          </FormControl>
+
           {renderCodingOptions()}
         </Stack>
       </Paper>
