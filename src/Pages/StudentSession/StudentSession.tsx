@@ -113,6 +113,29 @@ export default function StudentSession() {
     }
   }, [socket]);
 
+  // When current section changes
+  useEffect(() => {
+    if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
+      const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
+
+      // If we can get all the info we need, post the code
+      if (planName
+        && sessionName
+        && teacherName
+        && planSections[currentSection]
+      ) {
+        console.log('Getting code');
+        axios.get<String[]>(`/session/save/${encodeURIComponent(planName)}/${encodeURIComponent(sessionName)}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`)
+          .then(({ data }) => {
+            if (codemirrorRef.current) {
+              console.log(data);
+              codemirrorRef.current.setEditorState(data.join('\n'));
+            }
+          });
+      }
+    }
+  }, [currentSection]);
+
   const runCode = () => {
     console.log('Running code');
     let code;
@@ -162,8 +185,6 @@ export default function StudentSession() {
 
     const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
 
-    console.log(code);
-
     // If we can get all the info we need, post the code
     if (code !== undefined
       && planName
@@ -176,7 +197,10 @@ export default function StudentSession() {
     }
   };
 
-  const saveHandler = useCallback(debounce(saveCode, 2000, { leading: true }), []);
+  const saveHandler = useCallback(
+    debounce(saveCode, 2000, { leading: true }),
+    [planSections, currentSection],
+  );
 
   const renderLoading = () => {
     if (planSections.length === 0) {
