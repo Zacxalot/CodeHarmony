@@ -121,6 +121,17 @@ export const teacherLessonPlanSlice = createSlice({
       state[sectionId].codingData.language = newLanguage;
       state[sectionId].changed = true;
     },
+
+    // eslint-disable-next-line max-len
+    setStarterAndExpectedCode: (state, action: PayloadAction<{ sectionId: number, newCode: string, toSet: string }>) => {
+      const { payload: { newCode, sectionId, toSet } } = action;
+      if (toSet === 'starter') {
+        state[sectionId].codingData.startingCode = newCode;
+      } else {
+        state[sectionId].codingData.expectedOutput = newCode;
+      }
+      state[sectionId].changed = true;
+    },
   },
 });
 
@@ -135,5 +146,6 @@ export const {
   setSectionName,
   setSectionType,
   setSectionLanguage,
+  setStarterAndExpectedCode,
 } = teacherLessonPlanSlice.actions;
 export default teacherLessonPlanSlice.reducer;

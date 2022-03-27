@@ -6,11 +6,13 @@ import {
   MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography,
 } from '@mui/material';
 import axios from 'axios';
-import { Add, Build, Save } from '@mui/icons-material';
+import {
+  Add, Build, Cancel, Save,
+} from '@mui/icons-material';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import LessonPlanEditorElement from '../LessonPlanEditorElement/LessonPlanEditorElement';
 import {
-  addNewElement, setSectionLanguage, setSectionName, setSectionType,
+  addNewElement, setSectionLanguage, setSectionName, setSectionType, setStarterAndExpectedCode,
 } from '../../Pages/TeacherLessonPlan/teacherLessonPlanSlice';
 import TextFieldWithButton from '../TextFieldWithButton/TextFieldWithButton';
 import { ModalBox, ModalContainer } from '../../Pages/TeacherDashboard/TeacherDashboard';
@@ -117,6 +119,19 @@ function LessonPlanEditor(
     }
   };
 
+  const saveCodingOption = () => {
+    if (codemirrorRef.current) {
+      const toSet = editingCode.startsWith('S') ? 'starter' : 'result';
+      dispatch(
+        setStarterAndExpectedCode(
+          { sectionId, newCode: codemirrorRef.current.getEditorState().join('\n'), toSet },
+        ),
+      );
+
+      setEditingCode('');
+    }
+  };
+
   if (planSection.sectionType === 'undefined') {
     return (<div>To get started, add a new section!</div>);
   }
@@ -124,7 +139,7 @@ function LessonPlanEditor(
   return (
     // eslint-disable-next-line react/no-unstable-nested-components
     <Stack spacing={1}>
-      <ModalContainer open={editingCode !== ''} onClose={() => { setEditingCode(''); }}>
+      <ModalContainer open={editingCode !== ''}>
         <ModalBox
           sx={{
             maxWidth: '90vw', width: '90vw', maxHeight: '90vh', p: 1,
@@ -142,7 +157,10 @@ function LessonPlanEditor(
           >
             <Codemirror ref={codemirrorRef} />
           </Box>
-          <Button variant="contained" endIcon={<Save />}>Save</Button>
+          <Stack direction="row" justifyContent="center" spacing={1}>
+            <Button variant="contained" endIcon={<Save />} onClick={() => { saveCodingOption(); }}>Save</Button>
+            <Button variant="contained" endIcon={<Cancel />} onClick={() => { setEditingCode(''); }}>Cancel</Button>
+          </Stack>
         </ModalBox>
       </ModalContainer>
       <Paper>
