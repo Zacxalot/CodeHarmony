@@ -40,6 +40,7 @@ function LessonPlanEditor(
   // eslint-disable-next-line max-len
   const [sectionLanguageSelect, setSectionLanguageSelect] = useState(planSection.codingData.language);
   const [editingCode, setEditingCode] = useState('');
+  const [initialCode, setInitialCode] = useState('');
 
   const codemirrorRef = useRef<Codemirror>(null);
 
@@ -74,6 +75,17 @@ function LessonPlanEditor(
     setSectionLanguageSelect(value);
   });
 
+  const openCode = (option: string) => {
+    console.log('Opening code');
+    if (option === 'starter') {
+      setInitialCode(planSection.codingData.startingCode);
+      setEditingCode('Starter Code');
+    } else {
+      setInitialCode(planSection.codingData.expectedOutput);
+      setEditingCode('Expected Console Output');
+    }
+  };
+
   const renderCodingOptions = () => {
     if (planSection.sectionType === 'CODING  ') {
       return (
@@ -88,14 +100,14 @@ function LessonPlanEditor(
           <Button
             variant="contained"
             endIcon={<Build />}
-            onClick={() => { setEditingCode('Starter Code'); }}
+            onClick={() => { openCode('starter'); }}
           >
             Starter Code
           </Button>
           <Button
             variant="contained"
             endIcon={<Build />}
-            onClick={() => { setEditingCode('Expected Console Output'); }}
+            onClick={() => { openCode('expected'); }}
           >
             Answers
           </Button>
@@ -155,7 +167,7 @@ function LessonPlanEditor(
             overflowY: 'auto',
           }}
           >
-            <Codemirror ref={codemirrorRef} />
+            <Codemirror ref={codemirrorRef} initialCode={initialCode} />
           </Box>
           <Stack direction="row" justifyContent="center" spacing={1}>
             <Button variant="contained" endIcon={<Save />} onClick={() => { saveCodingOption(); }}>Save</Button>

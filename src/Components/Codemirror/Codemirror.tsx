@@ -34,16 +34,21 @@ const createState = (doc: string) => (EditorState.create({
   extensions: [basicSetup, python(), runExtension(), oneDark],
 }));
 
-class Codemirror extends React.Component {
+interface CodemirrorProps {
+  initialCode?: string,
+}
+
+class Codemirror extends React.Component<CodemirrorProps> {
   view: EditorView | undefined;
 
   componentDidMount() {
     changes = [];
     const parent = document.getElementById('code-window');
+    const { initialCode } = this.props;
 
     // Create Code Mirror state and view
     if (parent) {
-      const state = createState('');
+      const state = createState(initialCode || '');
 
       this.view = new EditorView({
         state,
