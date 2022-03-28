@@ -129,7 +129,20 @@ export default function StudentSession() {
           .then(({ data }) => {
             if (codemirrorRef.current) {
               console.log(data);
-              codemirrorRef.current.setEditorState(data.join('\n'));
+              if (data.length === 1 && data[0].trim() === '') {
+                codemirrorRef.current.setEditorState(
+                  planSections[currentSection].codingData.startingCode,
+                );
+              } else {
+                codemirrorRef.current.setEditorState(data.join('\n'));
+              }
+            }
+          })
+          .catch(() => {
+            if (codemirrorRef.current) {
+              codemirrorRef.current.setEditorState(
+                planSections[currentSection].codingData.startingCode,
+              );
             }
           });
       }
