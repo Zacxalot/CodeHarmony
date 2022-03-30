@@ -149,7 +149,12 @@ export default function StudentSession() {
     }
   }, [currentSection]);
 
+  console.log(planSections);
+
   const runCode = () => {
+    // eslint-disable-next-line no-unused-vars
+    const [planName, _sectionName, teacherName] = location.pathname.split('/').splice(-3);
+
     console.log('Running code');
     let code;
 
@@ -158,7 +163,9 @@ export default function StudentSession() {
       code = codemirrorRef.current.getEditorState()?.join('\n');
     }
 
-    if (code !== undefined) {
+    console.log(planName, teacherName, planSections[currentSection], code, planSections);
+
+    if (code !== undefined && planSections[currentSection]) {
       const sendCode = {
         language: 'python',
         version: '3.10.0',
@@ -170,11 +177,19 @@ export default function StudentSession() {
         ],
       };
 
-      axios.post<CodeSendResponse>('/api/v2/execute', sendCode)
-        .then((response) => {
+      // Post the code and identifier to the API
+      axios.post<CodeSendResponse>('/run', { piston: sendCode, identifier: { plan_name: planName, host: teacherName, section_name: planSections[currentSection].name } })
+        .then(({ data, status }) => {
           if (consoleRef.current) {
+            if (status === 202) {
+              console.log('Correct answer!');
+            } else if (status === 200) {
+              console.log('Incorrect!');
+            }
+
+            // Push results to console
             consoleRef.current.setState(
-              { contents: response.data.run.stdout, signal: response.data.run.signal },
+              { contents: data.run.stdout, signal: data.run.signal },
             );
             consoleRef.current?.scrollToBottom();
           }
