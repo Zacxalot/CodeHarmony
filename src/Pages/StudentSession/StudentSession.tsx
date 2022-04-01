@@ -57,7 +57,6 @@ export default function StudentSession() {
 
   useEffect(() => {
     const [planName, , teacherName] = location.pathname.split('/').splice(-3);
-
     if (planName && teacherName) {
       setSocket(new WebSocket('ws://localhost:8080/ws'));
       axios.get<PlanSection[]>(`/plan/info/student/${planName}/${teacherName}`)
@@ -149,11 +148,9 @@ export default function StudentSession() {
     }
   }, [currentSection]);
 
-  console.log(planSections);
-
   const runCode = () => {
     // eslint-disable-next-line no-unused-vars
-    const [planName, _sectionName, teacherName] = location.pathname.split('/').splice(-3);
+    const [planName, _sessionName, teacherName] = location.pathname.split('/').splice(-3);
 
     console.log('Running code');
     let code;
@@ -201,7 +198,7 @@ export default function StudentSession() {
     }
   };
 
-  const runHandler = useCallback(debounce(runCode, 2000, { leading: true }), []);
+  const runHandler = useCallback(debounce(runCode, 2000, { leading: true }), [currentSection]);
 
   const saveCode = () => {
     let code;
