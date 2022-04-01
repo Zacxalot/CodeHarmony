@@ -1280,6 +1280,18 @@
     "@codemirror/view" "^0.19.22"
     "@lezer/common" "^0.15.0"
 
+"@codemirror/commands@^0.19.8":
+  version "0.19.8"
+  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-0.19.8.tgz#1f99c1a8bf200d17c4d6997379099459f3678107"
+  integrity sha512-65LIMSGUGGpY3oH6mzV46YWRrgao6NmfJ+AuC7jNz3K5NPnH6GCV1H5I6SwOFyVbkiygGyd0EFwrWqywTBD1aw==
+  dependencies:
+    "@codemirror/language" "^0.19.0"
+    "@codemirror/matchbrackets" "^0.19.0"
+    "@codemirror/state" "^0.19.2"
+    "@codemirror/text" "^0.19.6"
+    "@codemirror/view" "^0.19.22"
+    "@lezer/common" "^0.15.0"
+
 "@codemirror/comment@^0.19.0":
   version "0.19.1"
   resolved "https://registry.npmjs.org/@codemirror/comment/-/comment-0.19.1.tgz"

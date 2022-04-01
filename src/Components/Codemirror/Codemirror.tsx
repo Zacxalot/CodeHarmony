@@ -7,9 +7,12 @@ import React from 'react';
 import { EditorState, basicSetup } from '@codemirror/basic-setup';
 import { python } from '@codemirror/lang-python';
 import { ChangeSet, TransactionSpec } from '@codemirror/state';
-import { ViewPlugin, ViewUpdate, EditorView } from '@codemirror/view';
+import {
+  ViewPlugin, ViewUpdate, EditorView, keymap,
+} from '@codemirror/view';
 import { oneDark } from '@codemirror/theme-one-dark';
 import './Codemirror.scss';
+import { indentWithTab } from '@codemirror/commands';
 
 let changes: ChangeSet[] = [];
 
@@ -31,7 +34,7 @@ const runExtension = () => {
 
 const createState = (doc: string) => (EditorState.create({
   doc,
-  extensions: [basicSetup, python(), runExtension(), oneDark],
+  extensions: [basicSetup, python(), runExtension(), oneDark, keymap.of([indentWithTab])],
 }));
 
 interface CodemirrorProps {
