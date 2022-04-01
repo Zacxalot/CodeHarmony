@@ -167,7 +167,7 @@ function LessonPlanEditor(
             overflowY: 'auto',
           }}
           >
-            <Codemirror ref={codemirrorRef} initialCode={initialCode} />
+            <Codemirror ref={codemirrorRef} initialCode={initialCode} disabled={false} />
           </Box>
           <Stack direction="row" justifyContent="center" spacing={1}>
             <Button variant="contained" endIcon={<Save />} onClick={() => { saveCodingOption(); }}>Save</Button>

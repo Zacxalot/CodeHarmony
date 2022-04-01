@@ -251,7 +251,7 @@ export default function StudentSession() {
                 position: 'absolute', width: 'calc(50% - 7.5px)', height: '100%', maxHeight: 'calc(100vh - 50px)', left: '5px', top: '45px', overflowY: 'scroll', display: 'flex', flexDirection: 'column',
               }}
             >
-              <Codemirror ref={codemirrorRef} />
+              <Codemirror ref={codemirrorRef} disabled={false} />
               <Box sx={{ flex: 1 }} onClick={() => { codemirrorRef.current?.focusEditor(); }} />
             </Paper>
           </ThemeProvider>

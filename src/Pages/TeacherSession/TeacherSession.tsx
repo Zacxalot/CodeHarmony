@@ -122,7 +122,7 @@ function TeacherSession() {
         }
       };
     }
-  }, [socket]);
+  }, [socket, username]);
 
   const renderElements = useMemo(() => {
     if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
@@ -179,7 +179,7 @@ function TeacherSession() {
               }}
               bgcolor="background.default"
             >
-              <Codemirror ref={codemirrorRef} />
+              <Codemirror ref={codemirrorRef} disabled />
             </ModalBox>
           </ModalContainer>
           <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">

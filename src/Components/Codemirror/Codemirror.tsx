@@ -32,13 +32,21 @@ const runExtension = () => {
   return plugin;
 };
 
-const createState = (doc: string) => (EditorState.create({
+const createState = (doc: string, disabled: boolean) => (EditorState.create({
   doc,
-  extensions: [basicSetup, python(), runExtension(), oneDark, keymap.of([indentWithTab])],
+  extensions: [
+    basicSetup,
+    python(),
+    runExtension(),
+    oneDark,
+    keymap.of([indentWithTab]),
+    EditorView.editable.of(!disabled),
+  ],
 }));
 
 interface CodemirrorProps {
   initialCode?: string,
+  disabled: boolean,
 }
 
 class Codemirror extends React.Component<CodemirrorProps> {
@@ -47,11 +55,11 @@ class Codemirror extends React.Component<CodemirrorProps> {
   componentDidMount() {
     changes = [];
     const parent = document.getElementById('code-window');
-    const { initialCode } = this.props;
+    const { initialCode, disabled } = this.props;
 
     // Create Code Mirror state and view
     if (parent) {
-      const state = createState(initialCode || '');
+      const state = createState(initialCode || '', disabled);
 
       this.view = new EditorView({
         state,
@@ -81,7 +89,8 @@ class Codemirror extends React.Component<CodemirrorProps> {
   // Clears the document and sets it to the value passed
   setEditorState(doc: string) {
     if (this.view) {
-      this.view.setState(createState(doc));
+      const { disabled } = this.props;
+      this.view.setState(createState(doc, disabled));
     }
   }
 
