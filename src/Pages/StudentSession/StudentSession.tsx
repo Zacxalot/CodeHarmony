@@ -4,9 +4,12 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-  Stack, CircularProgress, Container, Paper, Button, ThemeProvider, Box,
+  Stack, CircularProgress, Container, Paper, Button,
+  ThemeProvider, Box, Fab, Modal, IconButton, Typography, TextField,
 } from '@mui/material';
-import { PlayArrow, Save } from '@mui/icons-material';
+import {
+  Chat, Close, PlayArrow, Save,
+} from '@mui/icons-material';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
@@ -16,6 +19,7 @@ import CodingInfoWindow from '../../Components/CodingInfoWindow/CodingInfoWindow
 import Console from '../../Components/Console/Console';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import { darkTheme } from '../../Theme';
+import ChatWindow from '../../Components/ChatWindow';
 
 interface CodeSendResponse {
   language: string,
@@ -33,6 +37,7 @@ export default function StudentSession() {
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
   const [sendingUpdates, setSendingUpdates] = useState(false);
   const [currentVersion, setCurrentVersion] = useState(0);
+  const [chatOpen, setChatOpen] = useState(false);
 
   // eslint-disable-next-line no-undef
   const updateInterval = useRef<NodeJS.Timeout>();
@@ -289,6 +294,10 @@ export default function StudentSession() {
   return (
     <Stack minHeight="100vh" maxHeight={planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ' ? '100vh' : 'default'} sx={{ backgroundColor: 'background.default' }}>
       <NavBar />
+      <Fab sx={{ position: 'absolute', bottom: 16, left: 16 }} onClick={() => { setChatOpen(true); }}>
+        <Chat />
+      </Fab>
+      <ChatWindow onClose={() => { setChatOpen(false); }} open={chatOpen} />
       {renderLectureOrCoding()}
     </Stack>
   );
