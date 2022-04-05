@@ -3,17 +3,28 @@ import {
   Paper, Stack, Typography, Box, Button, IconButton, TextField,
 } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import ChatMessageBox from './ChatMessageBox';
+
+export interface Message {
+  username: string,
+  text: string,
+  uuid: string,
+}
 
 interface ChatWindowProps {
   open: boolean,
   onClose: () => void,
+  messages: Message[],
+  username: string,
 }
 
-export default function ChatWindow({ open, onClose }: ChatWindowProps) {
+export default function ChatWindow({
+  open, onClose, messages, username,
+}: ChatWindowProps) {
   return (
     <Paper
       sx={{
-        position: 'absolute',
+        position: 'fixed',
         bottom: 16,
         left: 16,
         height: '20rem',
@@ -32,14 +43,11 @@ export default function ChatWindow({ open, onClose }: ChatWindowProps) {
           </IconButton>
         </Stack>
         <Box sx={{ overflowY: 'scroll', height: '16rem' }}>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
-          <Typography variant="h1">Lalalalal</Typography>
+          <Stack spacing="5px" p="5px">
+            {messages.map((msg) => (
+              <ChatMessageBox message={msg} key={msg.uuid} username={username} />
+            ))}
+          </Stack>
         </Box>
         <Stack direction="row" flex="1">
           <TextField sx={{ flex: 1 }} />

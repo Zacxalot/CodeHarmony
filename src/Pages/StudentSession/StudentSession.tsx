@@ -20,6 +20,7 @@ import Console from '../../Components/Console/Console';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import { darkTheme } from '../../Theme';
 import ChatWindow from '../../Components/ChatWindow';
+import { useAppSelector } from '../../Redux/hooks';
 
 interface CodeSendResponse {
   language: string,
@@ -38,6 +39,8 @@ export default function StudentSession() {
   const [sendingUpdates, setSendingUpdates] = useState(false);
   const [currentVersion, setCurrentVersion] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
+
+  const username = useAppSelector((state) => state.account.username);
 
   // eslint-disable-next-line no-undef
   const updateInterval = useRef<NodeJS.Timeout>();
@@ -294,10 +297,10 @@ export default function StudentSession() {
   return (
     <Stack minHeight="100vh" maxHeight={planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ' ? '100vh' : 'default'} sx={{ backgroundColor: 'background.default' }}>
       <NavBar />
-      <Fab sx={{ position: 'absolute', bottom: 16, left: 16 }} onClick={() => { setChatOpen(true); }}>
+      <Fab sx={{ position: 'fixed', bottom: 16, left: 16 }} onClick={() => { setChatOpen(true); }}>
         <Chat />
       </Fab>
-      <ChatWindow onClose={() => { setChatOpen(false); }} open={chatOpen} />
+      <ChatWindow onClose={() => { setChatOpen(false); }} open={chatOpen} username={username || ''} messages={[{ username: 'user1', uuid: 'unique', text: 'Hey there' }, { username: 'user2', uuid: 'unique2', text: 'Howdy!' }]} />
       {renderLectureOrCoding()}
     </Stack>
   );
