@@ -5,10 +5,10 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import {
   Stack, CircularProgress, Container, Paper, Button,
-  ThemeProvider, Box, Fab, Modal, IconButton, Typography, TextField,
+  ThemeProvider, Box, Fab,
 } from '@mui/material';
 import {
-  Chat, Close, PlayArrow, Save,
+  Chat, PlayArrow, Save,
 } from '@mui/icons-material';
 import { debounce } from 'lodash';
 import axios from 'axios';
@@ -19,7 +19,7 @@ import CodingInfoWindow from '../../Components/CodingInfoWindow/CodingInfoWindow
 import Console from '../../Components/Console/Console';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import { darkTheme } from '../../Theme';
-import ChatWindow from '../../Components/ChatWindow';
+import ChatWindow, { Message } from '../../Components/ChatWindow';
 import { useAppSelector } from '../../Redux/hooks';
 
 interface CodeSendResponse {
@@ -39,6 +39,7 @@ export default function StudentSession() {
   const [sendingUpdates, setSendingUpdates] = useState(false);
   const [currentVersion, setCurrentVersion] = useState(0);
   const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const username = useAppSelector((state) => state.account.username);
 
@@ -92,6 +93,31 @@ export default function StudentSession() {
     }, 333);
   }, [currentVersion, sendingUpdates]);
 
+  // Handle socket messages
+  const handleMessage = useCallback((message: MessageEvent<any>) => {
+    const text: String = message.data;
+    const split = text.split(' ');
+
+    if (split[0] === 'sec') {
+      setCurrentSection(parseInt(split[1], 10));
+    } else if (text === 'unsub') {
+      setSendingUpdates(false);
+    } else if (text === 'subscribe') {
+      if (codemirrorRef.current && socket) {
+        socket.send(`sDoc ${JSON.stringify(codemirrorRef.current.getEditorState())}`);
+        codemirrorRef.current.clearChanges();
+      }
+      setSendingUpdates(true);
+    } else if (split[0] === 'txtm') {
+      const txtm: Message = JSON.parse(text.substring(5));
+
+      // Copy the messages array and push the new message
+      const tmpMessages = [...messages];
+      tmpMessages.push(txtm);
+      setMessages(tmpMessages);
+    }
+  }, [socket, messages]);
+
   // When socket connects
   useEffect(() => {
     const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
@@ -101,24 +127,9 @@ export default function StudentSession() {
         console.log('opened');
       };
 
-      socket.onmessage = (message) => {
-        const text: String = message.data;
-        const split = text.split(' ');
-
-        if (split[0] === 'sec') {
-          setCurrentSection(parseInt(split[1], 10));
-        } else if (text === 'unsub') {
-          setSendingUpdates(false);
-        } else if (text === 'subscribe') {
-          if (codemirrorRef.current) {
-            socket.send(`sDoc ${JSON.stringify(codemirrorRef.current.getEditorState())}`);
-            codemirrorRef.current.clearChanges();
-          }
-          setSendingUpdates(true);
-        }
-      };
+      socket.onmessage = handleMessage;
     }
-  }, [socket]);
+  }, [handleMessage]);
 
   // When current section changes
   useEffect(() => {
@@ -294,13 +305,29 @@ export default function StudentSession() {
     );
   };
 
+  // Send message to server
+  // Return success
+  const sendMessage = (txt: string) => {
+    if (socket) {
+      socket.send(`txtm ${txt}`);
+      return (true);
+    }
+    return (false);
+  };
+
   return (
     <Stack minHeight="100vh" maxHeight={planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ' ? '100vh' : 'default'} sx={{ backgroundColor: 'background.default' }}>
       <NavBar />
       <Fab sx={{ position: 'fixed', bottom: 16, left: 16 }} onClick={() => { setChatOpen(true); }}>
         <Chat />
       </Fab>
-      <ChatWindow onClose={() => { setChatOpen(false); }} open={chatOpen} username={username || ''} messages={[{ username: 'user1', uuid: 'unique', text: 'Hey there' }, { username: 'user2', uuid: 'unique2', text: 'Howdy!' }]} />
+      <ChatWindow
+        onClose={() => { setChatOpen(false); }}
+        open={chatOpen}
+        username={username || ''}
+        messages={messages}
+        messageSend={sendMessage}
+      />
       {renderLectureOrCoding()}
     </Stack>
   );

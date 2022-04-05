@@ -39,7 +39,7 @@ export default function ChatMessageBox({ message, username }: ChatMessageBoxProp
       }}
       elevation={1}
     >
-      <Stack>
+      <Stack sx={{ wordWrap: 'break-word' }}>
         {renderName()}
         {message.text}
       </Stack>
