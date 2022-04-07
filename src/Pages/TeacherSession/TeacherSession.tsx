@@ -14,7 +14,6 @@ import {
 import { ChangeSet } from '@codemirror/state';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
-import './TeacherSession.scss';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
 import { useAppSelector } from '../../Redux/hooks';
 import Codemirror from '../../Components/Codemirror/Codemirror';

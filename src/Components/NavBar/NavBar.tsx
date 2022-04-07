@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './NavBar.scss';
 import { ArrowBack, Person } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import {

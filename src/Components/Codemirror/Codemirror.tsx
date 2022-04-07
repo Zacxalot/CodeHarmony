@@ -11,7 +11,6 @@ import {
   ViewPlugin, ViewUpdate, EditorView, keymap,
 } from '@codemirror/view';
 import { oneDark } from '@codemirror/theme-one-dark';
-import './Codemirror.scss';
 import { indentWithTab } from '@codemirror/commands';
 
 let changes: ChangeSet[] = [];

@@ -4,7 +4,6 @@
 
 import { ListItem, ListItemButton } from '@mui/material';
 import React from 'react';
-import './LessonPlanSectionListItem.scss';
 
 interface LessonPlanSectionListItemProps {
   sectionName: String,

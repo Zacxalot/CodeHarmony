@@ -4,7 +4,6 @@ import { ThemeProvider } from '@emotion/react';
 import { Paper } from '@mui/material';
 import React, { RefObject } from 'react';
 import { darkTheme } from '../../Theme';
-import './Console.scss';
 
 interface ConsoleProps {
 }

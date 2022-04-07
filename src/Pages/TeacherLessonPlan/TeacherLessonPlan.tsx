@@ -12,7 +12,6 @@ import {
   clearChangedFlag, createNewSection, loadLessonPlan, setSectionOrders,
 } from './teacherLessonPlanSlice';
 import { useAppSelector } from '../../Redux/hooks';
-import './TeacherLessonPlan.scss';
 import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
 
 export interface CodingData {

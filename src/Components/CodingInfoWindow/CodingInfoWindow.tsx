@@ -5,7 +5,6 @@ import {
 import React from 'react';
 import { PlanSection } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
 import { renderSection } from '../../Pages/TeacherSession/TeacherSession';
-import './CodingInfoWindow.scss';
 
 interface CodingInfoWindowProps {
   planSection?: PlanSection

@@ -1,18 +1,17 @@
+import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import NavBar from '../../Components/NavBar/NavBar';
-import './PageNotFound.scss';
 
 function PageNotFound() {
   return (
-    <div className="full-page">
+    <Stack sx={{ minHeight: '100vh' }}>
       <NavBar />
-      <div className=" page-not-found">
-        <span className="large-emoji">😥</span>
-        <h1>404</h1>
-        <h2>Not Found</h2>
-        <p>sorry...</p>
-      </div>
-    </div>
+      <Stack flex="1" sx={{ color: 'text.primary' }} alignItems="center" justifyContent="center">
+        <Typography variant="h1" fontWeight={700}>404</Typography>
+        <Typography variant="h1" fontWeight={700}>Not Found</Typography>
+        <Typography>sorry...</Typography>
+      </Stack>
+    </Stack>
   );
 }
 

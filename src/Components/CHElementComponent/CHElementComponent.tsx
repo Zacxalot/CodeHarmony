@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import { CHElement } from '../../Pages/TeacherLessonPlan/TeacherLessonPlan';
-import './CHElementComponent.scss';
 import Image from '../Image';
 
 interface CHElementComponentProps {
@@ -27,7 +26,7 @@ function renderElementPreview(element: CHElement) {
 
 function CHElementComponent({ element }: CHElementComponentProps) {
   return (
-    <div className="element-preview">
+    <div>
       {renderElementPreview(element)}
     </div>
   );
