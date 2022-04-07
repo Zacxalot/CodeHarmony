@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import {
-  Container, List, Paper, Stack, Typography,
+  Button,
+  Container, Dialog, DialogTitle, List, Paper, Stack, Typography,
 } from '@mui/material';
 import NavBar from '../../Components/NavBar/NavBar';
 import LessonPlanSectionListItem from '../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem';
@@ -13,6 +14,7 @@ import {
 } from './teacherLessonPlanSlice';
 import { useAppSelector } from '../../Redux/hooks';
 import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
+import ErrorSnackbar from '../../Components/ErrorSnackbar';
 
 export interface CodingData {
   language: string,
@@ -58,7 +60,11 @@ function TeacherLessonPlan() {
   const planSections: PlanSection[] = useAppSelector((state) => state.planSections);
   const [selectedSection, setSelectedSection] = useState<number>(-1);
   const [newSectionName, setNewSectionName] = useState<string>('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [errorSnackbarText, setErrorSnackbarText] = useState('');
   const planName = location.pathname.split('/').slice(-1)[0];
+
+  const navigate = useNavigate();
 
   // Timer that waits before changes stop before sending update request
   // eslint-disable-next-line no-undef
@@ -164,11 +170,30 @@ function TeacherLessonPlan() {
     />
   ));
 
+  const deleteLessonPlan = () => {
+    axios.post(`/plan/delete/${planName}`).then(() => {
+      navigate('/t/dashboard');
+    }).catch(() => {
+      setErrorSnackbarText(`Couldn't delete ${planName}`);
+    });
+  };
+
   return (
     <Stack alignItems="center" spacing={2}>
+      <Dialog open={deleteDialogOpen} onClose={() => { setDeleteDialogOpen(false); }}>
+        <DialogTitle>
+          {`Are you sure you want to delete "${planName}"?`}
+        </DialogTitle>
+        <Stack direction="row" justifyContent="center" spacing={1} p={1}>
+          <Button variant="contained" onClick={() => { setDeleteDialogOpen(false); }}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={deleteLessonPlan}>Delete</Button>
+        </Stack>
+      </Dialog>
+      <ErrorSnackbar message={errorSnackbarText} onClose={() => { setErrorSnackbarText(''); }} />
       <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md">
+          <Typography variant="h1" textAlign="center" sx={{ color: 'text.primary' }}>{planName}</Typography>
           <Typography variant="h4" sx={{ color: 'text.primary' }}>Sections</Typography>
           <Paper>
             <Stack p={2} spacing={2}>
@@ -177,7 +202,7 @@ function TeacherLessonPlan() {
                   {renderSectionsList()}
                 </List>
               </Paper>
-              <Stack direction="row" justifyContent="center" alignItems="center">
+              <Stack alignItems="center" spacing={2}>
                 <TextFieldWithButton
                   onChange={(value) => { setNewSectionName(value); }}
                   onClick={addNewSection}
@@ -185,6 +210,13 @@ function TeacherLessonPlan() {
                   label="New Section Name"
                   buttonText="Add"
                 />
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => { setDeleteDialogOpen(true); }}
+                >
+                  Delete Lesson Plan
+                </Button>
               </Stack>
             </Stack>
           </Paper>
