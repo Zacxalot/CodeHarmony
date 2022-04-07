@@ -12,6 +12,7 @@ import TeacherSession from '../TeacherSession/TeacherSession';
 import StudentDashboard from '../StudentDashboard/StudentDashboard';
 import StudentSession from '../StudentSession/StudentSession';
 import LoginRegister from '../LoginRegister/LoginRegister';
+import PlanShare from '../PlanShare/PlanShare';
 
 function Hub() {
   return (
@@ -21,6 +22,7 @@ function Hub() {
         <Route path="/t/dashboard" element={<TeacherDashboard />} />
         <Route path="/t/plan/*" element={<TeacherLessonPlan />} />
         <Route path="/t/session/*" element={<TeacherSession />} />
+        <Route path="/t/browse" element={<PlanShare />} />
         <Route path="/s/session/*" element={<StudentSession />} />
         <Route path="/login" element={<LoginRegister />} />
         <Route path="/" element={<HomePage />} />
