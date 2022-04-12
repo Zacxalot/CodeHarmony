@@ -13,6 +13,8 @@ import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
 import TeacherPlanTable from '../../Components/TeacherTable/TeacherPlanTable';
 import { lightTheme } from '../../Theme';
+import TeacherPublishedTable from '../../Components/TeacherTable/TeacherPublishedTable';
+import { PlanSearchInfo } from '../PlanShare/PlanShare';
 
 interface CreateNewSessionResponse {
   planName: string,
@@ -53,6 +55,7 @@ export default function TeacherDashboard() {
 
   const [planList, setPlanList] = useState<Plan[]>([]);
   const [sessionList, setSessionList] = useState<Session[]>([]);
+  const [publishedList, setPublishedList] = useState<PlanSearchInfo[]>([]);
   const [newSessionModalOpen, setNewSessionModalOpen] = useState(false);
   const [newSessionName, setNewSessionName] = useState('');
   const [newSessionPlanName, setNewSessionPlanName] = useState('');
@@ -70,6 +73,11 @@ export default function TeacherDashboard() {
       .catch((err) => {
         console.log(err);
       });
+
+    axios.get<PlanSearchInfo[]>('/plan/published')
+      .then(({ data }) => {
+        setPublishedList(data);
+      }).catch(() => { });
   }, []);
 
   const requestNewSession = () => {
@@ -149,9 +157,7 @@ export default function TeacherDashboard() {
             plans={planList}
             newSessionCallback={openCreateSessionModal}
           />
-          <Button component={Link} to="/t/browse" variant="contained">
-            Get More Plans
-          </Button>
+          <TeacherPublishedTable plans={publishedList} />
         </Stack>
       </Container>
 

@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-interface PlanSearchInfo {
+export interface PlanSearchInfo {
   username: string,
   // eslint-disable-next-line camelcase
   plan_name: string,
