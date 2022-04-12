@@ -8,7 +8,6 @@ import {
   Button, Container, Stack, Modal, styled, Typography, TextField, Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import NavBar from '../../Components/NavBar/NavBar';
 import TeacherSessionTable from '../../Components/TeacherTable/TeacherSessionTable';
 import TeacherPlanTable from '../../Components/TeacherTable/TeacherPlanTable';

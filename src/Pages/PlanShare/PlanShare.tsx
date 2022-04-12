@@ -1,6 +1,6 @@
 import { Launch, Search } from '@mui/icons-material';
 import {
-  Container, IconButton, Stack,
+  Container, IconButton, Paper, Stack,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
@@ -48,26 +48,31 @@ export default function PlanShare() {
     <Stack alignItems="center" spacing={2}>
       <NavBar />
       <Container>
+
         <Stack alignItems="center" spacing={2}>
-          <TextFieldWithButton
-            buttonText=""
-            label="Search"
-            helperText=""
-            onChange={(text) => { setSearchText(text); }}
-            onClick={doSearch}
-            endIcon={<Search />}
-            sx={{ width: '100%', maxWidth: '40rem' }}
-          />
-          <DataGrid
-            rows={searchResults}
-            columns={columns}
-            getRowId={(row) => row.plan_name + row.username}
-            autoHeight
-            rowCount={20}
-            rowsPerPageOptions={[]}
-            disableSelectionOnClick
-            sx={{ width: '100%' }}
-          />
+          <Paper sx={{ width: '100%', maxWidth: '40rem' }}>
+            <TextFieldWithButton
+              buttonText=""
+              label="Search"
+              helperText=""
+              onChange={(text) => { setSearchText(text); }}
+              onClick={doSearch}
+              endIcon={<Search />}
+              sx={{ width: '100%', maxWidth: '40rem' }}
+            />
+          </Paper>
+          <Paper sx={{ width: '100%' }}>
+            <DataGrid
+              rows={searchResults}
+              columns={columns}
+              getRowId={(row) => row.plan_name + row.username}
+              autoHeight
+              rowCount={20}
+              rowsPerPageOptions={[]}
+              disableSelectionOnClick
+              sx={{ width: '100%' }}
+            />
+          </Paper>
         </Stack>
       </Container>
     </Stack>
