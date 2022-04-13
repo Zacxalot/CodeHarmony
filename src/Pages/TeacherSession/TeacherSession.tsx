@@ -9,15 +9,17 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import {
   Button, Container, Stack, Step, StepLabel, Stepper, CircularProgress, Paper,
-  Box, Card, styled, CardActionArea, CardContent, Typography,
+  Box, Card, styled, CardActionArea, CardContent, Typography, Fab,
 } from '@mui/material';
 import { ChangeSet } from '@codemirror/state';
+import { Chat } from '@mui/icons-material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
 import { useAppSelector } from '../../Redux/hooks';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import { ModalBox, ModalContainer } from '../TeacherDashboard/TeacherDashboard';
+import ChatWindow, { Message } from '../../Components/ChatWindow';
 
 interface LessonSession {
   plan: PlanSection[],
@@ -55,6 +57,8 @@ function TeacherSession() {
   const [connectedStudents, setConnectedStudents] = useState<string[]>([]);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
   const [subbedName, setSubbedName] = useState('');
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const username = useAppSelector((state) => state.account.username);
 
@@ -104,6 +108,8 @@ function TeacherSession() {
         const text: string = message.data;
         const split = text.split(' ');
 
+        console.log(text);
+
         if (split[0] === 'sDoc') {
           // Set the inital state of the editor
           const doc = JSON.parse(text.slice(5)).join('\n');
@@ -118,6 +124,13 @@ function TeacherSession() {
           if (codemirrorRef.current) {
             codemirrorRef.current.applyChanges(changes);
           }
+        } else if (split[0] === 'txtm') {
+          const txtm: Message = JSON.parse(text.substring(5));
+
+          // Copy the messages array and push the new message
+          const tmpMessages = [...messages];
+          tmpMessages.push(txtm);
+          setMessages(tmpMessages);
         }
       };
     }
@@ -159,6 +172,16 @@ function TeacherSession() {
       }
     }
   }, [subbedName]);
+
+  // Send message to server
+  // Return success
+  const sendMessage = (txt: string) => {
+    if (socket) {
+      socket.send(`txtm ${txt}`);
+      return (true);
+    }
+    return (false);
+  };
 
   const sectionNavButtons = () => (
     <Stack direction="row" justifyContent="space-between" mt={2}>
@@ -232,6 +255,16 @@ function TeacherSession() {
   return (
     <div>
       <NavBar />
+      <Fab sx={{ position: 'fixed', bottom: 16, left: 16 }} onClick={() => { setChatOpen(true); }}>
+        <Chat />
+      </Fab>
+      <ChatWindow
+        onClose={() => { setChatOpen(false); }}
+        open={chatOpen}
+        username={username || ''}
+        messages={messages}
+        messageSend={sendMessage}
+      />
       <Stack mt={2} spacing={2}>
         <Container>
           <Stepper activeStep={currentSection}>
