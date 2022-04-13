@@ -217,7 +217,10 @@ export default function StudentSession() {
     }
   };
 
-  const runHandler = useCallback(debounce(runCode, 2000, { leading: true }), [currentSection]);
+  const runHandler = useCallback(
+    debounce(runCode, 2000, { leading: true }),
+    [currentSection, socket, planSections],
+  );
 
   const saveCode = () => {
     let code;
