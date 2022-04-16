@@ -1,0 +1,19 @@
+{
+  "proxies": {
+    "/plan/": {
+      "origin": "${API_URL}"
+    },
+    "/session/": {
+      "origin": "${API_URL}"
+    },
+    "/account/": {
+      "origin": "${API_URL}"
+    },
+    "/ws/": {
+      "origin": "${API_URL}"
+    },
+    "/run/": {
+      "origin": "${API_URL}"
+    }
+  }
+}
