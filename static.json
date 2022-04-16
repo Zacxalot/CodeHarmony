@@ -1,4 +1,5 @@
 {
+  "allow_websocket_upgrade": true,
   "root": "build/",
   "routes": {
     "/**": "index.html"
