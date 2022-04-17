@@ -75,7 +75,7 @@ function TeacherSession() {
 
   // First load
   useEffect(() => {
-    setSocket(new WebSocket(`ws://${window.location.host}/ws`));
+    setSocket(new WebSocket(`wss://${window.location.host}/ws`));
   }, []);
 
   useEffect(() => {
