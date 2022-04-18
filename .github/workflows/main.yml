@@ -10,7 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      - name: Setup Node
+        uses: actions/setup-node@master
+        with:
+          node-version: 14.x
+      - name: Install Deps
+        run : npm ci
+      - name: Build
+        run : npm build
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "code-harmony" #Must be unique in Heroku
