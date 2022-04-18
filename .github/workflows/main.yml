@@ -23,6 +23,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "code-harmony" #Must be unique in Heroku
+          heroku_app_name: "code-harmony-front" #Must be unique in Heroku
           heroku_email: "zacxalot@gmail.com"
           usedocker: true
