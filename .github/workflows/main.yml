@@ -13,11 +13,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@master
         with:
-          node-version: 14.x
+          node-version: "14.x"
+          cache: "yarn"
       - name: Install Deps
-        run : npm ci
+        run : yarn install
       - name: Build
-        run : npm build
+        run : yarn build
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
