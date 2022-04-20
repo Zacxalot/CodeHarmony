@@ -165,7 +165,7 @@ export default function StudentSession() {
           });
       }
     }
-  }, [currentSection]);
+  }, [currentSection, planSections]);
 
   const runCode = () => {
     // eslint-disable-next-line no-unused-vars

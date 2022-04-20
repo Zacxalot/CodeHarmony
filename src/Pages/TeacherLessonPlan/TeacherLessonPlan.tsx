@@ -174,7 +174,7 @@ function TeacherLessonPlan() {
     axios.post(`/plan/delete/${planName}`).then(() => {
       navigate('/t/dashboard');
     }).catch(() => {
-      setErrorSnackbarText(`Couldn't delete ${planName}`);
+      setErrorSnackbarText(`Couldn't delete ${decodeURIComponent(planName)}`);
     });
   };
 
@@ -182,7 +182,7 @@ function TeacherLessonPlan() {
     <Stack alignItems="center" spacing={2}>
       <Dialog open={deleteDialogOpen} onClose={() => { setDeleteDialogOpen(false); }}>
         <DialogTitle>
-          {`Are you sure you want to delete "${planName}"?`}
+          {`Are you sure you want to delete "${decodeURIComponent(planName)}"?`}
         </DialogTitle>
         <Stack direction="row" justifyContent="center" spacing={1} p={1}>
           <Button variant="contained" onClick={() => { setDeleteDialogOpen(false); }}>Cancel</Button>
@@ -193,7 +193,7 @@ function TeacherLessonPlan() {
       <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md">
-          <Typography variant="h1" textAlign="center" sx={{ color: 'text.primary' }}>{planName}</Typography>
+          <Typography variant="h2" textAlign="center" sx={{ color: 'text.primary', wordBreak: 'break-all' }}>{decodeURIComponent(planName)}</Typography>
           <Typography variant="h4" sx={{ color: 'text.primary' }}>Sections</Typography>
           <Paper>
             <Stack p={2} spacing={2}>

@@ -26,7 +26,7 @@ function renderElementPreview(element: CHElement) {
 
 function CHElementComponent({ element }: CHElementComponentProps) {
   return (
-    <div>
+    <div style={{ wordWrap: 'break-word' }}>
       {renderElementPreview(element)}
     </div>
   );

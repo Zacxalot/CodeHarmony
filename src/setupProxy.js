@@ -27,7 +27,7 @@ module.exports = function (app) {
     '/ws',
     createProxyMiddleware({
       target: 'http://localhost:8080',
-      changeOrigin: true,
+      ws: true,
     }),
   );
   app.use(

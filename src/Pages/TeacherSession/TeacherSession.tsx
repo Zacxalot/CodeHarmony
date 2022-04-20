@@ -134,7 +134,7 @@ function TeacherSession() {
         }
       };
     }
-  }, [socket, username]);
+  }, [socket, messages, planSections, username]);
 
   const renderElements = useMemo(() => {
     if (planSections !== undefined && currentSection < planSections.length && currentSection >= 0) {
