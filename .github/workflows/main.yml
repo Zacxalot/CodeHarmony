@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@master
+        with:
+          node-version: "14.x"
+          cache: "yarn"
+      - name: Install Deps
+        run : yarn install
+      - name: Build
+        run : yarn build
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "code-harmony-front" #Must be unique in Heroku
+          heroku_email: "zacxalot@gmail.com"
+          usedocker: true
