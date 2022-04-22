@@ -69,7 +69,7 @@ export default function StudentSession() {
   useEffect(() => {
     const [planName, , teacherName] = location.pathname.split('/').splice(-3);
     if (planName && teacherName) {
-      setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}:8080/ws`));
+      setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`));
       axios.get<PlanSection[]>(`/plan/info/student/${planName}/${teacherName}`)
         .then(({ data }) => {
           setPlanSections(data);
