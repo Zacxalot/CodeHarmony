@@ -9,7 +9,7 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import {
   Button, Container, Stack, Step, StepLabel, Stepper, CircularProgress, Paper,
-  Box, Card, styled, CardActionArea, CardContent, Typography, Fab,
+  Box, Card, styled, CardActionArea, CardContent, Typography, Fab, Grid,
 } from '@mui/material';
 import { ChangeSet } from '@codemirror/state';
 import { Chat } from '@mui/icons-material';
@@ -42,13 +42,6 @@ export function renderSection(section: PlanSection) {
   return <CircularProgress />;
 }
 
-const CodeCard = styled(Card)`
-  max-width: 30%;
-  width: 100%;
-  height: 6rem;
-  margin-bottom: 1rem;
-`;
-
 function TeacherSession() {
   const location = useLocation();
 
@@ -75,7 +68,7 @@ function TeacherSession() {
 
   // First load
   useEffect(() => {
-    setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`));
+    setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}:8080/ws`));
   }, []);
 
   useEffect(() => {
@@ -205,27 +198,56 @@ function TeacherSession() {
             </ModalBox>
           </ModalContainer>
           <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">
-            <Stack
+            <Grid
+              container
               sx={{
                 p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
               }}
-              direction="row"
-              flexWrap="wrap"
               alignContent="flex-start"
-              justifyContent="space-around"
+              spacing={2}
+              justifyContent="center"
             >
               {connectedStudents.map((sUsername) => (
-                <CodeCard key={`s - ${sUsername}`}>
-                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName(sUsername); }}>
-                    <CardContent>
-                      <Stack>
+                <Grid item key={`s - ${sUsername}`}>
+                  <Card>
+                    <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName(sUsername); }}>
+                      <CardContent>
                         <Typography variant="h5" textAlign="center">{sUsername}</Typography>
-                      </Stack>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+
+              <Grid item>
+                <Card>
+                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
+                    <CardContent>
+                      <Typography variant="h5" textAlign="center">Bob</Typography>
                     </CardContent>
                   </CardActionArea>
-                </CodeCard>
-              ))}
-            </Stack>
+                </Card>
+              </Grid>
+              <Grid item>
+                <Card>
+                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
+                    <CardContent>
+                      <Typography variant="h5" textAlign="center">Charli</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+              <Grid item>
+                <Card>
+                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
+                    <CardContent>
+                      <Typography variant="h5" textAlign="center">Toni</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+
+            </Grid>
             <Paper sx={{
               p: 2, minHeight: '100%', flex: 1, overflowY: 'auto',
             }}

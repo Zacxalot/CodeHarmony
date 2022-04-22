@@ -3,6 +3,7 @@ import {
   Box, Button, Container, IconButton, Paper, Stack, Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import axios from 'axios';
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlanSearchInfo } from '../../Pages/PlanShare/PlanShare';
@@ -46,7 +47,11 @@ export default function TeacherPublishedTable({ plans }: TeacherPublishedTablePr
   );
 
   const deletePublishedPLan = () => {
-    setToDelete('');
+    axios.delete(`/plan/published/${encodeURIComponent(toDelete)}`).then(() => {
+      setToDelete('');
+    }).catch(() => {
+
+    });
   };
 
   return (
@@ -58,7 +63,7 @@ export default function TeacherPublishedTable({ plans }: TeacherPublishedTablePr
         <ModalBox alignItems="center" spacing={1} bgcolor="background.default">
           <Typography variant="h5" color="text.primary">
             Are you sure you want to delete
-            <Typography display="inline" variant="h5" color="primary">{` ${toDelete}`}</Typography>
+            <span style={{ fontWeight: 700 }}>{` ${toDelete}`}</span>
             ?
           </Typography>
           <Button

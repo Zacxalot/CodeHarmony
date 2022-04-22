@@ -54,8 +54,10 @@ export default function StudentSession() {
   const getUpdates = () => {
     if (codemirrorRef.current && sendingUpdates) {
       const changes = codemirrorRef.current.getChanges(currentVersion);
+      console.log(changes);
       if (changes.length !== 0) {
         if (socket) {
+          console.log(`Sending ${JSON.stringify(changes)}`);
           socket.send(`sUpdate ${JSON.stringify(changes)}`);
           setCurrentVersion(currentVersion + changes.length);
           console.log(changes);
@@ -67,7 +69,7 @@ export default function StudentSession() {
   useEffect(() => {
     const [planName, , teacherName] = location.pathname.split('/').splice(-3);
     if (planName && teacherName) {
-      setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`));
+      setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}:8080/ws`));
       axios.get<PlanSection[]>(`/plan/info/student/${planName}/${teacherName}`)
         .then(({ data }) => {
           setPlanSections(data);
@@ -98,6 +100,8 @@ export default function StudentSession() {
     const text: String = message.data;
     const split = text.split(' ');
 
+    console.log(text);
+
     if (split[0] === 'sec') {
       setCurrentSection(parseInt(split[1], 10));
     } else if (text === 'unsub') {
@@ -105,6 +109,7 @@ export default function StudentSession() {
     } else if (text === 'subscribe') {
       if (codemirrorRef.current && socket) {
         socket.send(`sDoc ${JSON.stringify(codemirrorRef.current.getEditorState())}`);
+        setCurrentVersion(0);
         codemirrorRef.current.clearChanges();
       }
       setSendingUpdates(true);
