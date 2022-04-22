@@ -9,7 +9,7 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import {
   Button, Container, Stack, Step, StepLabel, Stepper, CircularProgress, Paper,
-  Box, Card, styled, CardActionArea, CardContent, Typography, Fab, Grid,
+  Box, Card, CardActionArea, CardContent, Typography, Fab, Grid,
 } from '@mui/material';
 import { ChangeSet } from '@codemirror/state';
 import { Chat } from '@mui/icons-material';
