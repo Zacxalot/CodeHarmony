@@ -12,7 +12,7 @@ import {
   Box, Card, CardActionArea, CardContent, Typography, Fab, Grid,
 } from '@mui/material';
 import { ChangeSet } from '@codemirror/state';
-import { Chat } from '@mui/icons-material';
+import { Chat, Circle } from '@mui/icons-material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
@@ -20,6 +20,11 @@ import { useAppSelector } from '../../Redux/hooks';
 import Codemirror from '../../Components/Codemirror/Codemirror';
 import { ModalBox, ModalContainer } from '../TeacherDashboard/TeacherDashboard';
 import ChatWindow, { Message } from '../../Components/ChatWindow';
+
+interface Student {
+  username: string,
+  live: boolean,
+}
 
 interface LessonSession {
   plan: PlanSection[],
@@ -48,27 +53,48 @@ function TeacherSession() {
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
   const [connectedStudents, setConnectedStudents] = useState<string[]>([]);
+  const [submittedStudents, setSubmittedStudents] = useState<string[]>([]);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
-  const [subbedName, setSubbedName] = useState('');
+  const [subbed, setSubbed] = useState<Student>({ username: '', live: false });
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [lastRefreshed, setLastRefreshed] = useState(0);
+
+  // eslint-disable-next-line no-undef
+  const updateTimer = useRef<NodeJS.Timeout>();
 
   const username = useAppSelector((state) => state.account.username);
 
   const codemirrorRef = useRef<Codemirror>(null);
 
   const getStudentList = () => {
+    console.log('getting connected');
     if (username) {
       const [planName, sessionName] = location.pathname.split('/').splice(-2);
       axios.get<string[]>(`/session/connected/${username}/${planName}/${sessionName}`).then(({ data }) => {
         setConnectedStudents(data);
       }).catch(() => { });
+
+      if (planSections[currentSection]) {
+        axios.get<string[]>(`/session/submitted/${planName}/${sessionName}/${planSections[currentSection].name}`).then(({ data }) => {
+          setSubmittedStudents(data);
+        }).catch(() => { });
+      }
     }
   };
+
+  const studentList = useMemo(() => {
+    const connected = connectedStudents.map((s) => ({ username: s, live: true }));
+    const filteredSubmitted = submittedStudents
+      .filter((s) => !connectedStudents.includes(s))
+      .map((s) => ({ username: s, live: false }));
+    return connected.concat(filteredSubmitted);
+  }, [connectedStudents, submittedStudents]);
 
   // First load
   useEffect(() => {
     setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`));
+    updateTimer.current = setInterval(getStudentList, 5000);
   }, []);
 
   useEffect(() => {
@@ -158,13 +184,21 @@ function TeacherSession() {
 
   useEffect(() => {
     if (socket) {
-      if (subbedName === '') {
+      console.log(subbed);
+      if (subbed.username === '') {
         socket.send('unsub');
-      } else {
-        socket.send(`tInst subscribe ${subbedName}`);
+      } else if (subbed.live) {
+        socket.send(`tInst subscribe ${subbed.username}`);
+      } else if (planSections[currentSection]) {
+        const [planName, sessionName] = location.pathname.split('/').splice(-2);
+        axios.get<string[]>(`/session/submitted/${planName}/${sessionName}/${planSections[currentSection].name}/${subbed.username}`).then(({ data }) => {
+          if (codemirrorRef.current && codemirrorRef.current.view) {
+            codemirrorRef.current.setEditorState(data.join('\n'));
+          }
+        }).catch(() => { });
       }
     }
-  }, [subbedName]);
+  }, [subbed]);
 
   // Send message to server
   // Return success
@@ -187,7 +221,7 @@ function TeacherSession() {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
       return (
         <div>
-          <ModalContainer open={subbedName !== ''} onClose={() => { setSubbedName(''); }}>
+          <ModalContainer open={subbed.username !== ''} onClose={() => { setSubbed({ username: '', live: false }); }}>
             <ModalBox
               sx={{
                 maxWidth: '90vw', width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'scroll', p: 1,
@@ -198,56 +232,39 @@ function TeacherSession() {
             </ModalBox>
           </ModalContainer>
           <Stack height="100rem" maxHeight="calc(100vh - 50px - 9rem)" padding="5px" direction="row" spacing="5px">
-            <Grid
-              container
-              sx={{
-                p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
-              }}
-              alignContent="flex-start"
-              spacing={2}
-              justifyContent="center"
-            >
-              {connectedStudents.map((sUsername) => (
-                <Grid item key={`s - ${sUsername}`}>
-                  <Card>
-                    <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName(sUsername); }}>
-                      <CardContent>
-                        <Typography variant="h5" textAlign="center">{sUsername}</Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              ))}
-
-              <Grid item>
-                <Card>
-                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
-                    <CardContent>
-                      <Typography variant="h5" textAlign="center">Bob</Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+            <Stack sx={{ flex: 1 }}>
+              <Typography color="text.primary" variant="h4">Students:</Typography>
+              <Grid
+                container
+                sx={{
+                  p: 2, flex: 1, overflowY: 'auto', minHeight: '100%',
+                }}
+                alignContent="flex-start"
+                spacing={2}
+                justifyContent="center"
+              >
+                {studentList.map((student) => (
+                  <Grid item key={`s - ${student.username}`}>
+                    <Card>
+                      <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbed(student); }}>
+                        <CardContent>
+                          <Typography variant="h5" textAlign="center">{student.username}</Typography>
+                          {/* eslint-disable-next-line max-len */}
+                          {student.live ? (
+                            <Stack direction="row" justifyContent="cneter" alignItems="center" spacing={1}>
+                              <Typography variant="subtitle2">
+                                Live
+                              </Typography>
+                              <Circle sx={{ color: 'green', fontSize: 'inherit', mt: '-20px' }} />
+                            </Stack>
+                          ) : <Typography variant="subtitle2">Submitted</Typography>}
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                ))}
               </Grid>
-              <Grid item>
-                <Card>
-                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
-                    <CardContent>
-                      <Typography variant="h5" textAlign="center">Charli</Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-              <Grid item>
-                <Card>
-                  <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbedName('Bob'); }}>
-                    <CardContent>
-                      <Typography variant="h5" textAlign="center">Toni</Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-
-            </Grid>
+            </Stack>
             <Paper sx={{
               p: 2, minHeight: '100%', flex: 1, overflowY: 'auto',
             }}
