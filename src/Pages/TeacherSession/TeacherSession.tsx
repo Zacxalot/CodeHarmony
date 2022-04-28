@@ -58,7 +58,6 @@ function TeacherSession() {
   const [subbed, setSubbed] = useState<Student>({ username: '', live: false });
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [lastRefreshed, setLastRefreshed] = useState(0);
 
   // eslint-disable-next-line no-undef
   const updateTimer = useRef<NodeJS.Timeout>();
