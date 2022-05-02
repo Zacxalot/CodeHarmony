@@ -5,10 +5,10 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import {
   Stack, CircularProgress, Container, Paper, Button,
-  ThemeProvider, Box, Fab,
+  ThemeProvider, Box, Fab, Typography,
 } from '@mui/material';
 import {
-  Chat, PlayArrow, Save,
+  Chat, Check, Clear, PlayArrow, Save,
 } from '@mui/icons-material';
 import { debounce } from 'lodash';
 import axios from 'axios';
@@ -25,7 +25,7 @@ import { useAppSelector } from '../../Redux/hooks';
 interface CodeSendResponse {
   language: string,
   run: {
-    stdout: string,
+    output: string,
     signal: string | null
   },
   version: string
@@ -41,6 +41,8 @@ export default function StudentSession() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const [correctAnswer, setCorrectAnswer] = useState('unset');
+
   const username = useAppSelector((state) => state.account.username);
 
   // eslint-disable-next-line no-undef
@@ -54,8 +56,8 @@ export default function StudentSession() {
   const getUpdates = () => {
     if (codemirrorRef.current && sendingUpdates) {
       const changes = codemirrorRef.current.getChanges(currentVersion);
-      console.log(changes);
       if (changes.length !== 0) {
+        console.log(changes);
         if (socket) {
           console.log(`Sending ${JSON.stringify(changes)}`);
           socket.send(`sUpdate ${JSON.stringify(changes)}`);
@@ -130,6 +132,7 @@ export default function StudentSession() {
       socket.onopen = () => {
         socket.send(`sJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:${decodeURIComponent(teacherName)}`);
         console.log('opened');
+        setInterval(() => { socket.send('hb'); }, 2000);
       };
 
       socket.onmessage = handleMessage;
@@ -148,11 +151,11 @@ export default function StudentSession() {
         && planSections[currentSection]
       ) {
         console.log('Getting code');
-        axios.get<String[]>(`/session/save/${encodeURIComponent(planName)}/${encodeURIComponent(sessionName)}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`)
+        axios.get<String[]>(`/session/save/${planName}/${sessionName}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`)
           .then(({ data }) => {
             if (codemirrorRef.current) {
               console.log(data);
-              if (data.length === 1 && data[0].trim() === '') {
+              if (data.length === 0) {
                 codemirrorRef.current.setEditorState(
                   planSections[currentSection].codingData.startingCode,
                 );
@@ -162,6 +165,7 @@ export default function StudentSession() {
             }
           })
           .catch(() => {
+            console.log('No code found');
             if (codemirrorRef.current) {
               codemirrorRef.current.setEditorState(
                 planSections[currentSection].codingData.startingCode,
@@ -171,6 +175,28 @@ export default function StudentSession() {
       }
     }
   }, [currentSection, planSections]);
+
+  const saveCode = () => {
+    let code;
+
+    // Get code from the Codemirror
+    if (codemirrorRef.current) {
+      code = codemirrorRef.current.getEditorState();
+    }
+
+    const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
+
+    // If we can get all the info we need, post the code
+    if (code !== undefined
+      && planName
+      && sessionName
+      && teacherName
+      && planSections[currentSection]
+    ) {
+      console.log('Saving code');
+      axios.post(`/session/save/${planName}/${sessionName}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`, code);
+    }
+  };
 
   const runCode = () => {
     // eslint-disable-next-line no-unused-vars
@@ -199,18 +225,19 @@ export default function StudentSession() {
       };
 
       // Post the code and identifier to the API
-      axios.post<CodeSendResponse>('/run', { piston: sendCode, identifier: { plan_name: planName, host: teacherName, section_name: planSections[currentSection].name } })
+      axios.post<CodeSendResponse>('/run', { piston: sendCode, identifier: { plan_name: decodeURIComponent(planName), host: teacherName, section_name: planSections[currentSection].name } })
         .then(({ data, status }) => {
           if (consoleRef.current) {
             if (status === 202) {
-              console.log('Correct answer!');
+              setCorrectAnswer('correct');
             } else if (status === 200) {
+              setCorrectAnswer('incorrect');
               console.log('Incorrect!');
             }
 
             // Push results to console
             consoleRef.current.setState(
-              { contents: data.run.stdout, signal: data.run.signal },
+              { contents: data.run.output, signal: data.run.signal },
             );
             consoleRef.current?.scrollToBottom();
           }
@@ -226,28 +253,6 @@ export default function StudentSession() {
     debounce(runCode, 2000, { leading: true }),
     [currentSection, socket, planSections],
   );
-
-  const saveCode = () => {
-    let code;
-
-    // Get code from the Codemirror
-    if (codemirrorRef.current) {
-      code = codemirrorRef.current.getEditorState();
-    }
-
-    const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
-
-    // If we can get all the info we need, post the code
-    if (code !== undefined
-      && planName
-      && sessionName
-      && teacherName
-      && planSections[currentSection]
-    ) {
-      console.log('Saving code');
-      axios.post(`/session/save/${encodeURIComponent(planName)}/${encodeURIComponent(sessionName)}/${encodeURIComponent(teacherName)}/${encodeURIComponent(planSections[currentSection].name)}`, code);
-    }
-  };
 
   const saveHandler = useCallback(
     debounce(saveCode, 2000, { leading: true }),
@@ -267,6 +272,26 @@ export default function StudentSession() {
     }
     return (null);
   }, [planSections, currentSection]);
+
+  const answerElements = useMemo(() => {
+    if (correctAnswer === 'correct') {
+      return (
+        <Stack direction="row" style={{ color: '#60e004' }}>
+          <Check />
+          <Typography> Correct! Well done.</Typography>
+        </Stack>
+      );
+    } if (correctAnswer === 'incorrect') {
+      return (
+        <Stack direction="row" style={{ color: '#e02b21' }}>
+          <Clear />
+          <Typography> That&apos;s not right, try again!</Typography>
+        </Stack>
+      );
+    }
+
+    return null;
+  }, [correctAnswer]);
 
   const renderLectureOrCoding = () => {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
@@ -292,9 +317,10 @@ export default function StudentSession() {
             <CodingInfoWindow planSection={planSections[currentSection]} />
             <Console ref={consoleRef} />
             <Paper sx={{ height: '7%' }}>
-              <Stack direction="row" spacing={1} padding={1}>
+              <Stack direction="row" spacing={1} padding={1} alignItems="center">
                 <Button variant="contained" onClick={() => { runHandler(); }} endIcon={<PlayArrow />}>Run</Button>
                 <Button variant="contained" onClick={() => { saveHandler(); }} endIcon={<Save />}>Save</Button>
+                {answerElements}
               </Stack>
             </Paper>
           </Stack>

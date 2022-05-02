@@ -67,7 +67,6 @@ function TeacherSession() {
   const codemirrorRef = useRef<Codemirror>(null);
 
   const getStudentList = () => {
-    console.log('getting connected');
     if (username) {
       const [planName, sessionName] = location.pathname.split('/').splice(-2);
       axios.get<string[]>(`/session/connected/${username}/${planName}/${sessionName}`).then(({ data }) => {
@@ -93,7 +92,6 @@ function TeacherSession() {
   // First load
   useEffect(() => {
     setSocket(new WebSocket(`ws${document.location.protocol === 'https:' ? 's' : ''}://${window.location.host}/ws`));
-    updateTimer.current = setInterval(getStudentList, 5000);
   }, []);
 
   useEffect(() => {
@@ -108,8 +106,12 @@ function TeacherSession() {
   }, [username]);
 
   useEffect(() => {
+    getStudentList();
+    if (updateTimer.current) {
+      clearTimeout(updateTimer.current);
+    }
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
-      getStudentList();
+      updateTimer.current = setInterval(getStudentList, 5000);
     }
   }, [currentSection]);
 
@@ -120,6 +122,7 @@ function TeacherSession() {
       socket.onopen = () => {
         socket.send(`tJoin ${decodeURIComponent(planName)}:${decodeURIComponent(sessionName)}:${decodeURIComponent(username)}`);
         console.log('opened');
+        setInterval(() => { socket.send('hb'); }, 2000);
       };
 
       socket.onmessage = (message) => {
@@ -185,7 +188,7 @@ function TeacherSession() {
     if (socket) {
       console.log(subbed);
       if (subbed.username === '') {
-        socket.send('unsub');
+        socket.send('tInst unsub');
       } else if (subbed.live) {
         socket.send(`tInst subscribe ${subbed.username}`);
       } else if (planSections[currentSection]) {
