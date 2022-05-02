@@ -14,6 +14,7 @@ import { ModalBox, ModalContainer, Plan } from '../../Pages/TeacherDashboard/Tea
 interface TeacherTableProps {
   // eslint-disable-next-line no-unused-vars
   newSessionCallback: (planName: string) => void,
+  refreshPublishedPlans: () => void,
   plans: Plan[]
 }
 
@@ -50,7 +51,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
+function TeacherPlanTable({ plans, newSessionCallback, refreshPublishedPlans }: TeacherTableProps) {
   const navigate = useNavigate();
 
   const [sessionModalOpen, setSessionModalOpen] = useState(false);
@@ -95,7 +96,7 @@ function TeacherPlanTable({ plans, newSessionCallback }: TeacherTableProps) {
   };
 
   const publishLesson = () => {
-    axios.post('/plan/publish', { planName: planToPublish, publishName: newPlanName, description }).catch((e) => { console.log(e); });
+    axios.post('/plan/publish', { planName: planToPublish, publishName: newPlanName, description }).then(() => { setPublishModalOpen(false); refreshPublishedPlans(); }).catch((e) => { console.log(e); });
   };
 
   const publishButtonHandler = useCallback(

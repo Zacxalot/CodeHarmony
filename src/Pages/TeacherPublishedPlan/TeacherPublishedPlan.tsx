@@ -1,13 +1,16 @@
 import {
+  Button,
   Container, Grid, List, Paper, Stack, TextField, Typography,
 } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
 import LessonPlanSectionListItem from '../../Components/LessonPlanSectionListItem/LessonPlanSectionListItem';
 import NavBar from '../../Components/NavBar/NavBar';
+import TextFieldWithButton from '../../Components/TextFieldWithButton/TextFieldWithButton';
 import { useAppDispatch, useAppSelector } from '../../Redux/hooks';
+import { ModalBox, ModalContainer } from '../TeacherDashboard/TeacherDashboard';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import { loadLessonPlan } from '../TeacherLessonPlan/teacherLessonPlanSlice';
 
@@ -19,11 +22,14 @@ interface PublishedPlan {
 
 export default function TeacherPublishedPlan() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const pathname = useLocation().pathname.split('/');
   const planName = decodeURIComponent(pathname.slice(-2)[0]);
   const username = decodeURIComponent(pathname.slice(-1)[0]);
   const [description, setDescription] = useState('');
   const [selectedSection, setSelectedSection] = useState(0);
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
+  const [saveNewName, setSaveNewName] = useState('');
   const planSections: PlanSection[] = useAppSelector((state) => state.planSections);
 
   const renderSectionsList = () => planSections.map((section, index) => (
@@ -36,6 +42,7 @@ export default function TeacherPublishedPlan() {
 
   // First load
   useEffect(() => {
+    setSaveNewName(planName);
     axios.get<PublishedPlan>(`/plan/published/${planName}/${username}`)
       .then(({ data }) => {
         dispatch(loadLessonPlan(data.plan_sections));
@@ -56,16 +63,42 @@ export default function TeacherPublishedPlan() {
     return null;
   };
 
+  const saveAsPlan = () => {
+    axios.post('/plan/save', { publishedName: planName, publishHost: username, planName: saveNewName })
+      .then(() => {
+        navigate(`/t/plan/${saveNewName}`);
+      })
+      .catch(() => { });
+  };
+
   const currentSection: PlanSection = planSections[selectedSection] || { name: 'Section not selected', sectionType: 'Lecture' };
 
   return (
     <Stack alignItems="center" spacing={2}>
+      <ModalContainer
+        open={saveModalOpen}
+        onClose={() => { setSaveModalOpen(false); }}
+      >
+        <ModalBox alignItems="center" spacing={1} bgcolor="background.default">
+          <TextFieldWithButton
+            buttonText="Save"
+            onChange={(value) => setSaveNewName(value)}
+            label="Plan Name"
+            onClick={saveAsPlan}
+            value={saveNewName}
+            helperText=""
+          />
+        </ModalBox>
+      </ModalContainer>
       <NavBar />
       <Stack maxWidth="lg" width="100%" spacing={2}>
         <Container maxWidth="md" />
         <Typography variant="h2" textAlign="center" sx={{ color: 'text.primary', wordBreak: 'break-all' }}>{decodeURIComponent(planName)}</Typography>
         <Paper sx={{ p: 2 }}>
-          <Typography variant="h5">{description}</Typography>
+          <Stack alignItems="center">
+            <Typography variant="h5">{description}</Typography>
+            <Button variant="contained" onClick={() => { setSaveModalOpen(true); }}>Save Plan</Button>
+          </Stack>
         </Paper>
         <Typography variant="h4" sx={{ color: 'text.primary' }}>Sections</Typography>
         <Paper>

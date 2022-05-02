@@ -63,6 +63,13 @@ export default function TeacherDashboard() {
   const [codeModalOpen, setCodeModalOpen] = useState(false);
   const [teacherCode, setTeacherCode] = useState('');
 
+  const getPublishedPlans = () => {
+    axios.get<PlanSearchInfo[]>('/plan/published')
+      .then(({ data }) => {
+        setPublishedList(data);
+      }).catch(() => { });
+  };
+
   useEffect(() => {
     axios.get<PlanListResponse>('/plan/list')
       .then(({ data: { plans, sessions } }) => {
@@ -73,10 +80,7 @@ export default function TeacherDashboard() {
         console.log(err);
       });
 
-    axios.get<PlanSearchInfo[]>('/plan/published')
-      .then(({ data }) => {
-        setPublishedList(data);
-      }).catch(() => { });
+    getPublishedPlans();
   }, []);
 
   const requestNewSession = () => {
@@ -154,9 +158,11 @@ export default function TeacherDashboard() {
           <TeacherSessionTable sessions={sessionList} />
           <TeacherPlanTable
             plans={planList}
+            refreshPublishedPlans={getPublishedPlans}
             newSessionCallback={openCreateSessionModal}
+
           />
-          <TeacherPublishedTable plans={publishedList} />
+          <TeacherPublishedTable plans={publishedList} refreshPublishedPlans={getPublishedPlans} />
         </Stack>
       </Container>
 

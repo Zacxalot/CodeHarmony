@@ -29,10 +29,13 @@ const columns: GridColDef[] = [
 ];
 
 interface TeacherPublishedTableProps {
-  plans: PlanSearchInfo[];
+  plans: PlanSearchInfo[],
+  refreshPublishedPlans: () => void,
 }
 
-export default function TeacherPublishedTable({ plans }: TeacherPublishedTableProps) {
+export default function TeacherPublishedTable({
+  plans, refreshPublishedPlans,
+}: TeacherPublishedTableProps) {
   const [toDelete, setToDelete] = useState('');
   const deleteCallback = (planName: string) => { setToDelete(planName); };
 
@@ -49,6 +52,7 @@ export default function TeacherPublishedTable({ plans }: TeacherPublishedTablePr
   const deletePublishedPLan = () => {
     axios.delete(`/plan/published/${encodeURIComponent(toDelete)}`).then(() => {
       setToDelete('');
+      refreshPublishedPlans();
     }).catch(() => {
 
     });
