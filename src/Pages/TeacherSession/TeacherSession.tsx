@@ -12,7 +12,9 @@ import {
   Box, Card, CardActionArea, CardContent, Typography, Fab, Grid,
 } from '@mui/material';
 import { ChangeSet } from '@codemirror/state';
-import { Chat, Circle } from '@mui/icons-material';
+import {
+  Chat, CheckRounded, Circle, ClearRounded,
+} from '@mui/icons-material';
 import NavBar from '../../Components/NavBar/NavBar';
 import { PlanSection } from '../TeacherLessonPlan/TeacherLessonPlan';
 import CHElementComponent from '../../Components/CHElementComponent/CHElementComponent';
@@ -22,8 +24,15 @@ import { ModalBox, ModalContainer } from '../TeacherDashboard/TeacherDashboard';
 import ChatWindow, { Message } from '../../Components/ChatWindow';
 
 interface Student {
-  username: string,
+  username: string
   live: boolean,
+  correct: boolean,
+}
+
+interface Submitted {
+  // eslint-disable-next-line camelcase
+  student_un: string,
+  correct: boolean,
 }
 
 interface LessonSession {
@@ -53,9 +62,9 @@ function TeacherSession() {
   const [planSections, setPlanSections] = useState<PlanSection[]>([]);
   const [currentSection, setCurrentSection] = useState<number>(0);
   const [connectedStudents, setConnectedStudents] = useState<string[]>([]);
-  const [submittedStudents, setSubmittedStudents] = useState<string[]>([]);
+  const [submittedStudents, setSubmittedStudents] = useState<Submitted[]>([]);
   const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
-  const [subbed, setSubbed] = useState<Student>({ username: '', live: false });
+  const [subbed, setSubbed] = useState<Student>({ username: '', live: false, correct: false });
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -74,19 +83,31 @@ function TeacherSession() {
       }).catch(() => { });
 
       if (planSections[currentSection]) {
-        axios.get<string[]>(`/session/submitted/${planName}/${sessionName}/${planSections[currentSection].name}`).then(({ data }) => {
+        axios.get<Submitted[]>(`/session/submitted/${planName}/${sessionName}/${planSections[currentSection].name}`).then(({ data }) => {
           setSubmittedStudents(data);
         }).catch(() => { });
       }
     }
   };
 
-  const studentList = useMemo(() => {
-    const connected = connectedStudents.map((s) => ({ username: s, live: true }));
-    const filteredSubmitted = submittedStudents
-      .filter((s) => !connectedStudents.includes(s))
-      .map((s) => ({ username: s, live: false }));
-    return connected.concat(filteredSubmitted);
+  const studentList = useMemo<Student[]>(() => {
+    const students: Student[] = [];
+    const gotNames: string[] = [];
+
+    submittedStudents.forEach((s) => {
+      students.push({
+        correct: s.correct,
+        username: s.student_un,
+        live: connectedStudents.includes(s.student_un),
+      });
+      gotNames.push(s.student_un);
+    });
+
+    connectedStudents
+      .filter((s) => (!gotNames.includes(s)))
+      .forEach((s) => { students.push({ correct: false, username: s, live: true }); });
+
+    return students;
   }, [connectedStudents, submittedStudents]);
 
   // First load
@@ -223,7 +244,7 @@ function TeacherSession() {
     if (planSections[currentSection] && planSections[currentSection].sectionType === 'CODING  ') {
       return (
         <div>
-          <ModalContainer open={subbed.username !== ''} onClose={() => { setSubbed({ username: '', live: false }); }}>
+          <ModalContainer open={subbed.username !== ''} onClose={() => { setSubbed({ username: '', live: false, correct: false }); }}>
             <ModalBox
               sx={{
                 maxWidth: '90vw', width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'scroll', p: 1,
@@ -249,17 +270,18 @@ function TeacherSession() {
                   <Grid item key={`s - ${student.username}`}>
                     <Card>
                       <CardActionArea sx={{ height: '100%' }} onClick={() => { setSubbed(student); }}>
-                        <CardContent>
-                          <Typography variant="h5" textAlign="center">{student.username}</Typography>
+                        <CardContent sx={{ textAlign: 'center' }}>
+                          <Typography variant="h5">{student.username}</Typography>
                           {/* eslint-disable-next-line max-len */}
                           {student.live ? (
-                            <Stack direction="row" justifyContent="cneter" alignItems="center" spacing={1}>
+                            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
                               <Typography variant="subtitle2">
                                 Live
                               </Typography>
-                              <Circle sx={{ color: 'green', fontSize: 'inherit', mt: '-20px' }} />
+                              <Circle sx={{ color: 'success.dark', fontSize: 'inherit', mt: '-20px' }} />
                             </Stack>
                           ) : <Typography variant="subtitle2">Submitted</Typography>}
+                          {student.correct ? (<CheckRounded sx={{ color: 'success.dark' }} />) : (<ClearRounded sx={{ color: 'error.dark' }} />)}
                         </CardContent>
                       </CardActionArea>
                     </Card>

@@ -8,7 +8,8 @@ import {
   ThemeProvider, Box, Fab, Typography,
 } from '@mui/material';
 import {
-  Chat, Check, Clear, PlayArrow, Save,
+  CancelRounded,
+  Chat, CheckRounded, PlayArrow, Save,
 } from '@mui/icons-material';
 import { debounce } from 'lodash';
 import axios from 'axios';
@@ -200,7 +201,7 @@ export default function StudentSession() {
 
   const runCode = () => {
     // eslint-disable-next-line no-unused-vars
-    const [planName, _sessionName, teacherName] = location.pathname.split('/').splice(-3);
+    const [planName, sessionName, teacherName] = location.pathname.split('/').splice(-3);
 
     console.log('Running code');
     let code;
@@ -225,7 +226,7 @@ export default function StudentSession() {
       };
 
       // Post the code and identifier to the API
-      axios.post<CodeSendResponse>('/run', { piston: sendCode, identifier: { plan_name: decodeURIComponent(planName), host: teacherName, section_name: planSections[currentSection].name } })
+      axios.post<CodeSendResponse>('/run', { piston: sendCode, identifier: { plan_name: decodeURIComponent(planName), host: teacherName, section_name: planSections[currentSection].name }, session_name: decodeURIComponent(sessionName) })
         .then(({ data, status }) => {
           if (consoleRef.current) {
             if (status === 202) {
@@ -276,15 +277,15 @@ export default function StudentSession() {
   const answerElements = useMemo(() => {
     if (correctAnswer === 'correct') {
       return (
-        <Stack direction="row" style={{ color: '#60e004' }}>
-          <Check />
+        <Stack direction="row" sx={{ color: 'success.dark' }}>
+          <CheckRounded />
           <Typography> Correct! Well done.</Typography>
         </Stack>
       );
     } if (correctAnswer === 'incorrect') {
       return (
-        <Stack direction="row" style={{ color: '#e02b21' }}>
-          <Clear />
+        <Stack direction="row" sx={{ color: 'error.dark' }}>
+          <CancelRounded />
           <Typography> That&apos;s not right, try again!</Typography>
         </Stack>
       );
